@@ -1,0 +1,141 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1396283915774964}
+  m_IsPrefabParent: 1
+--- !u!1 &1396283915774964
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4390023781871748}
+  - component: {fileID: 33368147321872354}
+  - component: {fileID: 23745070620153844}
+  - component: {fileID: 65769507827521386}
+  - component: {fileID: 114528625682440514}
+  - component: {fileID: 114144752636434964}
+  m_Layer: 0
+  m_Name: GEAR_MetalPan
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4390023781871748
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1396283915774964}
+  m_LocalRotation: {x: 0.00000031987892, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &23745070620153844
+MeshRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1396283915774964}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 381851a9ef24eca498e0fc46bb614b23, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &33368147321872354
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1396283915774964}
+  m_Mesh: {fileID: 4300000, guid: 2f65b14228e4d3d408d20dbee9049141, type: 3}
+--- !u!65 &65769507827521386
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1396283915774964}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.452242, y: 0.070860006, z: 0.345324}
+  m_Center: {x: 0.06559999, y: 0.0354, z: -0.012199998}
+--- !u!114 &114144752636434964
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1396283915774964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -116821820, guid: cf5f2c8efb027b3428c08def532eea40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Minutes: 15
+  Audio: Play_HarvestingMetalSaw
+  Yield:
+  - GEAR_ScrapMetal
+--- !u!114 &114528625682440514
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1396283915774964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1344635434, guid: cf5f2c8efb027b3428c08def532eea40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConsoleName: 
+  DisplayNameLocalizationId: GAMEPLAY_MetalPan
+  DescriptionLocalizatonId: GAMEPLAY_MetalPanDescription
+  InventoryActionLocalizationId: 
+  PickUpAudio: Play_SndInvMetalMedium
+  StowAudio: Play_InventoryStow
+  PutBackAudio: Play_SndInvMetalMedium
+  WornOutAudio: 
+  WeightKG: 1
+  MaxHP: 100
+  DaysToDecay: 0
+  InspectOnPickup: 1
+  InspectDistance: 0.6
+  InspectScale: {x: 1, y: 1, z: 1}
+  InspectAngles: {x: -40, y: 20, z: -20}
+  InspectOffset: {x: 0, y: -0.05, z: 0}
+  EquippedModelPrefab: {fileID: 0}
+  ImplementationType: 
