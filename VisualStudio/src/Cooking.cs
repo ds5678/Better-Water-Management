@@ -10,7 +10,7 @@ namespace BetterWaterManagement
     {
         private static bool inInspect;
 
-        private static UILabel labelCookingGearRequired;
+        private static UILabel labelCookingWarning;
         private static UILabel labelEmptyCapacity;
 
         private static Vector3 offset = new Vector3(0, -60f, 0);
@@ -37,6 +37,9 @@ namespace BetterWaterManagement
 
         internal static void ClampBoilWaterAmount(Panel_FeedFire panel)
         {
+            float totalCapacity = Water.GetRemainingCapacity(LiquidQuality.Potable) + Water.GetRemainingCapacityEmpty();
+            labelCookingWarning.gameObject.SetActive(Cookware == null);
+
             FieldInfo boilWaterLitersField = AccessTools.Field(panel.GetType(), "m_BoilWaterLiters");
             float value = Mathf.Clamp((float)boilWaterLitersField.GetValue(panel), 0, MaxLiters);
             boilWaterLitersField.SetValue(panel, value);
@@ -47,11 +50,21 @@ namespace BetterWaterManagement
 
         internal static void ClampMeltSnowAmount(Panel_FeedFire panel)
         {
+            float totalCapacity = Water.GetRemainingCapacity(LiquidQuality.NonPotable) + Water.GetRemainingCapacityEmpty();
+
+            float limit = MaxLiters;
+            if (limit > 0 && totalCapacity == 0)
+            {
+                labelCookingWarning.text = Localization.Get("GAMEPLAY_NoCapacityAvailable");
+                limit = 0;
+            }
+            labelCookingWarning.gameObject.SetActive(limit == 0);
+
             FieldInfo meltSnowLitersField = AccessTools.Field(panel.GetType(), "m_MeltSnowLiters");
-            float value = Mathf.Clamp((float)meltSnowLitersField.GetValue(panel), 0, MaxLiters);
+            float value = Mathf.Clamp((float)meltSnowLitersField.GetValue(panel), 0, limit);
             meltSnowLitersField.SetValue(panel, value);
 
-            panel.m_ButtonIncreaseWater.SetActive(panel.m_ButtonIncreaseWater.activeSelf && value < MaxLiters);
+            panel.m_ButtonIncreaseWater.SetActive(panel.m_ButtonIncreaseWater.activeSelf && value < limit);
             panel.m_WaterAmountLabel.text = Utils.GetLiquidQuantityStringWithUnitsNoOunces(InterfaceManager.m_Panel_OptionsMenu.m_State.m_Units, value);
         }
 
@@ -65,7 +78,15 @@ namespace BetterWaterManagement
             FieldInfo boilWaterLitersField = AccessTools.Field(panel.GetType(), "m_BoilWaterLiters");
             boilWaterLitersField.SetValue(panel, Mathf.Clamp((float)boilWaterLitersField.GetValue(panel), 0, MaxLiters));
 
-            NGUITools.SetActive(labelCookingGearRequired.gameObject, Cookware == null);
+            if (Cookware == null)
+            {
+                labelCookingWarning.text = Localization.Get("GAMEPLAY_RequiresCookware");
+                labelCookingWarning.gameObject.SetActive(true);
+            }
+            else
+            {
+                labelCookingWarning.gameObject.SetActive(false);
+            }
         }
 
         internal static void HideCookingGearInInspect(Panel_FeedFire panel)
@@ -94,18 +115,17 @@ namespace BetterWaterManagement
 
         internal static void Prepare(Panel_FeedFire panel)
         {
-            labelCookingGearRequired = NGUITools.AddChild<UILabel>(panel.m_TabWater);
-            labelCookingGearRequired.depth = 2000;
-            labelCookingGearRequired.color = new Color(0.640f, 0.202f, 0.231f);
-            labelCookingGearRequired.bitmapFont = panel.m_Label_Water.bitmapFont;
-            labelCookingGearRequired.fontSize = 14;
-            labelCookingGearRequired.alignment = NGUIText.Alignment.Center;
-            labelCookingGearRequired.pivot = UIWidget.Pivot.Center;
-            labelCookingGearRequired.width = 200;
-            labelCookingGearRequired.height = 20;
-            labelCookingGearRequired.capsLock = true;
-            labelCookingGearRequired.transform.position = new Vector3(0, -0.858f, 0);
-            labelCookingGearRequired.gameObject.AddComponent<UILocalize>().key = "GAMEPLAY_RequiresCookware";
+            labelCookingWarning = NGUITools.AddChild<UILabel>(panel.m_TabWater);
+            labelCookingWarning.depth = 2000;
+            labelCookingWarning.color = new Color(0.640f, 0.202f, 0.231f);
+            labelCookingWarning.bitmapFont = panel.m_Label_Water.bitmapFont;
+            labelCookingWarning.fontSize = 14;
+            labelCookingWarning.alignment = NGUIText.Alignment.Center;
+            labelCookingWarning.pivot = UIWidget.Pivot.Center;
+            labelCookingWarning.width = 400;
+            labelCookingWarning.height = 20;
+            labelCookingWarning.capsLock = true;
+            labelCookingWarning.transform.position = new Vector3(0, -0.858f, 0);
 
             UISprite[] sprites = Resources.FindObjectsOfTypeAll<UISprite>();
             foreach (UISprite eachSprite in sprites)
@@ -117,7 +137,7 @@ namespace BetterWaterManagement
                 }
             }
 
-            UITexture texturePotable = CookingUtils.GetUITexure("gearIcon_Potable");
+            UITexture texturePotable = WaterUtils.GetUITexure("gearIcon_Potable");
             if (texturePotable != null)
             {
                 UITexture textureEmpty = Object.Instantiate(texturePotable, texturePotable.transform.parent);
@@ -125,7 +145,7 @@ namespace BetterWaterManagement
                 textureEmpty.mainTexture = (Texture)Resources.Load("InventoryGridIcons/ico_GearItem__WaterSupplyNone");
             }
 
-            UILabel labelPotable = CookingUtils.GetUILabel("LabelPotable");
+            UILabel labelPotable = WaterUtils.GetUILabel("LabelPotable");
             if (labelPotable != null)
             {
                 UILabel labelEmpty = Object.Instantiate(labelPotable, labelPotable.transform.parent);
@@ -145,7 +165,7 @@ namespace BetterWaterManagement
             panel.m_Label_NonpotableSupply.text = Utils.GetLiquidQuantityStringNoOunces(units, WATER.ActualNonPotable) + "/" + Utils.GetLiquidQuantityStringWithUnitsNoOunces(units, WATER.CapacityNonPotable);
             labelEmptyCapacity.text = Utils.GetLiquidQuantityStringWithUnitsNoOunces(units, WATER.CapacityEmpty);
 
-            panel.m_Texture_InspectItem.gameObject.SetActive(true);
+            panel.m_Texture_InspectItem.gameObject.SetActive(Cookware != null);
             panel.m_Texture_GearItem.alpha = 0.25f;
         }
 

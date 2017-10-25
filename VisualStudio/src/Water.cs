@@ -7,12 +7,18 @@ namespace BetterWaterManagement
     {
         public static readonly Water WATER = new Water();
 
-        private Water()
+        private static readonly System.Comparison<LiquidItem> REMOVING_ORDER = (LiquidItem x, LiquidItem y) => x.m_LiquidLiters.CompareTo(y.m_LiquidLiters);
+        private static readonly System.Comparison<LiquidItem> ADDING_ORDER = (LiquidItem x, LiquidItem y) =>
         {
-
-        }
+            int literComparison = y.m_LiquidLiters.CompareTo(x.m_LiquidLiters);
+            return literComparison != 0 ? literComparison : y.m_LiquidCapacityLiters.CompareTo(x.m_LiquidCapacityLiters);
+        };
 
         private List<LiquidItem> liquidItems = new List<LiquidItem>();
+
+        private Water()
+        {
+        }
 
         public float ActualNonPotable
         {
@@ -39,6 +45,105 @@ namespace BetterWaterManagement
             get; private set;
         }
 
+        public float RemainingCapacityNonPotable
+        {
+            get
+            {
+                return CapacityNonPotable - ActualNonPotable;
+            }
+        }
+
+        public float RemainingCapacityPotable
+        {
+            get
+            {
+                return CapacityPotable - ActualPotable;
+            }
+        }
+
+        public static void AdjustWaterSupplyToWater()
+        {
+            WATER.Update();
+
+            Inventory inventory = GameManager.GetInventoryComponent();
+            if (inventory == null)
+            {
+                return;
+            }
+
+            var nonPotableWaterSupply = inventory.GetNonPotableWaterSupply();
+            if (nonPotableWaterSupply != null)
+            {
+                nonPotableWaterSupply.m_WaterSupply.m_VolumeInLiters = WATER.ActualNonPotable;
+            }
+
+            var potableWaterSupply = inventory.GetPotableWaterSupply();
+            if (potableWaterSupply != null)
+            {
+                potableWaterSupply.m_WaterSupply.m_VolumeInLiters = WATER.ActualPotable;
+            }
+        }
+
+        public static void AdjustWaterToWaterSupply()
+        {
+            var potableWaterSupply = GameManager.GetInventoryComponent().GetPotableWaterSupply().m_WaterSupply;
+            var potableDelta = potableWaterSupply.m_VolumeInLiters - WATER.ActualPotable;
+
+            var nonPotableWaterSupply = GameManager.GetInventoryComponent().GetNonPotableWaterSupply().m_WaterSupply;
+            var nonPotableDelta = nonPotableWaterSupply.m_VolumeInLiters - WATER.ActualNonPotable;
+
+            WATER.Remove(-nonPotableDelta, LiquidQuality.NonPotable);
+            WATER.Remove(-potableDelta, LiquidQuality.Potable);
+            WATER.Add(potableDelta, LiquidQuality.Potable);
+            WATER.Add(nonPotableDelta, LiquidQuality.NonPotable);
+
+            WATER.UpdateAmounts();
+
+            float potableWaterLost = potableWaterSupply.m_VolumeInLiters - WATER.ActualPotable;
+            potableWaterSupply.m_VolumeInLiters = WATER.ActualPotable;
+            if (potableWaterLost > 0)
+            {
+                GearMessage.AddMessage(
+                    potableWaterSupply.name,
+                    Localization.Get("GAMEPLAY_Lost"),
+                    " " + Localization.Get("GAMEPLAY_WaterPotable") + " (" + Utils.GetLiquidQuantityStringWithUnitsNoOunces(InterfaceManager.m_Panel_OptionsMenu.m_State.m_Units, potableWaterLost) + ")",
+                    Color.red,
+                    false);
+            }
+
+            float nonPotableWaterLost = nonPotableWaterSupply.m_VolumeInLiters - WATER.ActualNonPotable;
+            nonPotableWaterSupply.m_VolumeInLiters = WATER.ActualNonPotable;
+            if (nonPotableWaterLost > 0)
+            {
+                GearMessage.AddMessage(
+                    nonPotableWaterSupply.name,
+                    Localization.Get("GAMEPLAY_Lost"),
+                    " " + Localization.Get("GAMEPLAY_WaterUnsafe") + " (" + Utils.GetLiquidQuantityStringWithUnitsNoOunces(InterfaceManager.m_Panel_OptionsMenu.m_State.m_Units, nonPotableWaterLost) + ")",
+                    Color.red,
+                    false);
+            }
+        }
+
+        public static float GetRemainingCapacity(LiquidQuality quality)
+        {
+            if (quality == LiquidQuality.NonPotable)
+            {
+                return WATER.RemainingCapacityNonPotable;
+            }
+
+            if (quality == LiquidQuality.Potable)
+            {
+                return WATER.RemainingCapacityPotable;
+            }
+
+            return 0;
+        }
+
+        public static float GetRemainingCapacityEmpty()
+        {
+            return WATER.CapacityEmpty;
+        }
+
         public void Update()
         {
             liquidItems.Clear();
@@ -55,104 +160,81 @@ namespace BetterWaterManagement
                 liquidItems.Add(liquidItem);
             }
 
-            liquidItems.Sort(delegate (LiquidItem x, LiquidItem y)
-            {
-                return y.m_LiquidCapacityLiters.CompareTo(x.m_LiquidCapacityLiters);
-            });
-
             UpdateAmounts();
         }
 
-        public static void AdjustWaterSupplyToWater()
+        private void Add(float amount, LiquidQuality quality)
         {
-            WATER.Update();
-
-            var nonPotableWaterSupply = GameManager.GetInventoryComponent().GetNonPotableWaterSupply().m_WaterSupply;
-            nonPotableWaterSupply.m_VolumeInLiters = WATER.ActualNonPotable;
-
-            var potableWaterSupply = GameManager.GetInventoryComponent().GetPotableWaterSupply().m_WaterSupply;
-            potableWaterSupply.m_VolumeInLiters = WATER.ActualPotable;
-        }
-
-        public static void AdjustWaterToWaterSupply()
-        {
-            var potableWaterSupply = GameManager.GetInventoryComponent().GetPotableWaterSupply().m_WaterSupply;
-            var nonPotableWaterSupply = GameManager.GetInventoryComponent().GetNonPotableWaterSupply().m_WaterSupply;
-
-            WATER.Redistribute(potableWaterSupply.m_VolumeInLiters, nonPotableWaterSupply.m_VolumeInLiters);
-
-            float potableWaterLost = potableWaterSupply.m_VolumeInLiters - WATER.ActualPotable;
-            potableWaterSupply.m_VolumeInLiters = WATER.ActualPotable;
-
-            if (potableWaterLost > 0)
+            if (amount <= 0)
             {
-                GearMessage.AddMessage(
-                    potableWaterSupply.name,
-                    Localization.Get("GAMEPLAY_Lost"),
-                    " " + Localization.Get("GAMEPLAY_WaterPotable") + " (" + Utils.GetLiquidQuantityStringWithUnitsNoOunces(InterfaceManager.m_Panel_OptionsMenu.m_State.m_Units, potableWaterLost) + ")",
-                    Color.red,
-                    false);
+                return;
             }
 
-            float nonPotableWaterLost = nonPotableWaterSupply.m_VolumeInLiters - WATER.ActualNonPotable;
-            nonPotableWaterSupply.m_VolumeInLiters = WATER.ActualNonPotable;
+            float remaining = amount;
+            liquidItems.Sort(ADDING_ORDER);
 
-            if (nonPotableWaterLost > 0)
-            {
-                GearMessage.AddMessage(
-                    nonPotableWaterSupply.name,
-                    Localization.Get("GAMEPLAY_Lost"),
-                    " " + Localization.Get("GAMEPLAY_WaterUnsafe") + " (" + Utils.GetLiquidQuantityStringWithUnitsNoOunces(InterfaceManager.m_Panel_OptionsMenu.m_State.m_Units, nonPotableWaterLost) + ")",
-                    Color.red,
-                    false);
-            }
-        }
-
-        public void Redistribute(float potable, float nonPotable)
-        {
             foreach (LiquidItem eachLiquidItem in liquidItems)
             {
-                eachLiquidItem.m_LiquidLiters = 0;
+                if (eachLiquidItem.m_LiquidLiters == 0 || eachLiquidItem.m_LiquidQuality != quality)
+                {
+                    continue;
+                }
+
+                float transfer = Mathf.Min(remaining, eachLiquidItem.m_LiquidCapacityLiters - eachLiquidItem.m_LiquidLiters);
+                eachLiquidItem.m_LiquidLiters += transfer;
+                remaining -= transfer;
+
+                if (remaining <= 0)
+                {
+                    return;
+                }
             }
 
-            Redistribute(potable, LiquidQuality.Potable);
-            Redistribute(nonPotable, LiquidQuality.NonPotable);
+            foreach (LiquidItem eachLiquidItem in liquidItems)
+            {
+                if (eachLiquidItem.m_LiquidLiters > 0)
+                {
+                    continue;
+                }
 
-            UpdateAmounts();
+                float transfer = Mathf.Min(remaining, eachLiquidItem.m_LiquidCapacityLiters - eachLiquidItem.m_LiquidLiters);
+
+                eachLiquidItem.m_LiquidLiters += transfer;
+                eachLiquidItem.m_LiquidQuality = quality;
+                remaining -= transfer;
+
+                if (remaining <= 0)
+                {
+                    return;
+                }
+            }
         }
 
-        private void Redistribute(float amount, LiquidQuality quality)
+        private void Remove(float amount, LiquidQuality quality)
         {
-            float remaining = amount;
-
-            int index = 0;
-            while (remaining > 0.5f && index < liquidItems.Count)
+            if (amount <= 0)
             {
-                LiquidItem liquidItem = liquidItems[index];
-                if (liquidItem.m_LiquidLiters == 0)
-                {
-                    float transfer = Mathf.Min(liquidItem.m_LiquidCapacityLiters, remaining);
-                    liquidItem.m_LiquidLiters = transfer;
-                    liquidItem.m_LiquidQuality = quality;
-                    remaining -= transfer;
-                }
-
-                index++;
+                return;
             }
 
-            index = liquidItems.Count - 1;
-            while (remaining > 0 && index >= 0)
+            float remaining = amount;
+            liquidItems.Sort(REMOVING_ORDER);
+
+            foreach (LiquidItem eachLiquidItem in liquidItems)
             {
-                LiquidItem liquidItem = liquidItems[index];
-                if (liquidItem.m_LiquidLiters == 0)
+                if (eachLiquidItem.m_LiquidLiters == 0 || eachLiquidItem.m_LiquidQuality != quality)
                 {
-                    float transfer = Mathf.Min(liquidItem.m_LiquidCapacityLiters, remaining);
-                    liquidItem.m_LiquidLiters = transfer;
-                    liquidItem.m_LiquidQuality = quality;
-                    remaining -= transfer;
+                    continue;
                 }
 
-                index--;
+                float transfer = Mathf.Min(remaining, eachLiquidItem.m_LiquidLiters);
+                eachLiquidItem.m_LiquidLiters -= transfer;
+                remaining -= transfer;
+
+                if (remaining <= 0)
+                {
+                    return;
+                }
             }
         }
 

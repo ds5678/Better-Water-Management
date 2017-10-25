@@ -2,18 +2,6 @@
 
 namespace BetterWaterManagement
 {
-    [HarmonyPatch(typeof(GearItem), "GetItemWeightKG")]
-    public class GearItem_GetItemWeightKG
-    {
-        public static void Postfix(GearItem __instance, ref float __result)
-        {
-            if (__instance.m_WaterSupply != null)
-            {
-                __result -= __instance.m_WaterSupply.m_VolumeInLiters;
-            }
-        }
-    }
-
     [HarmonyPatch(typeof(Panel_FeedFire), "BoilingWaterCompleted")]
     public class Panel_FeedFire_BoilingWaterCompleted
     {
@@ -113,24 +101,4 @@ namespace BetterWaterManagement
             }
         }
     }
-
-    //[HarmonyPatch(typeof(Panel_Inventory), "IgnoreWaterSupplyItem")]
-    //public class Panel_Inventory_IgnoreWaterSupplyItem
-    //{
-    //    public static bool Prefix(WaterSupply ws, ref bool __result)
-    //    {
-    //        __result = ws != null && ws.GetComponent<LiquidItem>() == null;
-    //        return false;
-    //    }
-    //}
-
-    //[HarmonyPatch(typeof(Panel_Container), "IgnoreWaterSupplyItem")]
-    //public class Panel_Container_IgnoreWaterSupplyItem
-    //{
-    //    public static bool Prefix(WaterSupply ws, ref bool __result)
-    //    {
-    //        __result = ws != null && ws.GetComponent<LiquidItem>() == null;
-    //        return false;
-    //    }
-    //}
 }

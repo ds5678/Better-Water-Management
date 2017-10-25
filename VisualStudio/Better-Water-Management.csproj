@@ -38,17 +38,12 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\Cooking.cs" />
-    <Compile Include="src\PickUpBottlesPatches.cs" />
+    <Compile Include="src\PickUpWaterPatches.cs" />
     <Compile Include="src\PickUpCookwarePatches.cs" />
     <Compile Include="src\CookingPatches.cs" />
-    <Compile Include="src\CookingUtils.cs" />
+    <Compile Include="src\UseWaterPatches.cs" />
+    <Compile Include="src\WaterUtils.cs" />
     <Compile Include="src\Water.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\DumpData\DumpData.csproj">
-      <Project>{c82ef606-5c1c-4f03-bf55-c990ac8dc424}</Project>
-      <Name>DumpData</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

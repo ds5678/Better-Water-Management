@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace BetterWaterManagement
 {
-    internal class CookingUtils
+    internal class WaterUtils
     {
         internal static UILabel GetUILabel(string name)
         {
@@ -35,6 +30,21 @@ namespace BetterWaterManagement
             }
 
             return null;
+        }
+
+        internal static bool ContainsWater(GearItem gearItem)
+        {
+            if (gearItem == null || gearItem.m_LiquidItem == null)
+            {
+                return false;
+            }
+
+            if (gearItem.m_LiquidItem.m_LiquidType != GearLiquidTypeEnum.Water)
+            {
+                return false;
+            }
+
+            return gearItem.m_LiquidItem.m_LiquidLiters > 0;
         }
     }
 }
