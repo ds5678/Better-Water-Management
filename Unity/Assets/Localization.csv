@@ -1,7 +1,7 @@
-Key, English, German
-GAMEPLAY_MetalPotDescription, "Can be used for cooking. Holds up to 3 l (102 oz).", "Kann zum Kochen verwendet werden. Fasst bis zu 3 l."
-GAMEPLAY_MetalPanDescription, "Can be used for cooking. Holds up to 1 l (34 oz).", "Kann zum Kochen verwendet werden. Fasst bis zu 1 l."
-GAMEPLAY_Empty, "Empty", "Leer"
-GAMEPLAY_Lost, "Lost", "Verloren"
-GAMEPLAY_RequiresCookware, "Requires Cookware", "Kochgeschirr benötigt"
-GAMEPLAY_NoCapacityAvailable, "No bottles with remaining capacity available", "Keine Flaschen mit verbleibender Kapazität vorhanden"
+Key, English, German, Russian
+GAMEPLAY_MetalPotDescription, "Can be used for cooking. Holds up to 3 l (102 oz).", "Kann zum Kochen verwendet werden. Fasst bis zu 3 l.", "Можно использоваться для приготовления пищи. Вмещает до 3 л."
+GAMEPLAY_MetalPanDescription, "Can be used for cooking. Holds up to 1 l (34 oz).", "Kann zum Kochen verwendet werden. Fasst bis zu 1 l.", "Можно использоваться для приготовления пищи. Вмещает до 1 л."
+GAMEPLAY_Empty, "Empty", "Leer", "Пустая емкость"
+GAMEPLAY_Lost, "Lost", "Verloren", "Потеряно"
+GAMEPLAY_RequiresCookware, "Requires Cookware", "Kochgeschirr benötigt", "Требуется посуда"
+GAMEPLAY_NoCapacityAvailable, "No bottles with remaining capacity available", "Keine Flaschen mit verbleibender Kapazität vorhanden", "Отсутствует емкость для воды"
