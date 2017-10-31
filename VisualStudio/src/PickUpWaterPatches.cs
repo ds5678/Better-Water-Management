@@ -134,24 +134,30 @@ namespace BetterWaterManagement
         }
     }
 
+    [HarmonyPatch(typeof(Panel_PickWater), "Start")]
+    public class Panel_PickWater_Start
+    {
+        public static void Postfix(Panel_PickWater __instance)
+        {
+            PickWater.Prepare(__instance);
+        }
+    }
+
+    [HarmonyPatch(typeof(Panel_PickWater), "SetWaterSourceForTaking")]
+    public class Panel_PickWater_SetWaterSourceForTaking
+    {
+        public static void Postfix(Panel_PickWater __instance)
+        {
+            PickWater.ClampAmount(__instance);
+        }
+    }
+
     [HarmonyPatch(typeof(Panel_PickWater), "OnIncrease")]
     public class Panel_PickWater_OnIncrease
     {
         public static void Postfix(Panel_PickWater __instance)
         {
-            WaterSupply waterSupply = AccessTools.Field(__instance.GetType(), "m_WaterSupplyInventory").GetValue(__instance) as WaterSupply;
-            if (!waterSupply)
-            {
-                Debug.LogError("Could not find WaterSupply to transfer to");
-                return;
-            }
-
-            float limit = Water.GetRemainingCapacity(waterSupply.m_WaterQuality) + Water.GetRemainingCapacityEmpty();
-            __instance.m_numLiters = Mathf.Clamp(__instance.m_numLiters, 0, limit);
-
-            AccessTools.Method(__instance.GetType(), "Refresh").Invoke(__instance, null);
-
-            __instance.m_ButtonIncrease.SetActive(__instance.m_numLiters < limit);
+            PickWater.ClampAmount(__instance);
         }
     }
 

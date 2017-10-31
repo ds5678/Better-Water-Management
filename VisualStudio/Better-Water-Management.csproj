@@ -41,6 +41,7 @@
     <Compile Include="src\PickUpWaterPatches.cs" />
     <Compile Include="src\PickUpCookwarePatches.cs" />
     <Compile Include="src\CookingPatches.cs" />
+    <Compile Include="src\PickWater.cs" />
     <Compile Include="src\UseWaterPatches.cs" />
     <Compile Include="src\WaterUtils.cs" />
     <Compile Include="src\Water.cs" />

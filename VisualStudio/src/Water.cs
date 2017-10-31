@@ -7,12 +7,13 @@ namespace BetterWaterManagement
     {
         public static readonly Water WATER = new Water();
 
-        private static readonly System.Comparison<LiquidItem> REMOVING_ORDER = (LiquidItem x, LiquidItem y) => x.m_LiquidLiters.CompareTo(y.m_LiquidLiters);
         private static readonly System.Comparison<LiquidItem> ADDING_ORDER = (LiquidItem x, LiquidItem y) =>
         {
             int literComparison = y.m_LiquidLiters.CompareTo(x.m_LiquidLiters);
             return literComparison != 0 ? literComparison : y.m_LiquidCapacityLiters.CompareTo(x.m_LiquidCapacityLiters);
         };
+
+        private static readonly System.Comparison<LiquidItem> REMOVING_ORDER = (LiquidItem x, LiquidItem y) => x.m_LiquidLiters.CompareTo(y.m_LiquidLiters);
 
         private List<LiquidItem> liquidItems = new List<LiquidItem>();
 
@@ -101,7 +102,7 @@ namespace BetterWaterManagement
 
             float potableWaterLost = potableWaterSupply.m_VolumeInLiters - WATER.ActualPotable;
             potableWaterSupply.m_VolumeInLiters = WATER.ActualPotable;
-            if (potableWaterLost > 0)
+            if (!IsNone(potableWaterLost))
             {
                 GearMessage.AddMessage(
                     potableWaterSupply.name,
@@ -113,7 +114,7 @@ namespace BetterWaterManagement
 
             float nonPotableWaterLost = nonPotableWaterSupply.m_VolumeInLiters - WATER.ActualNonPotable;
             nonPotableWaterSupply.m_VolumeInLiters = WATER.ActualNonPotable;
-            if (nonPotableWaterLost > 0)
+            if (!IsNone(nonPotableWaterLost))
             {
                 GearMessage.AddMessage(
                     nonPotableWaterSupply.name,
@@ -163,9 +164,19 @@ namespace BetterWaterManagement
             UpdateAmounts();
         }
 
+        private static bool IsEmpty(LiquidItem liquidItem)
+        {
+            return IsNone(liquidItem.m_LiquidLiters);
+        }
+
+        private static bool IsNone(float liters)
+        {
+            return liters < 0.005f;
+        }
+
         private void Add(float amount, LiquidQuality quality)
         {
-            if (amount <= 0)
+            if (IsNone(amount))
             {
                 return;
             }
@@ -175,7 +186,7 @@ namespace BetterWaterManagement
 
             foreach (LiquidItem eachLiquidItem in liquidItems)
             {
-                if (eachLiquidItem.m_LiquidLiters == 0 || eachLiquidItem.m_LiquidQuality != quality)
+                if (IsEmpty(eachLiquidItem) || eachLiquidItem.m_LiquidQuality != quality)
                 {
                     continue;
                 }
@@ -184,7 +195,7 @@ namespace BetterWaterManagement
                 eachLiquidItem.m_LiquidLiters += transfer;
                 remaining -= transfer;
 
-                if (remaining <= 0)
+                if (IsNone(remaining))
                 {
                     return;
                 }
@@ -192,7 +203,7 @@ namespace BetterWaterManagement
 
             foreach (LiquidItem eachLiquidItem in liquidItems)
             {
-                if (eachLiquidItem.m_LiquidLiters > 0)
+                if (!IsEmpty(eachLiquidItem))
                 {
                     continue;
                 }
@@ -203,7 +214,7 @@ namespace BetterWaterManagement
                 eachLiquidItem.m_LiquidQuality = quality;
                 remaining -= transfer;
 
-                if (remaining <= 0)
+                if (IsNone(remaining))
                 {
                     return;
                 }
@@ -212,7 +223,7 @@ namespace BetterWaterManagement
 
         private void Remove(float amount, LiquidQuality quality)
         {
-            if (amount <= 0)
+            if (IsNone(amount))
             {
                 return;
             }
@@ -222,7 +233,7 @@ namespace BetterWaterManagement
 
             foreach (LiquidItem eachLiquidItem in liquidItems)
             {
-                if (eachLiquidItem.m_LiquidLiters == 0 || eachLiquidItem.m_LiquidQuality != quality)
+                if (IsEmpty(eachLiquidItem) || eachLiquidItem.m_LiquidQuality != quality)
                 {
                     continue;
                 }
@@ -231,7 +242,7 @@ namespace BetterWaterManagement
                 eachLiquidItem.m_LiquidLiters -= transfer;
                 remaining -= transfer;
 
-                if (remaining <= 0)
+                if (IsNone(remaining))
                 {
                     return;
                 }
@@ -250,13 +261,11 @@ namespace BetterWaterManagement
 
             foreach (LiquidItem eachLiquidItem in liquidItems)
             {
-                if (eachLiquidItem.m_LiquidLiters == 0)
+                if (IsEmpty(eachLiquidItem))
                 {
                     CapacityEmpty += eachLiquidItem.m_LiquidCapacityLiters;
-                    continue;
                 }
-
-                if (eachLiquidItem.m_LiquidQuality == LiquidQuality.NonPotable)
+                else if (eachLiquidItem.m_LiquidQuality == LiquidQuality.NonPotable)
                 {
                     CapacityNonPotable += eachLiquidItem.m_LiquidCapacityLiters;
                     ActualNonPotable += eachLiquidItem.m_LiquidLiters;
