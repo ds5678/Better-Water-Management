@@ -90,7 +90,7 @@ namespace BetterWaterManagement
     {
         public static void Postfix(PlayerManager __instance)
         {
-            Cooking.SetCurrentBreakDown(null);
+            Cooking.ResetCurrentBreakDown();
         }
     }
 
@@ -99,7 +99,7 @@ namespace BetterWaterManagement
     {
         public static void Postfix(PlayerManager __instance)
         {
-            Cooking.RemoveCurrentBreakDown();
+            Cooking.ConsumeCurrentBreakDown();
         }
     }
 }

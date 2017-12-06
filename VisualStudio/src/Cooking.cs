@@ -89,6 +89,18 @@ namespace BetterWaterManagement
             }
         }
 
+        internal static void ConsumeCurrentBreakDown()
+        {
+            if (!CurrentBreakDown)
+            {
+                return;
+            }
+
+            CurrentBreakDown.m_YieldObject = new GameObject[0];
+            CurrentBreakDown.DoBreakDown();
+            SetCurrentBreakDown(null);
+        }
+
         internal static void HideCookingGearInInspect(Panel_FeedFire panel)
         {
             if (!inInspect || Cookware == null)
@@ -169,15 +181,9 @@ namespace BetterWaterManagement
             panel.m_Texture_GearItem.alpha = 0.25f;
         }
 
-        internal static void RemoveCurrentBreakDown()
+        internal static void ResetCurrentBreakDown()
         {
-            if (!CurrentBreakDown)
-            {
-                return;
-            }
-
-            CurrentBreakDown.m_YieldObject = new GameObject[0];
-            CurrentBreakDown.DoBreakDown();
+            GearManager.DestroyGearObject(CurrentBreakDownReplacement?.gameObject);
             SetCurrentBreakDown(null);
         }
 
