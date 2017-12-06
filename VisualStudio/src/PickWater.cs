@@ -1,16 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using Harmony;
 using UnityEngine;
-using Harmony;
 
 namespace BetterWaterManagement
 {
     internal class PickWater
     {
         private static UILabel labelNoCapacityWarning;
+
+        public static void ClampAmount(Panel_PickWater panel)
+        {
+            WaterSupply waterSupply = AccessTools.Field(panel.GetType(), "m_WaterSupplyInventory").GetValue(panel) as WaterSupply;
+            if (!waterSupply)
+            {
+                Debug.LogError("Could not find WaterSupply to transfer to");
+                return;
+            }
+
+            float limit = Water.GetRemainingCapacity(waterSupply.m_WaterQuality) + Water.GetRemainingCapacityEmpty();
+            panel.m_numLiters = Mathf.Clamp(panel.m_numLiters, 0, limit);
+            panel.m_maxLiters = Mathf.Clamp(panel.m_maxLiters, 0, limit);
+
+            AccessTools.Method(panel.GetType(), "Refresh").Invoke(panel, null);
+
+            labelNoCapacityWarning.gameObject.SetActive(limit == 0);
+        }
 
         internal static void Prepare(Panel_PickWater panel)
         {
@@ -27,25 +40,6 @@ namespace BetterWaterManagement
             labelNoCapacityWarning.transform.position = new Vector3(0, -0.858f, 0);
             labelNoCapacityWarning.text = Localization.Get("GAMEPLAY_NoCapacityAvailable");
             labelNoCapacityWarning.gameObject.SetActive(false);
-        }
-
-        public static void ClampAmount(Panel_PickWater panel)
-        {
-            WaterSupply waterSupply = AccessTools.Field(panel.GetType(), "m_WaterSupplyInventory").GetValue(panel) as WaterSupply;
-            if (!waterSupply)
-            {
-                Debug.LogError("Could not find WaterSupply to transfer to");
-                return;
-            }
-
-            float limit = Water.GetRemainingCapacity(waterSupply.m_WaterQuality) + Water.GetRemainingCapacityEmpty();
-            panel.m_numLiters = Mathf.Clamp(panel.m_numLiters, 0, limit);
-
-            AccessTools.Method(panel.GetType(), "Refresh").Invoke(panel, null);
-
-            panel.m_ButtonIncrease.SetActive(panel.m_numLiters < limit);
-
-            labelNoCapacityWarning.gameObject.SetActive(limit == 0);
         }
     }
 }

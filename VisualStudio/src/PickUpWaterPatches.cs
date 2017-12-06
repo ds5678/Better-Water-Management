@@ -1,5 +1,4 @@
 ﻿using Harmony;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace BetterWaterManagement
@@ -39,26 +38,6 @@ namespace BetterWaterManagement
             {
                 __result -= __instance.m_WaterSupply.m_VolumeInLiters;
             }
-        }
-    }
-
-    [HarmonyPatch(typeof(Panel_Inventory), "IgnoreWaterSupplyItem")]
-    public class Panel_Inventory_IgnoreWaterSupplyItem
-    {
-        public static bool Prefix(WaterSupply ws, ref bool __result)
-        {
-            __result = ws != null && ws.GetComponent<LiquidItem>() == null;
-            return false;
-        }
-    }
-
-    [HarmonyPatch(typeof(Panel_Container), "IgnoreWaterSupplyItem")]
-    public class Panel_Container_IgnoreWaterSupplyItem
-    {
-        public static bool Prefix(WaterSupply ws, ref bool __result)
-        {
-            __result = ws != null && ws.GetComponent<LiquidItem>() == null;
-            return false;
         }
     }
 
@@ -118,37 +97,23 @@ namespace BetterWaterManagement
         }
     }
 
-    [HarmonyPatch(typeof(Panel_PickWater), "OnExecuteAll")]
-    public class Panel_PickWater_OnExecuteAll
+    [HarmonyPatch(typeof(Panel_Container), "IgnoreWaterSupplyItem")]
+    public class Panel_Container_IgnoreWaterSupplyItem
     {
-        public static void Prefix(Panel_PickWater __instance)
+        public static bool Prefix(WaterSupply ws, ref bool __result)
         {
-            WaterSupply waterSupply = AccessTools.Field(__instance.GetType(), "m_WaterSupplyInventory").GetValue(__instance) as WaterSupply;
-            if (!waterSupply)
-            {
-                Debug.LogError("Could not find WaterSupply to transfer to");
-                return;
-            }
-
-            __instance.m_maxLiters = Water.GetRemainingCapacity(waterSupply.m_WaterQuality) + Water.GetRemainingCapacityEmpty();
+            __result = ws != null && ws.GetComponent<LiquidItem>() == null;
+            return false;
         }
     }
 
-    [HarmonyPatch(typeof(Panel_PickWater), "Start")]
-    public class Panel_PickWater_Start
+    [HarmonyPatch(typeof(Panel_Inventory), "IgnoreWaterSupplyItem")]
+    public class Panel_Inventory_IgnoreWaterSupplyItem
     {
-        public static void Postfix(Panel_PickWater __instance)
+        public static bool Prefix(WaterSupply ws, ref bool __result)
         {
-            PickWater.Prepare(__instance);
-        }
-    }
-
-    [HarmonyPatch(typeof(Panel_PickWater), "SetWaterSourceForTaking")]
-    public class Panel_PickWater_SetWaterSourceForTaking
-    {
-        public static void Postfix(Panel_PickWater __instance)
-        {
-            PickWater.ClampAmount(__instance);
+            __result = ws != null && ws.GetComponent<LiquidItem>() == null;
+            return false;
         }
     }
 
@@ -167,6 +132,24 @@ namespace BetterWaterManagement
         public static void Postfix()
         {
             Water.AdjustWaterToWaterSupply();
+        }
+    }
+
+    [HarmonyPatch(typeof(Panel_PickWater), "SetWaterSourceForTaking")]
+    public class Panel_PickWater_SetWaterSourceForTaking
+    {
+        public static void Postfix(Panel_PickWater __instance)
+        {
+            PickWater.ClampAmount(__instance);
+        }
+    }
+
+    [HarmonyPatch(typeof(Panel_PickWater), "Start")]
+    public class Panel_PickWater_Start
+    {
+        public static void Postfix(Panel_PickWater __instance)
+        {
+            PickWater.Prepare(__instance);
         }
     }
 }
