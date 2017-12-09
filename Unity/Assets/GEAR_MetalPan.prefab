@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23745070620153844}
   - component: {fileID: 65769507827521386}
   - component: {fileID: 114528625682440514}
-  - component: {fileID: 114144752636434964}
+  - component: {fileID: 114346496296835894}
   m_Layer: 0
   m_Name: GEAR_MetalPan
   m_TagString: Untagged
@@ -95,7 +95,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.452242, y: 0.070860006, z: 0.345324}
   m_Center: {x: 0.06559999, y: 0.0354, z: -0.012199998}
---- !u!114 &114144752636434964
+--- !u!114 &114346496296835894
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -103,13 +103,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1396283915774964}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -116821820, guid: cf5f2c8efb027b3428c08def532eea40, type: 3}
+  m_Script: {fileID: -234435149, guid: cf5f2c8efb027b3428c08def532eea40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Minutes: 15
   Audio: Play_HarvestingMetalSaw
-  Yield:
+  Minutes: 15
+  YieldNames:
   - GEAR_ScrapMetal
+  YieldCounts: 01000000
 --- !u!114 &114528625682440514
 MonoBehaviour:
   m_ObjectHideFlags: 1
