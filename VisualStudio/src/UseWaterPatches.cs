@@ -1,12 +1,53 @@
 ﻿using Harmony;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 
 namespace BetterWaterManagement
 {
-    [HarmonyPatch(typeof(Panel_ActionsRadial), "GetDrinkItemsInInventory")]
-    public class Panel_ActionsRadial_GetDrinkItemsInInventory
+    [HarmonyPatch(typeof(GameManager), "Start")]
+    internal class GameManager_Start
     {
-        public static bool Prefix(Panel_ActionsRadial __instance, ref List<GearItem> __result)
+        internal static void Postfix()
+        {
+            Water.AdjustWaterSupplyToWater();
+        }
+    }
+
+    [HarmonyPatch(typeof(ItemDescriptionPage), "GetEquipButtonLocalizationId")]
+    internal class ItemDescriptionPageGetEquipButtonLocalizationIdPatch
+    {
+        internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            var codes = new List<CodeInstruction>(instructions);
+
+            for (int i = 0; i < codes.Count; i++)
+            {
+                if (codes[i].opcode != OpCodes.Ldc_R4)
+                {
+                    continue;
+                }
+
+                var operand = codes[i].operand;
+                if (!(operand is float))
+                {
+                    continue;
+                }
+
+                float value = (float)operand;
+                if (value == 0.01f)
+                {
+                    codes[i].operand = Water.MIN_AMOUNT;
+                }
+            }
+
+            return codes;
+        }
+    }
+
+    [HarmonyPatch(typeof(Panel_ActionsRadial), "GetDrinkItemsInInventory")]
+    internal class Panel_ActionsRadial_GetDrinkItemsInInventory
+    {
+        internal static bool Prefix(Panel_ActionsRadial __instance, ref List<GearItem> __result)
         {
             __result = new List<GearItem>();
 
@@ -43,9 +84,9 @@ namespace BetterWaterManagement
     }
 
     [HarmonyPatch(typeof(Panel_Inventory), "CanBeAddedToSatchel")]
-    public class Panel_Inventory_CanBeAddedToSatchel
+    internal class Panel_Inventory_CanBeAddedToSatchel
     {
-        public static bool Prefix(GearItem gi, ref bool __result)
+        internal static bool Prefix(GearItem gi, ref bool __result)
         {
             if (gi.m_DisableFavoriting)
             {
@@ -63,9 +104,9 @@ namespace BetterWaterManagement
     }
 
     [HarmonyPatch(typeof(PlayerManager), "OnDrinkWaterComplete")]
-    public class PlayerManager_OnDrinkWaterComplete
+    internal class PlayerManager_OnDrinkWaterComplete
     {
-        public static void Postfix(PlayerManager __instance)
+        internal static void Postfix(PlayerManager __instance)
         {
             WaterSupply waterSupply = AccessTools.Field(__instance.GetType(), "m_WaterSourceToDrinkFrom").GetValue(__instance) as WaterSupply;
             if (waterSupply == null)
@@ -88,9 +129,9 @@ namespace BetterWaterManagement
     }
 
     [HarmonyPatch(typeof(PlayerManager), "UseInventoryItem")]
-    public class PlayerManager_UseInventoryItem
+    internal class PlayerManager_UseInventoryItem
     {
-        public static void Prefix(GearItem gi, ref bool __result)
+        internal static void Prefix(GearItem gi, ref bool __result)
         {
             if (gi == null)
             {
@@ -114,15 +155,6 @@ namespace BetterWaterManagement
             waterSupply.m_WaterQuality = liquidItem.m_LiquidQuality;
             waterSupply.m_TimeToDrinkSeconds = liquidItem.m_TimeToDrinkSeconds;
             waterSupply.m_DrinkingAudio = liquidItem.m_DrinkingAudio;
-        }
-    }
-
-    [HarmonyPatch(typeof(GameManager), "Start")]
-    public class GameManager_Start
-    {
-        public static void Postfix()
-        {
-            Water.AdjustWaterSupplyToWater();
         }
     }
 }

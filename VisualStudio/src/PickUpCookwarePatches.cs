@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BetterWaterManagement
 {
     [HarmonyPatch(typeof(BreakDown), "ProcessInteraction")]
-    public class BreakDown_ProcessInteraction
+    internal class BreakDown_ProcessInteraction
     {
         public static bool Prefix(BreakDown __instance, ref bool __result)
         {
@@ -27,24 +27,8 @@ namespace BetterWaterManagement
         }
     }
 
-    [HarmonyPatch(typeof(Panel_BreakDown), "GetSelectedTool")]
-    public class Panel_BreakDown_GetSelectedTool
-    {
-        public static bool Prefix(Panel_BreakDown __instance, ref GearItem __result)
-        {
-            List<GearItem> m_Tool = (List<GearItem>)AccessTools.Field(__instance.GetType(), "m_Tools").GetValue(__instance);
-            if (m_Tool.Count == 0)
-            {
-                __result = null;
-                return false;
-            }
-
-            return true;
-        }
-    }
-
     [HarmonyPatch(typeof(Panel_BreakDown), "Enable")]
-    public class Panel_BreakDown_Start
+    internal class Panel_BreakDown_Enable
     {
         private static GameObject buttonPickUp;
 
@@ -75,7 +59,7 @@ namespace BetterWaterManagement
             }
         }
 
-        private static void OnPickup()
+        internal static void OnPickup()
         {
             Panel_BreakDown panelBreakDown = InterfaceManager.m_Panel_BreakDown;
             panelBreakDown.Enable(false);
@@ -85,8 +69,61 @@ namespace BetterWaterManagement
         }
     }
 
+    [HarmonyPatch(typeof(Panel_BreakDown), "Update")]
+    internal class Panel_BreakDown_Update
+    {
+        public static void Postfix(Panel_BreakDown __instance)
+        {
+            if (!__instance.IsEnabled() || __instance.IsBreakingDown() || Utils.IsMouseActive())
+            {
+                return;
+            }
+
+            if (InputManager.GetInventoryExaminePressed())
+            {
+                Panel_BreakDown_Enable.OnPickup();
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(Panel_BreakDown), "GetSelectedTool")]
+    internal class Panel_BreakDown_GetSelectedTool
+    {
+        public static bool Prefix(Panel_BreakDown __instance, ref GearItem __result)
+        {
+            List<GearItem> m_Tool = (List<GearItem>)AccessTools.Field(__instance.GetType(), "m_Tools").GetValue(__instance);
+            if (m_Tool.Count == 0)
+            {
+                __result = null;
+                return false;
+            }
+
+            return true;
+        }
+    }
+
+    [HarmonyPatch(typeof(Panel_BreakDown), "UpdateButtonLegend")]
+    internal class Panel_BreakDown_UpdateButtonLegend
+    {
+        public static bool Prefix(Panel_BreakDown __instance)
+        {
+            if (!Cooking.IsCookware(__instance.m_BreakDown))
+            {
+                return true;
+            }
+
+            __instance.m_ButtonLegendContainer.BeginUpdate();
+            __instance.m_ButtonLegendContainer.UpdateButton("Inventory_Examine", "GAMEPLAY_PickUp", !__instance.IsBreakingDown(), 2, true);
+            __instance.m_ButtonLegendContainer.UpdateButton("Continue", "GAMEPLAY_BreakDown", !__instance.IsBreakingDown(), 1, true);
+            __instance.m_ButtonLegendContainer.UpdateButton("Escape", "GAMEPLAY_ButtonBack", !__instance.IsBreakingDown(), 0, true);
+            __instance.m_ButtonLegendContainer.EndUpdate();
+
+            return false;
+        }
+    }
+
     [HarmonyPatch(typeof(PlayerManager), "ExitInspectGearMode")]
-    public class PlayerManager_ExitInspectGearMode
+    internal class PlayerManager_ExitInspectGearMode
     {
         public static void Postfix(PlayerManager __instance)
         {
@@ -95,7 +132,7 @@ namespace BetterWaterManagement
     }
 
     [HarmonyPatch(typeof(PlayerManager), "ProcessPickupItemInteraction")]
-    public class PlayerManager_ProcessPickupItemInteraction
+    internal class PlayerManager_ProcessPickupItemInteraction
     {
         public static void Postfix(PlayerManager __instance)
         {

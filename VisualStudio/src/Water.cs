@@ -6,6 +6,7 @@ namespace BetterWaterManagement
     public class Water
     {
         public static readonly Water WATER = new Water();
+        public const float MIN_AMOUNT = 0.005f;
 
         private static readonly System.Comparison<LiquidItem> ADDING_ORDER = (LiquidItem x, LiquidItem y) =>
         {
@@ -171,7 +172,7 @@ namespace BetterWaterManagement
 
         private static bool IsNone(float liters)
         {
-            return liters < 0.005f;
+            return liters < MIN_AMOUNT;
         }
 
         private void Add(float amount, LiquidQuality quality)
