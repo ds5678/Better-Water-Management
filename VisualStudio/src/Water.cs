@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BetterWaterManagement
@@ -100,6 +101,7 @@ namespace BetterWaterManagement
             WATER.Add(nonPotableDelta, LiquidQuality.NonPotable);
 
             WATER.UpdateAmounts();
+            WATER.UpdateBottles();
 
             float potableWaterLost = potableWaterSupply.m_VolumeInLiters - WATER.ActualPotable;
             potableWaterSupply.m_VolumeInLiters = WATER.ActualPotable;
@@ -123,6 +125,14 @@ namespace BetterWaterManagement
                     " " + Localization.Get("GAMEPLAY_WaterUnsafe") + " (" + Utils.GetLiquidQuantityStringWithUnitsNoOunces(InterfaceManager.m_Panel_OptionsMenu.m_State.m_Units, nonPotableWaterLost) + ")",
                     Color.red,
                     false);
+            }
+        }
+
+        private void UpdateBottles()
+        {
+            foreach (LiquidItem eachLiquidItem in this.liquidItems)
+            {
+                WaterUtils.UpdateWaterBottle(eachLiquidItem.GetComponent<GearItem>());
             }
         }
 
@@ -163,9 +173,10 @@ namespace BetterWaterManagement
             }
 
             UpdateAmounts();
+            UpdateBottles();
         }
 
-        private static bool IsEmpty(LiquidItem liquidItem)
+        internal static bool IsEmpty(LiquidItem liquidItem)
         {
             return IsNone(liquidItem.m_LiquidLiters);
         }

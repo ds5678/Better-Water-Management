@@ -14,7 +14,7 @@ namespace BetterWaterManagement
                 return;
             }
 
-            if (liquidItem.m_LiquidLiters == 0)
+            if (Water.IsEmpty(liquidItem))
             {
                 __result += " - " + Localization.Get("GAMEPLAY_Empty");
             }
@@ -37,6 +37,19 @@ namespace BetterWaterManagement
             if (__instance.m_WaterSupply != null)
             {
                 __result -= __instance.m_WaterSupply.m_VolumeInLiters;
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(GearItem), "ManualStart")]
+    public class GearItem_ManualStart
+    {
+        public static void Postfix(GearItem __instance)
+        {
+            LiquidItem liquidItem = __instance.m_LiquidItem;
+            if (liquidItem && liquidItem.m_LiquidType == GearLiquidTypeEnum.Water)
+            {
+                WaterUtils.UpdateWaterBottle(__instance);
             }
         }
     }
@@ -150,6 +163,24 @@ namespace BetterWaterManagement
         public static void Postfix(Panel_PickWater __instance)
         {
             PickWater.Prepare(__instance);
+        }
+    }
+
+    [HarmonyPatch(typeof(Utils), "GetInventoryIconTexture")]
+    internal class Utils_GetInventoryIconTexture
+    {
+        public static bool Prefix(GearItem gi, ref Texture2D __result)
+        {
+            LiquidItem liquidItem = gi.m_LiquidItem;
+            if (!liquidItem || liquidItem.m_LiquidType != GearLiquidTypeEnum.Water)
+            {
+                return true;
+            }
+
+            string textureName = gi.name.Replace("GEAR_", "ico_GearItem__") + WaterUtils.GetWaterSuffix(liquidItem);
+            __result = Utils.GetInventoryIconTextureFromName(textureName);
+
+            return __result == null;
         }
     }
 }
