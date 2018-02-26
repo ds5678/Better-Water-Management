@@ -15,6 +15,11 @@ namespace BetterWaterManagement
 
         private static Vector3 offset = new Vector3(0, -60f, 0);
 
+        public static void OnLoad()
+        {
+            Debug.Log("[Better-Water-Management]: Version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
+        }
+
         internal static GearItem Cookware
         {
             get; private set;
