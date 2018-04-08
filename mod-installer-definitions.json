@@ -1,0 +1,15 @@
+﻿[
+	{
+		"name": "Better-Water-Management",
+		"version": "2.0.0",
+		"dependencies": [
+			{
+				"name": "ModComponent",
+				"version": "^2.0.0"
+			}
+		],
+		"assets": [
+			"https://github.com/WulfMarius/Better-Water-Management/releases/download/2.0.0-main/Better-Water-Management-V2.0.0.zip"
+		]
+	}
+]
