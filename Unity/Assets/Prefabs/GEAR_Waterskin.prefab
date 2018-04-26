@@ -9,55 +9,55 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1064214406161890}
+  m_RootGameObject: {fileID: 1274349658387068}
   m_IsPrefabParent: 1
---- !u!1 &1064214406161890
+--- !u!1 &1274349658387068
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4215547664000344}
-  - component: {fileID: 33793311990833328}
-  - component: {fileID: 23804233310653554}
-  - component: {fileID: 65948363965827832}
-  - component: {fileID: 114794975235693992}
-  - component: {fileID: 114261424279804962}
+  - component: {fileID: 4090431148596584}
+  - component: {fileID: 33991392840865676}
+  - component: {fileID: 23751493282108826}
+  - component: {fileID: 114213309348062058}
+  - component: {fileID: 65663105451283650}
   m_Layer: 0
-  m_Name: GEAR_MetalPot
+  m_Name: GEAR_Waterskin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4215547664000344
+--- !u!4 &4090431148596584
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1064214406161890}
-  m_LocalRotation: {x: 0.00000031987892, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_GameObject: {fileID: 1274349658387068}
+  m_LocalRotation: {x: -0.15924409, y: 0.48961025, z: -0.5603074, w: 0.64882886}
+  m_LocalPosition: {x: -0, y: 0, z: 0.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23804233310653554
+  m_LocalEulerAnglesHint: {x: 20, y: 60, z: -70}
+--- !u!23 &23751493282108826
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1064214406161890}
+  m_GameObject: {fileID: 1274349658387068}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: 381851a9ef24eca498e0fc46bb614b23, type: 2}
+  - {fileID: 2100000, guid: 7154f10054fdd0a42894e90e32668b8f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -68,6 +68,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -76,67 +77,53 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33793311990833328
+--- !u!33 &33991392840865676
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1064214406161890}
-  m_Mesh: {fileID: 4300000, guid: 84325cc5e0bd8b042a1d5460061f2df0, type: 3}
---- !u!65 &65948363965827832
+  m_GameObject: {fileID: 1274349658387068}
+  m_Mesh: {fileID: 4300000, guid: 28a3555c11a09b847bbbe100d2d3189d, type: 3}
+--- !u!65 &65663105451283650
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1064214406161890}
+  m_GameObject: {fileID: 1274349658387068}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.267312, y: 0.119012, z: 0.224748}
-  m_Center: {x: 0, y: 0.060000002, z: 0}
---- !u!114 &114261424279804962
+  m_Size: {x: 0.21669006, y: 0.06298804, z: 0.2889181}
+  m_Center: {x: -0.022691999, y: 0.022486998, z: 0.002199005}
+--- !u!114 &114213309348062058
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1064214406161890}
+  m_GameObject: {fileID: 1274349658387068}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -234435149, guid: cf5f2c8efb027b3428c08def532eea40, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Audio: Play_HarvestingMetalSaw
-  Minutes: 15
-  YieldNames:
-  - GEAR_ScrapMetal
-  YieldCounts: 01000000
---- !u!114 &114794975235693992
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1064214406161890}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1344635434, guid: cf5f2c8efb027b3428c08def532eea40, type: 3}
+  m_Script: {fileID: 1100399655, guid: cf5f2c8efb027b3428c08def532eea40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ConsoleName: 
-  DisplayNameLocalizationId: GAMEPLAY_MetalPot
-  DescriptionLocalizatonId: GAMEPLAY_MetalPotDescription
+  Radial: 0
+  DisplayNameLocalizationId: GAMEPLAY_Waterskin
+  DescriptionLocalizatonId: GAMEPLAY_WaterskinDescription
   InventoryActionLocalizationId: 
-  PickUpAudio: Play_SndInvMetalMedium
+  PickUpAudio: Play_SndInvWaterSkin
   StowAudio: Play_InventoryStow
-  PutBackAudio: Play_SndInvMetalMedium
+  PutBackAudio: Play_SndInvWaterSkin
   WornOutAudio: 
-  WeightKG: 1
+  WeightKG: 0.5
   MaxHP: 100
   DaysToDecay: 0
+  InitialCondition: 1
   InspectOnPickup: 1
-  InspectDistance: 0.6
+  InspectDistance: 0.4
   InspectScale: {x: 1, y: 1, z: 1}
-  InspectAngles: {x: -20, y: 50, z: -30}
+  InspectAngles: {x: 20, y: 60, z: -70}
   InspectOffset: {x: 0, y: -0.05, z: 0}
-  EquippedModelPrefab: {fileID: 0}
-  ImplementationType: 
+  MaxLiters: 3
+  LiquidType: 0

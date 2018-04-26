@@ -9,50 +9,51 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1396283915774964}
+  m_RootGameObject: {fileID: 1064214406161890}
   m_IsPrefabParent: 1
---- !u!1 &1396283915774964
+--- !u!1 &1064214406161890
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4390023781871748}
-  - component: {fileID: 33368147321872354}
-  - component: {fileID: 23745070620153844}
-  - component: {fileID: 65769507827521386}
-  - component: {fileID: 114528625682440514}
-  - component: {fileID: 114346496296835894}
+  - component: {fileID: 4215547664000344}
+  - component: {fileID: 33793311990833328}
+  - component: {fileID: 23804233310653554}
+  - component: {fileID: 65948363965827832}
+  - component: {fileID: 114794975235693992}
+  - component: {fileID: 114261424279804962}
   m_Layer: 0
-  m_Name: GEAR_MetalPan
+  m_Name: GEAR_MetalPot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4390023781871748
+--- !u!4 &4215547664000344
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1396283915774964}
-  m_LocalRotation: {x: 0.00000031987892, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_GameObject: {fileID: 1064214406161890}
+  m_LocalRotation: {x: 0.00000031987892, y: 0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23745070620153844
+--- !u!23 &23804233310653554
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1396283915774964}
+  m_GameObject: {fileID: 1064214406161890}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
@@ -68,6 +69,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -76,31 +78,31 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33368147321872354
+--- !u!33 &33793311990833328
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1396283915774964}
-  m_Mesh: {fileID: 4300000, guid: 2f65b14228e4d3d408d20dbee9049141, type: 3}
---- !u!65 &65769507827521386
+  m_GameObject: {fileID: 1064214406161890}
+  m_Mesh: {fileID: 4300000, guid: 84325cc5e0bd8b042a1d5460061f2df0, type: 3}
+--- !u!65 &65948363965827832
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1396283915774964}
+  m_GameObject: {fileID: 1064214406161890}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.452242, y: 0.070860006, z: 0.345324}
-  m_Center: {x: 0.06559999, y: 0.0354, z: -0.012199998}
---- !u!114 &114346496296835894
+  m_Size: {x: 0.267312, y: 0.119012, z: 0.224748}
+  m_Center: {x: 0, y: 0.060000002, z: 0}
+--- !u!114 &114261424279804962
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1396283915774964}
+  m_GameObject: {fileID: 1064214406161890}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -234435149, guid: cf5f2c8efb027b3428c08def532eea40, type: 3}
@@ -111,20 +113,21 @@ MonoBehaviour:
   YieldNames:
   - GEAR_ScrapMetal
   YieldCounts: 01000000
---- !u!114 &114528625682440514
+--- !u!114 &114794975235693992
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1396283915774964}
+  m_GameObject: {fileID: 1064214406161890}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 1344635434, guid: cf5f2c8efb027b3428c08def532eea40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ConsoleName: 
-  DisplayNameLocalizationId: GAMEPLAY_MetalPan
-  DescriptionLocalizatonId: GAMEPLAY_MetalPanDescription
+  Radial: 0
+  DisplayNameLocalizationId: GAMEPLAY_MetalPot
+  DescriptionLocalizatonId: GAMEPLAY_MetalPotDescription
   InventoryActionLocalizationId: 
   PickUpAudio: Play_SndInvMetalMedium
   StowAudio: Play_InventoryStow
@@ -133,10 +136,13 @@ MonoBehaviour:
   WeightKG: 1
   MaxHP: 100
   DaysToDecay: 0
+  InitialCondition: 0
   InspectOnPickup: 1
   InspectDistance: 0.6
   InspectScale: {x: 1, y: 1, z: 1}
-  InspectAngles: {x: -40, y: 20, z: -20}
+  InspectAngles: {x: -20, y: 50, z: -30}
   InspectOffset: {x: 0, y: -0.05, z: 0}
   EquippedModelPrefab: {fileID: 0}
   ImplementationType: 
+  EquippingAudio: 
+  EquippedModel: {fileID: 0}

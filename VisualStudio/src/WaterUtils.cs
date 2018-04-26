@@ -4,6 +4,8 @@ namespace BetterWaterManagement
 {
     internal class WaterUtils
     {
+        private const string SOUND_SUFFIX_EMPTY = "_empty";
+
         internal static bool ContainsWater(GearItem gearItem)
         {
             if (gearItem == null || gearItem.m_LiquidItem == null)
@@ -68,22 +70,42 @@ namespace BetterWaterManagement
             UpdateWaterBottleTexture(gearItem.m_LiquidItem);
         }
 
+        private static string AppendSuffix(string sound, string suffix)
+        {
+            if (sound.EndsWith(suffix))
+            {
+                return sound;
+            }
+
+            return sound + suffix;
+        }
+
         private static Texture GetTexture(LiquidItem liquidItem)
         {
             return Resources.Load("Textures/GEAR_WaterBottle" + GetWaterSuffix(liquidItem)) as Texture;
+        }
+
+        private static string StripSuffix(string sound, string suffix)
+        {
+            if (sound.EndsWith(suffix))
+            {
+                return sound.Substring(0, sound.Length - suffix.Length);
+            }
+
+            return sound;
         }
 
         private static void UpdateWaterBottleSound(GearItem instance)
         {
             if (Water.IsEmpty(instance.m_LiquidItem))
             {
-                instance.m_PickUpAudio = "Play_SndInvWaterBottle_empty";
-                instance.m_PutBackAudio = "Play_SndInvWaterBottle_empty";
+                instance.m_PickUpAudio = AppendSuffix(instance.m_PickUpAudio, SOUND_SUFFIX_EMPTY);
+                instance.m_PutBackAudio = AppendSuffix(instance.m_PutBackAudio, SOUND_SUFFIX_EMPTY);
             }
             else
             {
-                instance.m_PickUpAudio = "Play_SndInvWaterBottle";
-                instance.m_PutBackAudio = "Play_SndInvWaterBottle";
+                instance.m_PickUpAudio = StripSuffix(instance.m_PickUpAudio, SOUND_SUFFIX_EMPTY);
+                instance.m_PutBackAudio = StripSuffix(instance.m_PutBackAudio, SOUND_SUFFIX_EMPTY);
             }
         }
 
