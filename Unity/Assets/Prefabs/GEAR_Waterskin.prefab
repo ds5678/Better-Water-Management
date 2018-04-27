@@ -94,8 +94,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.21669006, y: 0.06298804, z: 0.2889181}
-  m_Center: {x: -0.022691999, y: 0.022486998, z: 0.002199005}
+  m_Size: {x: 0.3250361, y: 0.09448208, z: 0.43337712}
+  m_Center: {x: -0.034038007, y: 0.033731002, z: 0.0032985078}
 --- !u!114 &114213309348062058
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -122,7 +122,7 @@ MonoBehaviour:
   InitialCondition: 1
   InspectOnPickup: 1
   InspectDistance: 0.4
-  InspectScale: {x: 1, y: 1, z: 1}
+  InspectScale: {x: 0.5, y: 0.5, z: 0.5}
   InspectAngles: {x: 20, y: 60, z: -70}
   InspectOffset: {x: 0, y: -0.05, z: 0}
   MaxLiters: 3
