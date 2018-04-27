@@ -8,12 +8,7 @@ namespace BetterWaterManagement
 
         internal static bool ContainsWater(GearItem gearItem)
         {
-            if (gearItem == null || gearItem.m_LiquidItem == null)
-            {
-                return false;
-            }
-
-            if (gearItem.m_LiquidItem.m_LiquidType != GearLiquidTypeEnum.Water)
+            if (!IsWaterItem(gearItem))
             {
                 return false;
             }
@@ -62,6 +57,16 @@ namespace BetterWaterManagement
             }
 
             return "_potable";
+        }
+
+        internal static bool IsWaterItem(GearItem gearItem)
+        {
+            if (gearItem == null || gearItem.m_LiquidItem == null)
+            {
+                return false;
+            }
+
+            return gearItem.m_LiquidItem.m_LiquidType == GearLiquidTypeEnum.Water;
         }
 
         internal static void UpdateWaterBottle(GearItem gearItem)

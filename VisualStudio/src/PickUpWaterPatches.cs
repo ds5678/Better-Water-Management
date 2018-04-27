@@ -1,4 +1,7 @@
 ﻿using Harmony;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 using UnityEngine;
 
 namespace BetterWaterManagement
@@ -29,15 +32,77 @@ namespace BetterWaterManagement
         }
     }
 
+    [HarmonyPatch(typeof(GearItem), "GetItemWeightIgnoreClothingWornBonusKG")]
+    public class GearItem_GetItemWeightIgnoreClothingWornBonusKG
+    {
+        internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            List<CodeInstruction> codeInstructions = new List<CodeInstruction>(instructions);
+
+            for (int i = 0; i < codeInstructions.Count; i++)
+            {
+                CodeInstruction codeInstruction = codeInstructions[i];
+
+                if (codeInstruction.opcode != OpCodes.Ldfld)
+                {
+                    continue;
+                }
+
+                FieldInfo fieldInfo = codeInstruction.operand as FieldInfo;
+                if (fieldInfo == null)
+                {
+                    continue;
+                }
+
+                if (fieldInfo.Name == "m_VolumeInLiters" && fieldInfo.DeclaringType == typeof(WaterSupply))
+                {
+                    codeInstructions[i - 3].opcode = OpCodes.Nop;
+                    codeInstructions[i - 2].opcode = OpCodes.Nop;
+                    codeInstructions[i - 1].opcode = OpCodes.Nop;
+                    codeInstructions[i].opcode = OpCodes.Nop;
+                    codeInstructions[i + 1].opcode = OpCodes.Nop;
+                    codeInstructions[i + 2].opcode = OpCodes.Nop;
+                }
+            }
+
+            return codeInstructions;
+        }
+    }
+
     [HarmonyPatch(typeof(GearItem), "GetItemWeightKG")]
     public class GearItem_GetItemWeightKG
     {
-        public static void Postfix(GearItem __instance, ref float __result)
+        internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            if (__instance.m_WaterSupply != null)
+            List<CodeInstruction> codeInstructions = new List<CodeInstruction>(instructions);
+
+            for (int i = 0; i < codeInstructions.Count; i++)
             {
-                __result -= __instance.m_WaterSupply.m_VolumeInLiters;
+                CodeInstruction codeInstruction = codeInstructions[i];
+
+                if (codeInstruction.opcode != OpCodes.Ldfld)
+                {
+                    continue;
+                }
+
+                FieldInfo fieldInfo = codeInstruction.operand as FieldInfo;
+                if (fieldInfo == null)
+                {
+                    continue;
+                }
+
+                if (fieldInfo.Name == "m_VolumeInLiters" && fieldInfo.DeclaringType == typeof(WaterSupply))
+                {
+                    codeInstructions[i - 3].opcode = OpCodes.Nop;
+                    codeInstructions[i - 2].opcode = OpCodes.Nop;
+                    codeInstructions[i - 1].opcode = OpCodes.Nop;
+                    codeInstructions[i].opcode = OpCodes.Nop;
+                    codeInstructions[i + 1].opcode = OpCodes.Nop;
+                    codeInstructions[i + 2].opcode = OpCodes.Nop;
+                }
             }
+
+            return codeInstructions;
         }
     }
 

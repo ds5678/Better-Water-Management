@@ -1,6 +1,8 @@
 ﻿using Harmony;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Reflection.Emit;
+using UnityEngine;
 
 namespace BetterWaterManagement
 {
@@ -103,6 +105,28 @@ namespace BetterWaterManagement
         }
     }
 
+    [HarmonyPatch(typeof(PlayerManager), "DrinkFromWaterSupply")]
+    internal class PlayerManager_DrinkFromWaterSupply
+    {
+        internal static void Postfix(WaterSupply ws, bool __result)
+        {
+            if (GameManager.GetThirstComponent().IsAddingThirstOverTime())
+            {
+                return;
+            }
+
+            LiquidItem liquidItem = ws.GetComponent<LiquidItem>();
+            if (liquidItem == null)
+            {
+                return;
+            }
+
+            liquidItem.m_LiquidLiters = ws.m_VolumeInLiters;
+            Object.Destroy(ws);
+            liquidItem.GetComponent<GearItem>().m_WaterSupply = null;
+        }
+    }
+
     [HarmonyPatch(typeof(PlayerManager), "OnDrinkWaterComplete")]
     internal class PlayerManager_OnDrinkWaterComplete
     {
@@ -128,21 +152,52 @@ namespace BetterWaterManagement
         }
     }
 
+    [HarmonyPatch(typeof(PlayerManager), "UpdateInspectGear")]
+    internal class PlayerManager_UpdateInspectGear
+    {
+        internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            List<CodeInstruction> codeInstructions = new List<CodeInstruction>(instructions);
+
+            for (int i = 0; i < codeInstructions.Count; i++)
+            {
+                CodeInstruction codeInstruction = codeInstructions[i];
+
+                if (codeInstruction.opcode != OpCodes.Callvirt)
+                {
+                    continue;
+                }
+
+                MethodInfo methodInfo = codeInstruction.operand as MethodInfo;
+                if (methodInfo == null)
+                {
+                    continue;
+                }
+
+                if ((methodInfo.Name == "GetPotableWaterSupply" || methodInfo.Name == "GetNonPotableWaterSupply") && methodInfo.DeclaringType == typeof(Inventory) && methodInfo.GetParameters().Length == 0)
+                {
+                    codeInstructions[i - 2].opcode = OpCodes.Ldarg_0;
+                    codeInstructions[i - 1].opcode = OpCodes.Ldarg_0;
+                    codeInstructions[i].opcode = OpCodes.Ldfld;
+                    codeInstructions[i].operand = typeof(PlayerManager).GetField("m_Gear", BindingFlags.Instance | BindingFlags.NonPublic);
+                }
+            }
+
+            return codeInstructions;
+        }
+    }
+
     [HarmonyPatch(typeof(PlayerManager), "UseInventoryItem")]
     internal class PlayerManager_UseInventoryItem
     {
         internal static void Prefix(GearItem gi, ref bool __result)
         {
-            if (gi == null)
+            if (!WaterUtils.IsWaterItem(gi))
             {
                 return;
             }
 
             LiquidItem liquidItem = gi.m_LiquidItem;
-            if (liquidItem == null || liquidItem.m_LiquidType != GearLiquidTypeEnum.Water)
-            {
-                return;
-            }
 
             WaterSupply waterSupply = liquidItem.GetComponent<WaterSupply>();
             if (waterSupply == null)
