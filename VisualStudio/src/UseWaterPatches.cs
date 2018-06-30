@@ -138,15 +138,19 @@ namespace BetterWaterManagement
                 return;
             }
 
-            LiquidItem liquidItem = waterSupply.GetComponent<LiquidItem>();
-            if (liquidItem == null)
+            GearItem gearItem = waterSupply.GetComponent<GearItem>();
+            if (gearItem.m_LiquidItem != null)
             {
-                return;
+                gearItem.m_LiquidItem.m_LiquidLiters = waterSupply.m_VolumeInLiters;
+                Object.Destroy(waterSupply);
+                gearItem.m_WaterSupply = null;
             }
 
-            liquidItem.m_LiquidLiters = waterSupply.m_VolumeInLiters;
-            UnityEngine.Object.Destroy(waterSupply);
-            liquidItem.GetComponent<GearItem>().m_WaterSupply = null;
+            if (gearItem.m_CookingPotItem != null)
+            {
+                WaterUtils.SetWaterAmount(gearItem.m_CookingPotItem, waterSupply.m_VolumeInLiters);
+                Object.Destroy(waterSupply);
+            }
 
             Water.AdjustWaterSupplyToWater();
         }

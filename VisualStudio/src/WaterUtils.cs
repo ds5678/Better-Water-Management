@@ -1,10 +1,23 @@
 ﻿using UnityEngine;
+using Harmony;
 
 namespace BetterWaterManagement
 {
     internal class WaterUtils
     {
         private const string SOUND_SUFFIX_EMPTY = "_empty";
+
+        internal static float GetWaterAmount(CookingPotItem cookingPotItem)
+        {
+            System.Reflection.FieldInfo fieldInfo = AccessTools.Field(typeof(CookingPotItem), "m_LitersWaterBeingBoiled");
+            return (float)fieldInfo.GetValue(cookingPotItem);
+        }
+
+        internal static void SetWaterAmount(CookingPotItem cookingPotItem, float value)
+        {
+            System.Reflection.FieldInfo fieldInfo = AccessTools.Field(typeof(CookingPotItem), "m_LitersWaterBeingBoiled");
+            fieldInfo.SetValue(cookingPotItem, value);
+        }
 
         internal static bool ContainsWater(GearItem gearItem)
         {

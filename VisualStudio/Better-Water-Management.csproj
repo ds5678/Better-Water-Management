@@ -31,9 +31,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\Cooking.cs" />
+    <Compile Include="src\CoolDown.cs" />
     <Compile Include="src\PickUpWaterPatches.cs" />
-    <Compile Include="src\PickUpCookwarePatches.cs" />
     <Compile Include="src\CookingPatches.cs" />
     <Compile Include="src\PickWater.cs" />
     <Compile Include="src\UseWaterPatches.cs" />

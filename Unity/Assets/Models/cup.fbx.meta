@@ -1,19 +1,41 @@
 fileFormatVersion: 2
-guid: 84325cc5e0bd8b042a1d5460061f2df0
-timeCreated: 1508496142
+guid: b0a485293c011664580d583fa59804d0
+timeCreated: 1529989034
 licenseType: Free
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Snow
+    100004: Water
     400000: //RootNode
+    400002: Snow
+    400004: Water
     2300000: //RootNode
+    2300002: Snow
+    2300004: Water
     3300000: //RootNode
-    4300000: MetalPotMesh
+    3300002: Snow
+    3300004: Water
+    4300000: CoffeeCup
+    4300002: Snow
+    4300004: Water
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_Cup
+    second: {fileID: 2100000, guid: 4a85a5111e0b9fc4589640b0e5bf6a7e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: unnamed
+    second: {fileID: 2100000, guid: b85547c32b7d45e4282d0152f3aa1acf, type: 2}
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -26,26 +48,31 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
-    importBlendShapes: 1
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
-    weldVertices: 1
+    weldVertices: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -55,7 +82,8 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-  importAnimation: 0
+    normalCalculationMode: 4
+  importAnimation: 1
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2

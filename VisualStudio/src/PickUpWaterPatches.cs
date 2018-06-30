@@ -147,7 +147,7 @@ namespace BetterWaterManagement
     [HarmonyPatch(typeof(Inventory), "AddToPotableWaterSupply")]
     public class Inventory_AddToPotableWaterSupply
     {
-        public static void Prefix(float volumeLiters)
+        public static void Postfix(float volumeLiters)
         {
             Water.AdjustWaterToWaterSupply();
         }
@@ -156,7 +156,7 @@ namespace BetterWaterManagement
     [HarmonyPatch(typeof(Inventory), "AddToWaterSupply")]
     public class Inventory_AddToWaterSupply
     {
-        public static void Prefix(float numLiters, LiquidQuality quality)
+        public static void Postfix(float numLiters, LiquidQuality quality)
         {
             Water.AdjustWaterToWaterSupply();
         }
