@@ -33,7 +33,6 @@ namespace BetterWaterManagement
             elapsed += Time.fixedDeltaTime;
             if (elapsed - lastUpdate > 5)
             {
-                Debug.Log("elapsed = " + elapsed);
                 lastUpdate = elapsed;
             }
 

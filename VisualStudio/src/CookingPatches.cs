@@ -136,7 +136,7 @@ namespace BetterWaterManagement
         }
     }
 
-    [HarmonyPatch(typeof(CookingPotItem), "UpdateCookingTimeAndState")]
+    //[HarmonyPatch(typeof(CookingPotItem), "UpdateCookingTimeAndState")]
     public class CookingPotItem_UpdateCookingTimeAndState
     {
         public static bool IsCookingFoodItem(CookingPotItem cookingPotItem)
