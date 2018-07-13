@@ -88,95 +88,15 @@ namespace BetterWaterManagement
         }
     }
 
-    //[HarmonyPatch(typeof(CookingPotItem), "PickUpCookedItem")]
-    public class CookingPotItem_PickUpCookedItem
+    [HarmonyPatch(typeof(CookingPotItem), "SetCookingState")]
+    public class CookingPotItem_SetCookingState
     {
-        public static bool Prefix(CookingPotItem __instance)
+        public static void Prefix(CookingPotItem __instance, ref CookingPotItem.CookingState cookingState)
         {
-            if (!__instance.AttachedFireIsBurning())
+            if (cookingState == CookingPotItem.CookingState.Ruined && WaterUtils.GetWaterAmount(__instance) > 0)
             {
-                return true;
+                cookingState = CookingPotItem.CookingState.Ready;
             }
-
-            float waterAmount = WaterUtils.GetWaterAmount(__instance);
-            if (waterAmount <= 0)
-            {
-                return true;
-            }
-
-            float capacity;
-            bool potable = __instance.GetCookingState() == CookingPotItem.CookingState.Ready;
-            if (potable)
-            {
-                capacity = Water.WATER.RemainingCapacityPotable;
-            }
-            else
-            {
-                capacity = Water.WATER.RemainingCapacityNonPotable;
-            }
-
-            if (capacity > waterAmount)
-            {
-                return true;
-            }
-
-            GameManager.GetInventoryComponent().AddToPotableWaterSupply(capacity);
-            GearMessage.AddMessage(
-                potable ?
-                    GameManager.GetInventoryComponent().GetPotableWaterSupply().name :
-                    GameManager.GetInventoryComponent().GetNonPotableWaterSupply().name,
-                Localization.Get("GAMEPLAY_Added"),
-                (potable ?
-                    Localization.Get("GAMEPLAY_WaterPotable") :
-                    Localization.Get("GAMEPLAY_WaterNonPotable")) + " (" + Utils.GetLiquidQuantityStringWithUnitsNoOunces(InterfaceManager.m_Panel_OptionsMenu.m_State.m_Units, capacity) + ")",
-                false);
-
-            WaterUtils.SetWaterAmount(__instance, waterAmount - capacity);
-            return false;
-        }
-    }
-
-    //[HarmonyPatch(typeof(CookingPotItem), "UpdateCookingTimeAndState")]
-    public class CookingPotItem_UpdateCookingTimeAndState
-    {
-        public static bool IsCookingFoodItem(CookingPotItem cookingPotItem)
-        {
-            Debug.Log("IsCookingFoodItem(" + cookingPotItem + ")");
-            GearItem gearItem = cookingPotItem.GetGearItemForInspectMode();
-            return gearItem != null && gearItem.m_FoodItem != null;
-        }
-
-        internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-        {
-            List<CodeInstruction> codeInstructions = new List<CodeInstruction>(instructions);
-
-            for (int i = 0; i < codeInstructions.Count; i++)
-            {
-                CodeInstruction codeInstruction = codeInstructions[i];
-
-                if (codeInstruction.opcode != OpCodes.Ldfld)
-                {
-                    continue;
-                }
-
-                FieldInfo info = codeInstruction.operand as FieldInfo;
-                if (info == null)
-                {
-                    continue;
-                }
-
-                if (info.Name == "m_GearItemBeingCooked" && info.DeclaringType == typeof(CookingPotItem))
-                {
-                    //codeInstructions[i - 1].opcode = OpCodes.Nop;
-                    codeInstructions[i].opcode = OpCodes.Call;
-                    codeInstructions[i].operand = AccessTools.Method(typeof(CookingPotItem_UpdateCookingTimeAndState), "IsCookingFoodItem");
-                    codeInstructions[i + 1].opcode = OpCodes.Nop;
-                    codeInstructions[i + 2].opcode = OpCodes.Nop;
-                    break;
-                }
-            }
-
-            return codeInstructions;
         }
     }
 }
