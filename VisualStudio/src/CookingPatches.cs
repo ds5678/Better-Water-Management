@@ -97,6 +97,20 @@ namespace BetterWaterManagement
             {
                 cookingState = CookingPotItem.CookingState.Ready;
             }
+
+            if (cookingState == CookingPotItem.CookingState.Cooking && !__instance.AttachedFireIsBurning())
+            {
+                cookingState = CookingPotItem.CookingState.Ready;
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(CookingPotItem), "StartCooking")]
+    public class CookingPotItem_StartCooking
+    {
+        public static void Postfix(CookingPotItem __instance)
+        {
+            Water.AdjustWaterToWaterSupply();
         }
     }
 }
