@@ -107,6 +107,16 @@ namespace BetterWaterManagement
         }
     }
 
+
+    [HarmonyPatch(typeof(CookingPotItem), "StartCooking")]
+    public class CookingPotItem_StartCooking
+    {
+        public static void Postfix(CookingPotItem __instance)
+        {
+            Water.AdjustWaterToWaterSupply();
+        }
+    }
+
     [HarmonyPatch(typeof(GearItem), "Deserialize")]
     internal class GearItem_Deserialize
     {
