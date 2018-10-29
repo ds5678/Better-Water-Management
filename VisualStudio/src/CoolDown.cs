@@ -1,27 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Harmony;
+﻿using Harmony;
 using UnityEngine;
 
 namespace BetterWaterManagement
 {
     public class CoolDown : MonoBehaviour
     {
-        private float elapsed;
         private CookingPotItem cookingPotItem;
-        private CookingPotItem.CookingState originalState;
-        private CookingPotItem.CookingState nextState;
+        private float elapsed;
         private float lastUpdate;
-
-        public void Start()
-        {
-            this.cookingPotItem = this.GetComponent<CookingPotItem>();
-            this.originalState = this.cookingPotItem.GetCookingState();
-            this.nextState = originalState - 1;
-        }
+        private CookingPotItem.CookingState nextState;
+        private CookingPotItem.CookingState originalState;
 
         public void FixedUpdate()
         {
@@ -75,6 +63,23 @@ namespace BetterWaterManagement
             {
                 this.enabled = false;
             }
+        }
+
+        internal void Initialize()
+        {
+            if (this.cookingPotItem != null)
+            {
+                return;
+            }
+
+            this.cookingPotItem = this.GetComponent<CookingPotItem>();
+            this.originalState = this.cookingPotItem.GetCookingState();
+            this.nextState = originalState - 1;
+        }
+
+        public void Start()
+        {
+            this.Initialize();
         }
     }
 }
