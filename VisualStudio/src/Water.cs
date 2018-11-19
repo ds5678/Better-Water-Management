@@ -135,6 +135,21 @@ namespace BetterWaterManagement
             }
         }
 
+        public static float GetCapacity(LiquidQuality quality)
+        {
+            if (quality == LiquidQuality.NonPotable)
+            {
+                return WATER.CapacityNonPotable;
+            }
+
+            if (quality == LiquidQuality.Potable)
+            {
+                return WATER.CapacityPotable;
+            }
+
+            return 0;
+        }
+
         public static float GetRemainingCapacity(LiquidQuality quality)
         {
             if (quality == LiquidQuality.NonPotable)
@@ -145,6 +160,21 @@ namespace BetterWaterManagement
             if (quality == LiquidQuality.Potable)
             {
                 return WATER.RemainingCapacityPotable;
+            }
+
+            return 0;
+        }
+
+        public static float GetActual(LiquidQuality quality)
+        {
+            if (quality == LiquidQuality.NonPotable)
+            {
+                return WATER.ActualNonPotable;
+            }
+
+            if (quality == LiquidQuality.Potable)
+            {
+                return WATER.ActualPotable;
             }
 
             return 0;

@@ -152,6 +152,12 @@ namespace BetterWaterManagement
                 Object.Destroy(waterSupply);
             }
 
+            if (waterSupply is WaterSourceSupply)
+            {
+                WaterSourceSupply waterSourceSupply = waterSupply as WaterSourceSupply;
+                waterSourceSupply.UpdateWaterSource();
+            }
+
             Water.AdjustWaterSupplyToWater();
         }
     }

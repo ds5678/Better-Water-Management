@@ -7,6 +7,11 @@ namespace BetterWaterManagement
     {
         private const string SOUND_SUFFIX_EMPTY = "_empty";
 
+        internal static string FormatWaterAmount(float liters)
+        {
+            return Utils.GetLiquidQuantityStringNoOunces(InterfaceManager.m_Panel_OptionsMenu.m_State.m_Units, liters);
+        }
+
         internal static float GetWaterAmount(CookingPotItem cookingPotItem)
         {
             System.Reflection.FieldInfo fieldInfo = AccessTools.Field(typeof(CookingPotItem), "m_LitersWaterBeingBoiled");

@@ -1,15 +1,12 @@
 ﻿using Harmony;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
 using UnityEngine;
 
 namespace BetterWaterManagement
 {
     [HarmonyPatch(typeof(ConditionTableManager), "GetDisplayNameWithCondition")]
-    public class ConditionTableManager_GetDisplayNameWithCondition
+    internal class ConditionTableManager_GetDisplayNameWithCondition
     {
-        public static void Postfix(GearItem gearItem, ref string __result)
+        internal static void Postfix(GearItem gearItem, ref string __result)
         {
             LiquidItem liquidItem = gearItem.m_LiquidItem;
             if (!liquidItem || liquidItem.m_LiquidType != GearLiquidTypeEnum.Water)
@@ -33,7 +30,7 @@ namespace BetterWaterManagement
     }
 
     [HarmonyPatch(typeof(GearItem), "GetItemWeightIgnoreClothingWornBonusKG")]
-    public class GearItem_GetItemWeightIgnoreClothingWornBonusKG
+    internal class GearItem_GetItemWeightIgnoreClothingWornBonusKG
     {
         internal static bool Prefix(GearItem __instance, ref float __result)
         {
@@ -49,7 +46,7 @@ namespace BetterWaterManagement
     }
 
     [HarmonyPatch(typeof(GearItem), "GetItemWeightKG")]
-    public class GearItem_GetItemWeightKG
+    internal class GearItem_GetItemWeightKG
     {
         internal static bool Prefix(GearItem __instance, ref float __result)
         {
@@ -65,9 +62,9 @@ namespace BetterWaterManagement
     }
 
     [HarmonyPatch(typeof(GearItem), "ManualStart")]
-    public class GearItem_ManualStart
+    internal class GearItem_ManualStart
     {
-        public static void Postfix(GearItem __instance)
+        internal static void Postfix(GearItem __instance)
         {
             LiquidItem liquidItem = __instance.m_LiquidItem;
             if (liquidItem && liquidItem.m_LiquidType == GearLiquidTypeEnum.Water)
@@ -78,11 +75,11 @@ namespace BetterWaterManagement
     }
 
     [HarmonyPatch(typeof(Inventory), "AddGear")]
-    public class Inventory_AddGear
+    internal class Inventory_AddGear
     {
         private const GearLiquidTypeEnum ModWater = (GearLiquidTypeEnum)1000;
 
-        public static void Postfix(GameObject go)
+        internal static void Postfix(GameObject go)
         {
             LiquidItem liquidItem = go.GetComponent<LiquidItem>();
             if (liquidItem && liquidItem.m_LiquidType == ModWater)
@@ -92,7 +89,7 @@ namespace BetterWaterManagement
             }
         }
 
-        public static void Prefix(Inventory __instance, GameObject go)
+        internal static void Prefix(Inventory __instance, GameObject go)
         {
             LiquidItem liquidItem = go.GetComponent<LiquidItem>();
             if (liquidItem && liquidItem.m_LiquidType == GearLiquidTypeEnum.Water)
@@ -103,27 +100,27 @@ namespace BetterWaterManagement
     }
 
     [HarmonyPatch(typeof(Inventory), "AddToPotableWaterSupply")]
-    public class Inventory_AddToPotableWaterSupply
+    internal class Inventory_AddToPotableWaterSupply
     {
-        public static void Postfix(float volumeLiters)
+        internal static void Postfix(float volumeLiters)
         {
             Water.AdjustWaterToWaterSupply();
         }
     }
 
     [HarmonyPatch(typeof(Inventory), "AddToWaterSupply")]
-    public class Inventory_AddToWaterSupply
+    internal class Inventory_AddToWaterSupply
     {
-        public static void Postfix(float numLiters, LiquidQuality quality)
+        internal static void Postfix(float numLiters, LiquidQuality quality)
         {
             Water.AdjustWaterToWaterSupply();
         }
     }
 
     [HarmonyPatch(typeof(Inventory), "RemoveGear")]
-    public class Inventory_RemoveGear
+    internal class Inventory_RemoveGear
     {
-        public static void Postfix(GameObject go)
+        internal static void Postfix(GameObject go)
         {
             LiquidItem liquidItem = go.GetComponent<LiquidItem>();
             if (liquidItem && liquidItem.m_LiquidType == GearLiquidTypeEnum.Water)
@@ -134,9 +131,9 @@ namespace BetterWaterManagement
     }
 
     [HarmonyPatch(typeof(Panel_Container), "IgnoreWaterSupplyItem")]
-    public class Panel_Container_IgnoreWaterSupplyItem
+    internal class Panel_Container_IgnoreWaterSupplyItem
     {
-        public static bool Prefix(WaterSupply ws, ref bool __result)
+        internal static bool Prefix(WaterSupply ws, ref bool __result)
         {
             __result = ws != null && ws.GetComponent<LiquidItem>() == null;
             return false;
@@ -144,55 +141,91 @@ namespace BetterWaterManagement
     }
 
     [HarmonyPatch(typeof(Panel_Inventory), "IgnoreWaterSupplyItem")]
-    public class Panel_Inventory_IgnoreWaterSupplyItem
+    internal class Panel_Inventory_IgnoreWaterSupplyItem
     {
-        public static bool Prefix(WaterSupply ws, ref bool __result)
+        internal static bool Prefix(WaterSupply ws, ref bool __result)
         {
             __result = ws != null && ws.GetComponent<LiquidItem>() == null;
             return false;
         }
     }
 
-    [HarmonyPatch(typeof(Panel_PickWater), "OnIncrease")]
-    public class Panel_PickWater_OnIncrease
+    [HarmonyPatch(typeof(Panel_PickWater), "Enable")]
+    internal class Panel_PickWater_Enable
     {
-        public static void Postfix(Panel_PickWater __instance)
+        internal static void Postfix(Panel_PickWater __instance)
+        {
+            PickWater.UpdateDrinking(__instance);
+        }
+    }
+
+    [HarmonyPatch(typeof(Panel_PickWater), "Refresh")]
+    internal class Panel_PickWater_Refresh
+    {
+        internal static void Prefix(Panel_PickWater __instance)
         {
             PickWater.ClampAmount(__instance);
+        }
+
+        internal static void Postfix(Panel_PickWater __instance)
+        {
+            PickWater.UpdateButtons(__instance);
         }
     }
 
     [HarmonyPatch(typeof(Panel_PickWater), "OnTakeWaterComplete")]
-    public class Panel_PickWater_OnTakeWaterComplete
+    internal class Panel_PickWater_OnTakeWaterComplete
     {
-        public static void Postfix()
+        internal static void Postfix()
         {
             Water.AdjustWaterToWaterSupply();
         }
     }
 
     [HarmonyPatch(typeof(Panel_PickWater), "SetWaterSourceForTaking")]
-    public class Panel_PickWater_SetWaterSourceForTaking
+    internal class Panel_PickWater_SetWaterSourceForTaking
     {
-        public static void Postfix(Panel_PickWater __instance)
+        internal static void Postfix(Panel_PickWater __instance)
         {
-            PickWater.ClampAmount(__instance);
+            PickWater.UpdateCapacityInfo(__instance);
         }
     }
 
     [HarmonyPatch(typeof(Panel_PickWater), "Start")]
-    public class Panel_PickWater_Start
+    internal class Panel_PickWater_Start
     {
-        public static void Postfix(Panel_PickWater __instance)
+        internal static void Postfix(Panel_PickWater __instance)
         {
             PickWater.Prepare(__instance);
+        }
+    }
+
+    [HarmonyPatch(typeof(Panel_PickWater), "Update")]
+    internal class Panel_PickWater_Update
+    {
+        internal static void Postfix(Panel_PickWater __instance)
+        {
+            if (InputManager.GetEquipPressed())
+            {
+                Traverse traverse = Traverse.Create(__instance);
+
+                GameObject gameObject = new GameObject();
+                GearItem gearItem = gameObject.AddComponent<GearItem>();
+                WaterSourceSupply waterSourceSupply = gameObject.AddComponent<WaterSourceSupply>();
+                waterSourceSupply.SetWaterSource(traverse.Field("m_WaterSource").GetValue<WaterSource>());
+                gearItem.Awake();
+
+                traverse.Method("ExitInterface").GetValue();
+
+                GameManager.GetPlayerManagerComponent().UseInventoryItem(gearItem);
+            }
         }
     }
 
     [HarmonyPatch(typeof(Utils), "GetInventoryIconTexture")]
     internal class Utils_GetInventoryIconTexture
     {
-        public static bool Prefix(GearItem gi, ref Texture2D __result)
+        internal static bool Prefix(GearItem gi, ref Texture2D __result)
         {
             LiquidItem liquidItem = gi.m_LiquidItem;
             if (!liquidItem || liquidItem.m_LiquidType != GearLiquidTypeEnum.Water)
@@ -204,6 +237,25 @@ namespace BetterWaterManagement
             __result = Utils.GetInventoryIconTextureFromName(textureName);
 
             return __result == null;
+        }
+    }
+
+    internal class WaterSourceSupply : WaterSupply
+    {
+        internal WaterSource waterSource;
+
+        internal void SetWaterSource(WaterSource waterSource)
+        {
+            this.waterSource = waterSource;
+            this.m_VolumeInLiters = waterSource.GetVolumeLiters();
+            this.m_WaterQuality = waterSource.GetQuality();
+            this.m_DrinkingAudio = "Play_Slurping1";
+            this.m_TimeToDrinkSeconds = 4;
+        }
+
+        internal void UpdateWaterSource()
+        {
+            waterSource.RemoveLiters(waterSource.GetVolumeLiters() - this.m_VolumeInLiters);
         }
     }
 }
