@@ -211,8 +211,11 @@ namespace BetterWaterManagement
 
                 GameObject gameObject = new GameObject();
                 GearItem gearItem = gameObject.AddComponent<GearItem>();
+                gearItem.m_LocalizedDisplayName = new LocalizedString { m_LocalizationID = "" };
+
                 WaterSourceSupply waterSourceSupply = gameObject.AddComponent<WaterSourceSupply>();
                 waterSourceSupply.SetWaterSource(traverse.Field("m_WaterSource").GetValue<WaterSource>());
+
                 gearItem.Awake();
 
                 traverse.Method("ExitInterface").GetValue();
