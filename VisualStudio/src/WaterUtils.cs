@@ -1,28 +1,11 @@
-﻿using UnityEngine;
-using Harmony;
+﻿using Harmony;
+using UnityEngine;
 
 namespace BetterWaterManagement
 {
     internal class WaterUtils
     {
         private const string SOUND_SUFFIX_EMPTY = "_empty";
-
-        internal static string FormatWaterAmount(float liters)
-        {
-            return Utils.GetLiquidQuantityStringNoOunces(InterfaceManager.m_Panel_OptionsMenu.m_State.m_Units, liters);
-        }
-
-        internal static float GetWaterAmount(CookingPotItem cookingPotItem)
-        {
-            System.Reflection.FieldInfo fieldInfo = AccessTools.Field(typeof(CookingPotItem), "m_LitersWaterBeingBoiled");
-            return (float)fieldInfo.GetValue(cookingPotItem);
-        }
-
-        internal static void SetWaterAmount(CookingPotItem cookingPotItem, float value)
-        {
-            System.Reflection.FieldInfo fieldInfo = AccessTools.Field(typeof(CookingPotItem), "m_LitersWaterBeingBoiled");
-            fieldInfo.SetValue(cookingPotItem, value);
-        }
 
         internal static bool ContainsWater(GearItem gearItem)
         {
@@ -32,6 +15,11 @@ namespace BetterWaterManagement
             }
 
             return gearItem.m_LiquidItem.m_LiquidLiters > 0;
+        }
+
+        internal static string FormatWaterAmount(float liters)
+        {
+            return Utils.GetLiquidQuantityStringNoOunces(InterfaceManager.m_Panel_OptionsMenu.m_State.m_Units, liters);
         }
 
         internal static UILabel GetUILabel(string name)
@@ -62,6 +50,12 @@ namespace BetterWaterManagement
             return null;
         }
 
+        internal static float GetWaterAmount(CookingPotItem cookingPotItem)
+        {
+            System.Reflection.FieldInfo fieldInfo = AccessTools.Field(typeof(CookingPotItem), "m_LitersWaterBeingBoiled");
+            return (float)fieldInfo.GetValue(cookingPotItem);
+        }
+
         internal static string GetWaterSuffix(LiquidItem liquidItem)
         {
             if (Water.IsEmpty(liquidItem))
@@ -77,6 +71,11 @@ namespace BetterWaterManagement
             return "_potable";
         }
 
+        internal static bool IsCooledDown(CookingPotItem cookingPotItem)
+        {
+            return Traverse.Create(cookingPotItem).Field("m_GracePeriodElapsedHours").GetValue<float>() * 60.0 > (double)InterfaceManager.m_Panel_Cooking.m_MinutesGraceTimeInterruptedCooking;
+        }
+
         internal static bool IsWaterItem(GearItem gearItem)
         {
             if (gearItem == null || gearItem.m_LiquidItem == null)
@@ -85,6 +84,17 @@ namespace BetterWaterManagement
             }
 
             return gearItem.m_LiquidItem.m_LiquidType == GearLiquidTypeEnum.Water;
+        }
+
+        internal static void SetElapsedCookingTime(CookingPotItem cookingPotItem, float value)
+        {
+            Traverse.Create(cookingPotItem).Field("m_CookingElapsedHours").SetValue(value);
+        }
+
+        internal static void SetWaterAmount(CookingPotItem cookingPotItem, float value)
+        {
+            System.Reflection.FieldInfo fieldInfo = AccessTools.Field(typeof(CookingPotItem), "m_LitersWaterBeingBoiled");
+            fieldInfo.SetValue(cookingPotItem, value);
         }
 
         internal static void UpdateWaterBottle(GearItem gearItem)

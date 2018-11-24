@@ -7,6 +7,27 @@ using UnityEngine;
 
 namespace BetterWaterManagement
 {
+    [HarmonyPatch(typeof(GearPlacePoint), "UpdateAttachedFire")]
+    internal class GearPlacePoint_UpdateAttachedFire
+    {
+        internal static void Postfix(GearItem placedGearNew)
+        {
+            if (placedGearNew == null || placedGearNew.m_CookingPotItem == null || !placedGearNew.m_CookingPotItem.AttachedFireIsBurning())
+            {
+                return;
+            }
+
+            CookingPotItem cookingPotItem = placedGearNew.m_CookingPotItem;
+            OverrideCookingState overrideCookingState = ModUtils.GetComponent<OverrideCookingState>(cookingPotItem);
+
+            if (overrideCookingState?.ForceReady ?? false)
+            {
+                float cookingTime = WaterUtils.GetWaterAmount(cookingPotItem) * InterfaceManager.m_Panel_Cooking.m_MinutesToBoilWaterPerLiter * cookingPotItem.GetTotalBoilMultiplier() / 60f;
+                WaterUtils.SetElapsedCookingTime(cookingPotItem, cookingTime);
+            }
+        }
+    }
+
     [HarmonyPatch(typeof(CookingPotItem), "DoSpecialActionFromInspectMode")]
     internal class CookingPotItem_DoSpecialActionFromInspectMode
     {
@@ -48,18 +69,6 @@ namespace BetterWaterManagement
     [HarmonyPatch(typeof(CookingPotItem), "ExitPlaceMesh")]
     internal class CookingPotItem_ExitPlaceMesh
     {
-        internal static void Postfix(CookingPotItem __instance)
-        {
-            CoolDown coolDown = __instance.gameObject.GetComponent<CoolDown>();
-            if (coolDown == null)
-            {
-                coolDown = __instance.gameObject.AddComponent<CoolDown>();
-            }
-
-            coolDown.Initialize();
-            coolDown.SetEnabled(!__instance.AttachedFireIsBurning());
-        }
-
         internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             List<CodeInstruction> codeInstructions = new List<CodeInstruction>(instructions);
@@ -95,25 +104,83 @@ namespace BetterWaterManagement
     {
         public static void Prefix(CookingPotItem __instance, ref CookingPotItem.CookingState cookingState)
         {
-            if (cookingState == CookingPotItem.CookingState.Ruined && WaterUtils.GetWaterAmount(__instance) > 0)
+            if (cookingState == CookingPotItem.CookingState.Cooking && !__instance.AttachedFireIsBurning() && WaterUtils.GetWaterAmount(__instance) > 0)
             {
-                cookingState = CookingPotItem.CookingState.Ready;
-            }
-
-            if (cookingState == CookingPotItem.CookingState.Cooking && !__instance.AttachedFireIsBurning())
-            {
-                cookingState = CookingPotItem.CookingState.Ready;
+                cookingState = __instance.GetCookingState();
             }
         }
     }
 
-
-    [HarmonyPatch(typeof(CookingPotItem), "StartCooking")]
-    public class CookingPotItem_StartCooking
+    [HarmonyPatch(typeof(CookingPotItem), "StartBoilingWater")]
+    internal class CookingPotItem_StartBoilingWater
     {
-        public static void Postfix(CookingPotItem __instance)
+        internal static void Postfix(CookingPotItem __instance)
         {
             Water.AdjustWaterToWaterSupply();
+
+            ModUtils.GetOrCreateComponent<OverrideCookingState>(__instance).ForceReady = false;
+        }
+    }
+
+    [HarmonyPatch(typeof(CookingPotItem), "StartCooking")]
+    internal class CookingPotItem_StartCooking
+    {
+        internal static void Postfix(CookingPotItem __instance)
+        {
+            Water.AdjustWaterToWaterSupply();
+        }
+    }
+
+    [HarmonyPatch(typeof(CookingPotItem), "StartMeltingSnow")]
+    internal class CookingPotItem_StartMeltingSnow
+    {
+        internal static void Postfix(CookingPotItem __instance)
+        {
+            ModUtils.GetOrCreateComponent<OverrideCookingState>(__instance).ForceReady = false;
+        }
+    }
+
+    [HarmonyPatch(typeof(CookingPotItem), "UpdateBoilingWater")]
+    internal class CookingPotItem_UpdateBoilingWater
+    {
+        internal static void Postfix(CookingPotItem __instance)
+        {
+            if (__instance.AttachedFireIsBurning())
+            {
+                return;
+            }
+
+            if ((__instance.m_ParticlesWaterBoiling.activeInHierarchy || __instance.m_ParticlesWaterReady.activeInHierarchy) && WaterUtils.IsCooledDown(__instance))
+            {
+                Utils.SetActive(__instance.m_ParticlesWaterReady, false);
+                Utils.SetActive(__instance.m_ParticlesWaterBoiling, false);
+
+                if (__instance.GetCookingState() == CookingPotItem.CookingState.Ready)
+                {
+                    ModUtils.GetOrCreateComponent<OverrideCookingState>(__instance).ForceReady = true;
+
+                    float cookingTime = WaterUtils.GetWaterAmount(__instance) * InterfaceManager.m_Panel_Cooking.m_MinutesToBoilWaterPerLiter * __instance.GetTotalBoilMultiplier();
+                    WaterUtils.SetElapsedCookingTime(__instance, cookingTime);
+                }
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(CookingPotItem), "UpdateMeltingSnow")]
+    internal class CookingPotItem_UpdateMeltingSnow
+    {
+        internal static void Postfix(CookingPotItem __instance)
+        {
+            if (__instance.AttachedFireIsBurning())
+            {
+                return;
+            }
+
+            if (__instance.m_ParticlesSnowMelting.activeInHierarchy && WaterUtils.IsCooledDown(__instance))
+            {
+                Debug.Log("Disabling m_ParticlesSnowMelting");
+                Utils.SetActive(__instance.m_ParticlesSnowMelting, false);
+            }
         }
     }
 
@@ -128,12 +195,20 @@ namespace BetterWaterManagement
                 ModUtils.GetOrCreateComponent<CookingModifier>(__instance);
             }
         }
+
+        internal static void Prefix(GearItem __instance)
+        {
+            if (__instance.m_CookingPotItem)
+            {
+                ModUtils.GetOrCreateComponent<OverrideCookingState>(__instance);
+            }
+        }
     }
 
     internal class MeltAndCookButton
     {
-        private static GameObject button;
         internal static string text;
+        private static GameObject button;
 
         public static void Execute()
         {
@@ -167,6 +242,25 @@ namespace BetterWaterManagement
         internal static void SetActive(bool active)
         {
             NGUITools.SetActive(button, active);
+        }
+    }
+
+    [HarmonyPatch(typeof(Panel_Cooking), "RefreshFoodList")]
+    internal class Panel_Cooking_RefreshFoodList
+    {
+        internal static void Postfix(Panel_Cooking __instance)
+        {
+            List<GearItem> foodList = Traverse.Create(__instance).Field("m_FoodList").GetValue<List<GearItem>>();
+            if (foodList == null)
+            {
+                return;
+            }
+
+            foreach (GearItem eachGearItem in foodList)
+            {
+                CookingModifier cookingModifier = ModUtils.GetComponent<CookingModifier>(eachGearItem);
+                cookingModifier?.Revert();
+            }
         }
     }
 
@@ -257,25 +351,6 @@ namespace BetterWaterManagement
             }
 
             return Utils.GetDurationString(Mathf.RoundToInt(minutes));
-        }
-    }
-
-    [HarmonyPatch(typeof(Panel_Cooking), "RefreshFoodList")]
-    internal class Panel_Cooking_RefreshFoodList
-    {
-        internal static void Postfix(Panel_Cooking __instance)
-        {
-            List<GearItem> foodList = Traverse.Create(__instance).Field("m_FoodList").GetValue<List<GearItem>>();
-            if (foodList == null)
-            {
-                return;
-            }
-
-            foreach (GearItem eachGearItem in foodList)
-            {
-                CookingModifier cookingModifier = ModUtils.GetComponent<CookingModifier>(eachGearItem);
-                cookingModifier?.Revert();
-            }
         }
     }
 }

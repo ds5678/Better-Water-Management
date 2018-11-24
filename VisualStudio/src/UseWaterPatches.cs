@@ -130,7 +130,7 @@ namespace BetterWaterManagement
     [HarmonyPatch(typeof(PlayerManager), "OnDrinkWaterComplete")]
     internal class PlayerManager_OnDrinkWaterComplete
     {
-        internal static void Postfix(PlayerManager __instance)
+        internal static void Postfix(PlayerManager __instance, float progress)
         {
             WaterSupply waterSupply = AccessTools.Field(__instance.GetType(), "m_WaterSourceToDrinkFrom").GetValue(__instance) as WaterSupply;
             if (waterSupply == null)
@@ -148,6 +148,12 @@ namespace BetterWaterManagement
 
             if (gearItem.m_CookingPotItem != null)
             {
+                if (!WaterUtils.IsCooledDown(gearItem.m_CookingPotItem))
+                {
+                    GameManager.GetPlayerManagerComponent().ApplyFreezingBuff(20 * progress, 0.5f, 1 * progress);
+                    PlayerDamageEvent.SpawnAfflictionEvent("GAMEPLAY_WarmingUp", "GAMEPLAY_BuffHeader", "ico_injury_warmingUp", InterfaceManager.m_Panel_ActionsRadial.m_FirstAidBuffColor);
+                }
+
                 WaterUtils.SetWaterAmount(gearItem.m_CookingPotItem, waterSupply.m_VolumeInLiters);
                 Object.Destroy(waterSupply);
             }
@@ -159,6 +165,15 @@ namespace BetterWaterManagement
             }
 
             Water.AdjustWaterSupplyToWater();
+        }
+    }
+
+    [HarmonyPatch(typeof(PlayerManager), "OnPurifyWaterComplete")]
+    internal class PlayerManager_OnPurifyWaterComplete
+    {
+        internal static void Postfix()
+        {
+            Water.AdjustWaterToWaterSupply();
         }
     }
 
