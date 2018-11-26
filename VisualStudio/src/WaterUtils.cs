@@ -86,9 +86,10 @@ namespace BetterWaterManagement
             return gearItem.m_LiquidItem.m_LiquidType == GearLiquidTypeEnum.Water;
         }
 
-        internal static void SetElapsedCookingTime(CookingPotItem cookingPotItem, float value)
+        internal static void SetElapsedCookingTime(CookingPotItem cookingPotItem, float waterLiters)
         {
-            Traverse.Create(cookingPotItem).Field("m_CookingElapsedHours").SetValue(value);
+            float hours = waterLiters * InterfaceManager.m_Panel_Cooking.m_MinutesToBoilWaterPerLiter * cookingPotItem.GetTotalBoilMultiplier() / 60f;
+            Traverse.Create(cookingPotItem).Field("m_CookingElapsedHours").SetValue(hours);
         }
 
         internal static void SetWaterAmount(CookingPotItem cookingPotItem, float value)

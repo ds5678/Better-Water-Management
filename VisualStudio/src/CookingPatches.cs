@@ -22,8 +22,7 @@ namespace BetterWaterManagement
 
             if (overrideCookingState?.ForceReady ?? false)
             {
-                float cookingTime = WaterUtils.GetWaterAmount(cookingPotItem) * InterfaceManager.m_Panel_Cooking.m_MinutesToBoilWaterPerLiter * cookingPotItem.GetTotalBoilMultiplier() / 60f;
-                WaterUtils.SetElapsedCookingTime(cookingPotItem, cookingTime);
+                WaterUtils.SetElapsedCookingTime(cookingPotItem, WaterUtils.GetWaterAmount(cookingPotItem));
             }
         }
     }
@@ -158,9 +157,7 @@ namespace BetterWaterManagement
                 if (__instance.GetCookingState() == CookingPotItem.CookingState.Ready)
                 {
                     ModUtils.GetOrCreateComponent<OverrideCookingState>(__instance).ForceReady = true;
-
-                    float cookingTime = WaterUtils.GetWaterAmount(__instance) * InterfaceManager.m_Panel_Cooking.m_MinutesToBoilWaterPerLiter * __instance.GetTotalBoilMultiplier();
-                    WaterUtils.SetElapsedCookingTime(__instance, cookingTime);
+                    WaterUtils.SetElapsedCookingTime(__instance, WaterUtils.GetWaterAmount(__instance));
                 }
             }
         }
@@ -178,7 +175,6 @@ namespace BetterWaterManagement
 
             if (__instance.m_ParticlesSnowMelting.activeInHierarchy && WaterUtils.IsCooledDown(__instance))
             {
-                Debug.Log("Disabling m_ParticlesSnowMelting");
                 Utils.SetActive(__instance.m_ParticlesSnowMelting, false);
             }
         }
