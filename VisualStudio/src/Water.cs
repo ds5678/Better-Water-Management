@@ -5,8 +5,8 @@ namespace BetterWaterManagement
 {
     public class Water
     {
-        public static readonly Water WATER = new Water();
         public const float MIN_AMOUNT = 0.005f;
+        public static readonly Water WATER = new Water();
 
         private static readonly System.Comparison<LiquidItem> ADDING_ORDER = (LiquidItem x, LiquidItem y) =>
         {
@@ -106,33 +106,30 @@ namespace BetterWaterManagement
             potableWaterSupply.m_VolumeInLiters = WATER.ActualPotable;
             if (!IsNone(potableWaterLost))
             {
-                GearMessage.AddMessage(
-                    potableWaterSupply.name,
-                    Localization.Get("GAMEPLAY_Lost"),
-                    " " + Localization.Get("GAMEPLAY_WaterPotable") + " (" + Utils.GetLiquidQuantityStringWithUnitsNoOunces(InterfaceManager.m_Panel_OptionsMenu.m_State.m_Units, potableWaterLost) + ")",
-                    Color.red,
-                    false);
+                SendDelayedLostMessage(potableWaterSupply, "GAMEPLAY_WaterPotable", potableWaterLost);
             }
 
             float nonPotableWaterLost = nonPotableWaterSupply.m_VolumeInLiters - WATER.ActualNonPotable;
             nonPotableWaterSupply.m_VolumeInLiters = WATER.ActualNonPotable;
             if (!IsNone(nonPotableWaterLost))
             {
-                GearMessage.AddMessage(
-                    nonPotableWaterSupply.name,
-                    Localization.Get("GAMEPLAY_Lost"),
-                    " " + Localization.Get("GAMEPLAY_WaterUnsafe") + " (" + Utils.GetLiquidQuantityStringWithUnitsNoOunces(InterfaceManager.m_Panel_OptionsMenu.m_State.m_Units, nonPotableWaterLost) + ")",
-                    Color.red,
-                    false);
+                SendDelayedLostMessage(nonPotableWaterSupply, "GAMEPLAY_WaterUnsafe", nonPotableWaterLost);
             }
         }
 
-        private void UpdateBottles()
+        public static float GetActual(LiquidQuality quality)
         {
-            foreach (LiquidItem eachLiquidItem in this.liquidItems)
+            if (quality == LiquidQuality.NonPotable)
             {
-                WaterUtils.UpdateWaterBottle(eachLiquidItem.GetComponent<GearItem>());
+                return WATER.ActualNonPotable;
             }
+
+            if (quality == LiquidQuality.Potable)
+            {
+                return WATER.ActualPotable;
+            }
+
+            return 0;
         }
 
         public static float GetCapacity(LiquidQuality quality)
@@ -160,21 +157,6 @@ namespace BetterWaterManagement
             if (quality == LiquidQuality.Potable)
             {
                 return WATER.RemainingCapacityPotable;
-            }
-
-            return 0;
-        }
-
-        public static float GetActual(LiquidQuality quality)
-        {
-            if (quality == LiquidQuality.NonPotable)
-            {
-                return WATER.ActualNonPotable;
-            }
-
-            if (quality == LiquidQuality.Potable)
-            {
-                return WATER.ActualPotable;
             }
 
             return 0;
@@ -210,9 +192,26 @@ namespace BetterWaterManagement
             return IsNone(liquidItem.m_LiquidLiters);
         }
 
+        private static System.Collections.IEnumerator DelayedLostMessage(WaterSupply waterSupply, string name, float amount)
+        {
+            yield return new WaitForSeconds(1f);
+
+            GearMessage.AddMessage(
+                waterSupply.name,
+                Localization.Get("GAMEPLAY_Lost"),
+                " " + Localization.Get(name) + " (" + Utils.GetLiquidQuantityStringWithUnitsNoOunces(InterfaceManager.m_Panel_OptionsMenu.m_State.m_Units, amount) + ")",
+                Color.red,
+                false);
+        }
+
         private static bool IsNone(float liters)
         {
             return liters < MIN_AMOUNT;
+        }
+
+        private static void SendDelayedLostMessage(WaterSupply waterSupply, string name, float amount)
+        {
+            GameManager.Instance().StartCoroutine(DelayedLostMessage(waterSupply, name, amount));
         }
 
         private void Add(float amount, LiquidQuality quality)
@@ -316,6 +315,14 @@ namespace BetterWaterManagement
                     CapacityPotable += eachLiquidItem.m_LiquidCapacityLiters;
                     ActualPotable += eachLiquidItem.m_LiquidLiters;
                 }
+            }
+        }
+
+        private void UpdateBottles()
+        {
+            foreach (LiquidItem eachLiquidItem in this.liquidItems)
+            {
+                WaterUtils.UpdateWaterBottle(eachLiquidItem.GetComponent<GearItem>());
             }
         }
     }

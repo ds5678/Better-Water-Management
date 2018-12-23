@@ -1,7 +1,10 @@
-AssetBundles
+.vs
 Library
 Temp
-UnityPackageManager
-Unity.Editor.csproj
+AssetBundles
 Unity.sln
-.vs
+Unity.Editor.csproj
+Unity.PackageManagerUI.Editor.csproj
+Unity.TextMeshPro.csproj
+Unity.TextMeshPro.Editor.csproj
+UnityEditor.StandardEvents.csproj

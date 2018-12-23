@@ -1,0 +1,14 @@
+{
+	"RequiredGear": ["GEAR_RabbitPeltDried", "GEAR_GutDried"],
+	"RequiredGearUnits": [4, 3],
+	"KeroseneLitersRequired": 0,
+	"RequiredTool": "GEAR_SewingKit",
+	"OptionalTools": ["GEAR_HookAndLine"],
+	"RequiresForge": false,
+	"RequiresWorkbench": true,
+	"RequiresLight": true,
+	"CraftedResult": "GEAR_Waterskin",
+	"CraftedResultCount": 1,
+	"DurationMinutes": 120,
+	"CraftingAudio": "PLAY_CraftingLeatherHide"
+}

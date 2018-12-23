@@ -205,7 +205,7 @@ namespace BetterWaterManagement
     {
         internal static void Postfix(Panel_PickWater __instance)
         {
-            if (InputManager.GetEquipPressed())
+            if (InputManager.GetEquipPressed(GameManager.Instance()))
             {
                 Traverse traverse = Traverse.Create(__instance);
 
@@ -237,7 +237,7 @@ namespace BetterWaterManagement
             }
 
             string textureName = gi.name.Replace("GEAR_", "ico_GearItem__") + WaterUtils.GetWaterSuffix(liquidItem);
-            __result = Utils.GetInventoryIconTextureFromName(textureName);
+            __result = Utils.GetInventoryGridIconTexture(textureName);
 
             return __result == null;
         }
