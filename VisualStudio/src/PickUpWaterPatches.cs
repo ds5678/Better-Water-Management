@@ -34,8 +34,7 @@ namespace BetterWaterManagement
     {
         internal static bool Prefix(GearItem __instance, ref float __result)
         {
-            if (GameManager.GetInventoryComponent().GetPotableWaterSupply() == __instance ||
-                GameManager.GetInventoryComponent().GetNonPotableWaterSupply() == __instance)
+            if (__instance.m_WaterSupply != null)
             {
                 __result = 0;
                 return false;
@@ -50,8 +49,7 @@ namespace BetterWaterManagement
     {
         internal static bool Prefix(GearItem __instance, ref float __result)
         {
-            if (GameManager.GetInventoryComponent().GetPotableWaterSupply() == __instance ||
-                GameManager.GetInventoryComponent().GetNonPotableWaterSupply() == __instance)
+            if (__instance.m_WaterSupply != null)
             {
                 __result = 0;
                 return false;
