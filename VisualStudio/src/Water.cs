@@ -7,6 +7,7 @@ namespace BetterWaterManagement
     {
         public const float MIN_AMOUNT = 0.005f;
         public static readonly Water WATER = new Water();
+        internal static bool IgnoreChanges;
 
         private static readonly System.Comparison<LiquidItem> ADDING_ORDER = (LiquidItem x, LiquidItem y) =>
         {
@@ -65,6 +66,11 @@ namespace BetterWaterManagement
 
         public static void AdjustWaterSupplyToWater()
         {
+            if (IgnoreChanges)
+            {
+                return;
+            }
+
             WATER.Update();
 
             Inventory inventory = GameManager.GetInventoryComponent();
@@ -88,6 +94,11 @@ namespace BetterWaterManagement
 
         public static void AdjustWaterToWaterSupply()
         {
+            if (IgnoreChanges)
+            {
+                return;
+            }
+
             var potableWaterSupply = GameManager.GetInventoryComponent().GetPotableWaterSupply().m_WaterSupply;
             var potableDelta = potableWaterSupply.m_VolumeInLiters - WATER.ActualPotable;
 

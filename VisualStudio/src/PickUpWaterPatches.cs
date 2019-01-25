@@ -72,6 +72,21 @@ namespace BetterWaterManagement
         }
     }
 
+    [HarmonyPatch(typeof(Inventory), "Deserialize")]
+    internal class Inventory_Deserialize
+    {
+        internal static void Prefix()
+        {
+            Water.IgnoreChanges = true;
+        }
+
+        internal static void Postfix()
+        {
+            Water.IgnoreChanges = false;
+            Water.AdjustWaterSupplyToWater();
+        }
+    }
+
     [HarmonyPatch(typeof(Inventory), "AddGear")]
     internal class Inventory_AddGear
     {
@@ -82,6 +97,7 @@ namespace BetterWaterManagement
             LiquidItem liquidItem = go.GetComponent<LiquidItem>();
             if (liquidItem && liquidItem.m_LiquidType == ModWater)
             {
+
                 liquidItem.m_LiquidType = GearLiquidTypeEnum.Water;
                 Water.AdjustWaterSupplyToWater();
             }
