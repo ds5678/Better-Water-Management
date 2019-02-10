@@ -71,6 +71,16 @@ namespace BetterWaterManagement
             return "_potable";
         }
 
+        internal static bool IsCookingItem(CookingPotItem cookingPotItem)
+        {
+            if (!cookingPotItem.IsCookingSomething())
+            {
+                return false;
+            }
+
+            return Traverse.Create(cookingPotItem).Field("m_GearItemBeingCooked").GetValue() != null;
+        }
+
         internal static bool IsCooledDown(CookingPotItem cookingPotItem)
         {
             return Traverse.Create(cookingPotItem).Field("m_GracePeriodElapsedHours").GetValue<float>() * 60.0 > (double)InterfaceManager.m_Panel_Cooking.m_MinutesGraceTimeInterruptedCooking;
@@ -86,10 +96,15 @@ namespace BetterWaterManagement
             return gearItem.m_LiquidItem.m_LiquidType == GearLiquidTypeEnum.Water;
         }
 
-        internal static void SetElapsedCookingTime(CookingPotItem cookingPotItem, float waterLiters)
+        internal static void SetElapsedCookingTime(CookingPotItem cookingPotItem, float hours)
+        {
+            Traverse.Create(cookingPotItem).Field("m_CookingElapsedHours").SetValue(hours);
+        }
+
+        internal static void SetElapsedCookingTimeForWater(CookingPotItem cookingPotItem, float waterLiters)
         {
             float hours = waterLiters * InterfaceManager.m_Panel_Cooking.m_MinutesToBoilWaterPerLiter * cookingPotItem.GetTotalBoilMultiplier() / 60f;
-            Traverse.Create(cookingPotItem).Field("m_CookingElapsedHours").SetValue(hours);
+            SetElapsedCookingTime(cookingPotItem, hours);
         }
 
         internal static void SetWaterAmount(CookingPotItem cookingPotItem, float value)

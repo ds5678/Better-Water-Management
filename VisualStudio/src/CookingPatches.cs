@@ -7,26 +7,6 @@ using UnityEngine;
 
 namespace BetterWaterManagement
 {
-    [HarmonyPatch(typeof(GearPlacePoint), "UpdateAttachedFire")]
-    internal class GearPlacePoint_UpdateAttachedFire
-    {
-        internal static void Postfix(GearItem placedGearNew)
-        {
-            if (placedGearNew == null || placedGearNew.m_CookingPotItem == null || !placedGearNew.m_CookingPotItem.AttachedFireIsBurning())
-            {
-                return;
-            }
-
-            CookingPotItem cookingPotItem = placedGearNew.m_CookingPotItem;
-            OverrideCookingState overrideCookingState = ModUtils.GetComponent<OverrideCookingState>(cookingPotItem);
-
-            if (overrideCookingState?.ForceReady ?? false)
-            {
-                WaterUtils.SetElapsedCookingTime(cookingPotItem, WaterUtils.GetWaterAmount(cookingPotItem));
-            }
-        }
-    }
-
     [HarmonyPatch(typeof(CookingPotItem), "DoSpecialActionFromInspectMode")]
     internal class CookingPotItem_DoSpecialActionFromInspectMode
     {
@@ -68,6 +48,15 @@ namespace BetterWaterManagement
     [HarmonyPatch(typeof(CookingPotItem), "ExitPlaceMesh")]
     internal class CookingPotItem_ExitPlaceMesh
     {
+        internal static void Postfix(CookingPotItem __instance)
+        {
+            if (!__instance.AttachedFireIsBurning() && __instance.GetCookingState() == CookingPotItem.CookingState.Ready && WaterUtils.IsCookingItem(__instance))
+            {
+                float cookingTime = Traverse.Create(__instance).Method("ModifiedCookTimeMinutes").GetValue<float>() / 60f;
+                WaterUtils.SetElapsedCookingTime(__instance, cookingTime);
+            }
+        }
+
         internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             List<CodeInstruction> codeInstructions = new List<CodeInstruction>(instructions);
@@ -101,7 +90,7 @@ namespace BetterWaterManagement
     [HarmonyPatch(typeof(CookingPotItem), "SetCookingState")]
     internal class CookingPotItem_SetCookingState
     {
-        public static void Prefix(CookingPotItem __instance, ref CookingPotItem.CookingState cookingState)
+        internal static void Prefix(CookingPotItem __instance, ref CookingPotItem.CookingState cookingState)
         {
             if (cookingState == CookingPotItem.CookingState.Cooking && !__instance.AttachedFireIsBurning() && WaterUtils.GetWaterAmount(__instance) > 0)
             {
@@ -157,7 +146,7 @@ namespace BetterWaterManagement
                 if (__instance.GetCookingState() == CookingPotItem.CookingState.Ready)
                 {
                     ModUtils.GetOrCreateComponent<OverrideCookingState>(__instance).ForceReady = true;
-                    WaterUtils.SetElapsedCookingTime(__instance, WaterUtils.GetWaterAmount(__instance));
+                    WaterUtils.SetElapsedCookingTimeForWater(__instance, WaterUtils.GetWaterAmount(__instance));
                 }
             }
         }
@@ -197,6 +186,26 @@ namespace BetterWaterManagement
             if (__instance.m_CookingPotItem)
             {
                 ModUtils.GetOrCreateComponent<OverrideCookingState>(__instance);
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(GearPlacePoint), "UpdateAttachedFire")]
+    internal class GearPlacePoint_UpdateAttachedFire
+    {
+        internal static void Postfix(GearItem placedGearNew)
+        {
+            if (placedGearNew == null || placedGearNew.m_CookingPotItem == null || !placedGearNew.m_CookingPotItem.AttachedFireIsBurning())
+            {
+                return;
+            }
+
+            CookingPotItem cookingPotItem = placedGearNew.m_CookingPotItem;
+            OverrideCookingState overrideCookingState = ModUtils.GetComponent<OverrideCookingState>(cookingPotItem);
+
+            if (overrideCookingState?.ForceReady ?? false)
+            {
+                WaterUtils.SetElapsedCookingTimeForWater(cookingPotItem, WaterUtils.GetWaterAmount(cookingPotItem));
             }
         }
     }
