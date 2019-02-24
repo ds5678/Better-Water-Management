@@ -50,10 +50,9 @@ namespace BetterWaterManagement
     {
         internal static void Postfix(CookingPotItem __instance)
         {
-            if (!__instance.AttachedFireIsBurning() && __instance.GetCookingState() == CookingPotItem.CookingState.Ready && WaterUtils.IsCookingItem(__instance))
+            if (!__instance.AttachedFireIsBurning() && WaterUtils.IsCookingItem(__instance))
             {
-                float cookingTime = Traverse.Create(__instance).Method("ModifiedCookTimeMinutes").GetValue<float>() / 60f;
-                WaterUtils.SetElapsedCookingTime(__instance, cookingTime);
+                __instance.PickUpCookedItem();
             }
         }
 
