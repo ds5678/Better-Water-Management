@@ -15,7 +15,10 @@ namespace BetterWaterManagement
         }
     }
 
-    [HarmonyPatch(typeof(ItemDescriptionPage), "GetEquipButtonLocalizationId")]
+    //
+    //Changes the minimum water amount to display the "Drink" button
+    //
+    /*[HarmonyPatch(typeof(ItemDescriptionPage), "GetEquipButtonLocalizationId")] //Transpiler!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     internal class ItemDescriptionPageGetEquipButtonLocalizationIdPatch
     {
         internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
@@ -44,18 +47,18 @@ namespace BetterWaterManagement
 
             return codes;
         }
-    }
+    }*/
 
     [HarmonyPatch(typeof(Panel_ActionsRadial), "GetDrinkItemsInInventory")]
     internal class Panel_ActionsRadial_GetDrinkItemsInInventory
     {
-        internal static bool Prefix(Panel_ActionsRadial __instance, ref List<GearItem> __result)
+        internal static bool Prefix(Panel_ActionsRadial __instance, ref Il2CppSystem.Collections.Generic.List<GearItem> __result)
         {
-            __result = new List<GearItem>();
+            __result = new Il2CppSystem.Collections.Generic.List<GearItem>();
 
             for (int index = 0; index < GameManager.GetInventoryComponent().m_Items.Count; ++index)
             {
-                GearItem component = GameManager.GetInventoryComponent().m_Items[index].GetComponent<GearItem>();
+                GearItem component = GameManager.GetInventoryComponent().m_Items[index].m_GearItem;
                 if (component.m_FoodItem != null && component.m_FoodItem.m_IsDrink)
                 {
                     if (component.m_IsInSatchel)
@@ -68,7 +71,7 @@ namespace BetterWaterManagement
                     }
                 }
 
-                if (WaterUtils.ContainsWater(component))
+                if (WaterUtils.ContainsPotableWater(component))
                 {
                     if (component.m_IsInSatchel)
                     {
@@ -105,11 +108,12 @@ namespace BetterWaterManagement
         }
     }
 
-    [HarmonyPatch(typeof(PlayerManager), "DrinkFromWaterSupply")]
+    [HarmonyPatch(typeof(PlayerManager), "DrinkFromWaterSupply")]//runs when you start drinking water; doesn't run when drinking tea
     internal class PlayerManager_DrinkFromWaterSupply
     {
         internal static void Postfix(WaterSupply ws, bool __result)
         {
+            //Implementation.Log("PlayerManager -- DrinkFromWaterSupply");
             if (GameManager.GetThirstComponent().IsAddingThirstOverTime())
             {
                 return;
@@ -132,7 +136,8 @@ namespace BetterWaterManagement
     {
         internal static void Postfix(PlayerManager __instance, float progress)
         {
-            WaterSupply waterSupply = AccessTools.Field(__instance.GetType(), "m_WaterSourceToDrinkFrom").GetValue(__instance) as WaterSupply;
+            //WaterSupply waterSupply = AccessTools.Field(__instance.GetType(), "m_WaterSourceToDrinkFrom").GetValue(__instance) as WaterSupply;
+            WaterSupply waterSupply = __instance.m_WaterSourceToDrinkFrom;
             if (waterSupply == null)
             {
                 return;
@@ -150,7 +155,8 @@ namespace BetterWaterManagement
             {
                 if (!WaterUtils.IsCooledDown(gearItem.m_CookingPotItem))
                 {
-                    GameManager.GetPlayerManagerComponent().ApplyFreezingBuff(20 * progress, 0.5f, 1 * progress);
+                    //GameManager.GetPlayerManagerComponent().ApplyFreezingBuff(20 * progress, 0.5f, 1 * progress);
+                    GameManager.GetPlayerManagerComponent().ApplyFreezingBuff(20 * progress, 0.5f, 1 * progress,24f);
                     PlayerDamageEvent.SpawnAfflictionEvent("GAMEPLAY_WarmingUp", "GAMEPLAY_BuffHeader", "ico_injury_warmingUp", InterfaceManager.m_Panel_ActionsRadial.m_FirstAidBuffColor);
                 }
 
@@ -173,11 +179,12 @@ namespace BetterWaterManagement
     {
         internal static void Postfix()
         {
+            //Implementation.Log("PlayerManager -- OnPurifyWaterComplete");
             Water.AdjustWaterToWaterSupply();
         }
     }
 
-    [HarmonyPatch(typeof(PlayerManager), "UpdateInspectGear")]
+    /*[HarmonyPatch(typeof(PlayerManager), "UpdateInspectGear")]// Transpiler!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     internal class PlayerManager_UpdateInspectGear
     {
         internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
@@ -210,13 +217,90 @@ namespace BetterWaterManagement
 
             return codeInstructions;
         }
+    }*/
+
+    //Replacement Patches
+    
+    internal class UpdateInspectGearTracker
+    {
+        internal static bool isExecuting = false;
     }
+
+    [HarmonyPatch(typeof(PlayerManager),"UpdateInspectGear")]
+    internal class PlayerManager_UpdateInspectGear
+    {
+        private static void Prefix()
+        {
+            UpdateInspectGearTracker.isExecuting = true;
+        }
+        private static void Postfix()
+        {
+            UpdateInspectGearTracker.isExecuting = false;
+        }
+    }
+
+    /*[HarmonyPatch(typeof(PlayerManager), "UseInventoryItem")]
+    internal class PlayerManager_UseInventoryItem
+    {
+        private static void Prefix(ref GearItem gi,float volumeAvailable)
+        {
+            if (UpdateInspectGearTracker.isExecuting && volumeAvailable > 0f)
+            {
+                gi = GameManager.GetPlayerManagerComponent().m_Gear;
+            }
+        }
+    }*/
+
+    /*[HarmonyPatch(typeof(Inventory), "GetPotableWaterSupply")]
+    internal class Inventory_GetPotableWaterSupply
+    {
+        private static bool Prefix(ref GearItem __result)
+        {
+            if (UpdateInspectGearTracker.isExecuting)
+            {
+                __result = GameManager.GetPlayerManagerComponent().m_Gear;
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(Inventory), "GetNonPotableWaterSupply")]
+    internal class Inventory_GetNonPotableWaterSupply
+    {
+        private static bool Prefix(ref GearItem __result)
+        {
+            if (UpdateInspectGearTracker.isExecuting)
+            {
+                __result = GameManager.GetPlayerManagerComponent().m_Gear;
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+    }*/
+
+    //End Replacements
 
     [HarmonyPatch(typeof(PlayerManager), "UseInventoryItem")]
     internal class PlayerManager_UseInventoryItem
     {
-        internal static void Prefix(GearItem gi, ref bool __result)
+        internal static void Prefix(ref GearItem gi, float volumeAvailable, ref bool __result)
         {
+            //Added for replacing transpiler patch:
+            //ref to gi
+            //float volumeAvailable
+            //this if clause
+            if (UpdateInspectGearTracker.isExecuting && volumeAvailable > 0f)
+            {
+                gi = GameManager.GetPlayerManagerComponent().m_Gear;
+            }
+
             if (!WaterUtils.IsWaterItem(gi))
             {
                 return;

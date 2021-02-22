@@ -1,8 +1,0 @@
-Key, English, German, Russian, Turkish
-GAMEPLAY_Empty, "Empty", "Leer", "Пустая емкость", "Boþ"
-GAMEPLAY_Lost, "Lost", "Verloren", "Потеряно", "Kayýp"
-GAMEPLAY_NoCapacityAvailable, "No bottles with remaining capacity available", "Keine Flaschen mit verbleibender Kapazität vorhanden", "Отсутствует емкость для воды", "Boþ þiþe kalmadý veya yeterli deðil"
-GAMEPLAY_Waterskin, "Waterskin", "Wasserschlauch"
-GAMEPLAY_WaterskinDescription, "A simple waterskin made from rabbit pelts. Holds up to 3 l (102 oz).", "Ein einfacher Wasserschlauch aus Kaninchenpelzen. Fasst bis zu 3 l."
-GAMEPLAY_Cup, "Metal Cup", "Metalltasse"
-GAMEPLAY_CupDescription, "Old metal camping cup.", "Alte Campingtasse aus Metall."

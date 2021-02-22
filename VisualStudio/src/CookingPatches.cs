@@ -7,45 +7,48 @@ using UnityEngine;
 
 namespace BetterWaterManagement
 {
-    [HarmonyPatch(typeof(CookingPotItem), "DoSpecialActionFromInspectMode")]
+    [HarmonyPatch(typeof(CookingPotItem), "DoSpecialActionFromInspectMode")] //like eating, drinking, or passing time
     internal class CookingPotItem_DoSpecialActionFromInspectMode
     {
         internal static bool Prefix(CookingPotItem __instance)
         {
-            if (__instance.GetCookingState() == CookingPotItem.CookingState.Cooking)
+            //Implementation.Log("CookingPotItem -- DoSpecialActionFromInspectMode");
+            if (__instance.GetCookingState() == CookingPotItem.CookingState.Cooking) //patch does not apply while cooking
             {
                 return true;
             }
 
             float waterAmount = WaterUtils.GetWaterAmount(__instance);
-            if (waterAmount <= 0)
+            if (waterAmount <= 0) //There must be some water for this to apply
             {
                 return true;
             }
 
+            //sets to true if the item has been boiled
             bool potable = __instance.GetCookingState() == CookingPotItem.CookingState.Ready;
 
             GearItem gearItem = __instance.GetComponent<GearItem>();
 
-            WaterSupply waterSupply = gearItem.m_WaterSupply;
-            if (waterSupply == null)
+            WaterSupply waterSupply = gearItem.m_WaterSupply; //Gets the cooking pot's water supply component
+            if (waterSupply == null)//if it doesn't exist
             {
-                waterSupply = gearItem.gameObject.AddComponent<WaterSupply>();
-                gearItem.m_WaterSupply = waterSupply;
+                waterSupply = gearItem.gameObject.AddComponent<WaterSupply>();//create one
+                gearItem.m_WaterSupply = waterSupply;//and assign it
             }
 
+            //assign values to the water supply
             waterSupply.m_VolumeInLiters = waterAmount;
             waterSupply.m_WaterQuality = potable ? LiquidQuality.Potable : LiquidQuality.NonPotable;
             waterSupply.m_TimeToDrinkSeconds = GameManager.GetInventoryComponent().GetPotableWaterSupply().m_WaterSupply.m_TimeToDrinkSeconds;
             waterSupply.m_DrinkingAudio = GameManager.GetInventoryComponent().GetPotableWaterSupply().m_WaterSupply.m_DrinkingAudio;
 
-            GameManager.GetPlayerManagerComponent().UseInventoryItem(gearItem);
+            GameManager.GetPlayerManagerComponent().UseInventoryItem(gearItem); //drink it?
 
             return false;
         }
     }
 
-    [HarmonyPatch(typeof(CookingPotItem), "ExitPlaceMesh")]
+    /*[HarmonyPatch(typeof(CookingPotItem), "ExitPlaceMesh")] // transpiler!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     internal class CookingPotItem_ExitPlaceMesh
     {
         internal static void Postfix(CookingPotItem __instance)
@@ -84,7 +87,59 @@ namespace BetterWaterManagement
 
             return codeInstructions;
         }
+    }*/
+
+    //Replacement Patches
+
+    internal class TrackExitPlaceMesh
+    {
+        public static bool isExecuting = false;
     }
+
+    [HarmonyPatch(typeof(CookingPotItem), "ExitPlaceMesh")]
+    internal class CookingPotItem_ExitPlaceMesh
+    {
+        internal static void Prefix()
+        {
+            TrackExitPlaceMesh.isExecuting = true;
+        }
+        
+        internal static void Postfix(CookingPotItem __instance)
+        {
+            TrackExitPlaceMesh.isExecuting = false;
+            if (!__instance.AttachedFireIsBurning() && WaterUtils.IsCookingItem(__instance))
+            {
+                __instance.PickUpCookedItem();
+            }
+        }
+    }
+
+    //Patch prevents PickUpCookedItem from running within the ExitPlaceMesh method
+    //In other words, it allows water to be stored in cooking pots
+    [HarmonyPatch(typeof(CookingPotItem),"PickUpCookedItem")]
+    internal class CookingPotItem_PickUpCookedItem
+    {
+        private static bool Prefix()
+        {
+            //Implementation.Log("CookingPotItem - PickUpCookedItem");
+            if (TrackExitPlaceMesh.isExecuting)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        //this is for a completely separate problem
+        //this adds the water to the bottles after picking it up from a cooking pot
+        private static void Postfix() 
+        {
+            Water.AdjustWaterToWaterSupply();
+        }
+    }
+
+    //End Replacements
 
     [HarmonyPatch(typeof(CookingPotItem), "SetCookingState")]
     internal class CookingPotItem_SetCookingState
@@ -118,52 +173,62 @@ namespace BetterWaterManagement
         }
     }
 
-    [HarmonyPatch(typeof(CookingPotItem), "StartMeltingSnow")]
+    //[HarmonyPatch(typeof(CookingPotItem), "StartMeltingSnow")] //inlined
+    [HarmonyPatch(typeof(Panel_Cooking), "OnMeltSnow")]
     internal class CookingPotItem_StartMeltingSnow
     {
         internal static void Postfix(CookingPotItem __instance)
         {
+            //Implementation.Log("CookingPotItem -- StartMeltingSnow");
             ModUtils.GetOrCreateComponent<OverrideCookingState>(__instance).ForceReady = false;
         }
     }
 
-    [HarmonyPatch(typeof(CookingPotItem), "UpdateBoilingWater")]
+    //[HarmonyPatch(typeof(CookingPotItem), "UpdateBoilingWater")] //inlined
+    [HarmonyPatch(typeof(CookingPotItem), "Update")]
     internal class CookingPotItem_UpdateBoilingWater
     {
         internal static void Postfix(CookingPotItem __instance)
         {
+            //Implementation.Log("CookingPotItem -- UpdateBoilingWater");
             if (__instance.AttachedFireIsBurning())
             {
                 return;
             }
-
-            if ((__instance.m_ParticlesWaterBoiling.activeInHierarchy || __instance.m_ParticlesWaterReady.activeInHierarchy) && WaterUtils.IsCooledDown(__instance))
+            else if (__instance.m_LitersWaterBeingBoiled > 0)
             {
-                Utils.SetActive(__instance.m_ParticlesWaterReady, false);
-                Utils.SetActive(__instance.m_ParticlesWaterBoiling, false);
-
-                if (__instance.GetCookingState() == CookingPotItem.CookingState.Ready)
+                if ((__instance.m_ParticlesWaterBoiling.activeInHierarchy || __instance.m_ParticlesWaterReady.activeInHierarchy) && WaterUtils.IsCooledDown(__instance))
                 {
-                    ModUtils.GetOrCreateComponent<OverrideCookingState>(__instance).ForceReady = true;
-                    WaterUtils.SetElapsedCookingTimeForWater(__instance, WaterUtils.GetWaterAmount(__instance));
+                    Utils.SetActive(__instance.m_ParticlesWaterReady, false);
+                    Utils.SetActive(__instance.m_ParticlesWaterBoiling, false);
+
+                    if (__instance.GetCookingState() == CookingPotItem.CookingState.Ready)
+                    {
+                        ModUtils.GetOrCreateComponent<OverrideCookingState>(__instance).ForceReady = true;
+                        WaterUtils.SetElapsedCookingTimeForWater(__instance, WaterUtils.GetWaterAmount(__instance));
+                    }
                 }
             }
         }
     }
 
-    [HarmonyPatch(typeof(CookingPotItem), "UpdateMeltingSnow")]
+    //[HarmonyPatch(typeof(CookingPotItem), "UpdateMeltingSnow")] //inlined
+    [HarmonyPatch(typeof(CookingPotItem), "Update")] //replacement
     internal class CookingPotItem_UpdateMeltingSnow
     {
         internal static void Postfix(CookingPotItem __instance)
         {
+            //Implementation.Log("CookingPotItem -- UpdateMeltingSnow");
             if (__instance.AttachedFireIsBurning())
             {
                 return;
             }
-
-            if (__instance.m_ParticlesSnowMelting.activeInHierarchy && WaterUtils.IsCooledDown(__instance))
+            else if (__instance.m_LitersSnowBeingMelted > 0)
             {
-                Utils.SetActive(__instance.m_ParticlesSnowMelting, false);
+                if (__instance.m_ParticlesSnowMelting.activeInHierarchy && WaterUtils.IsCooledDown(__instance))
+                {
+                    Utils.SetActive(__instance.m_ParticlesSnowMelting, false);
+                }
             }
         }
     }
@@ -185,6 +250,7 @@ namespace BetterWaterManagement
             if (__instance.m_CookingPotItem)
             {
                 ModUtils.GetOrCreateComponent<OverrideCookingState>(__instance);
+                ModUtils.GetOrCreateComponent<CookingPotWaterSaveData>(__instance);
             }
         }
     }
@@ -217,8 +283,10 @@ namespace BetterWaterManagement
         public static void Execute()
         {
             Panel_Cooking panel_Cooking = InterfaceManager.m_Panel_Cooking;
-            GearItem cookedItem = Traverse.Create(panel_Cooking).Method("GetSelectedFood").GetValue<GearItem>();
-            CookingPotItem cookingPotItem = Traverse.Create(panel_Cooking).Field("m_CookingPotInteractedWith").GetValue<CookingPotItem>();
+            //GearItem cookedItem = Traverse.Create(panel_Cooking).Method("GetSelectedFood").GetValue<GearItem>();
+            GearItem cookedItem = panel_Cooking.GetSelectedFood();
+            //CookingPotItem cookingPotItem = Traverse.Create(panel_Cooking).Field("m_CookingPotInteractedWith").GetValue<CookingPotItem>();
+            CookingPotItem cookingPotItem = panel_Cooking.m_CookingPotInteractedWith;
 
             GearItem result = cookedItem.Drop(1, false, true);
 
@@ -238,7 +306,10 @@ namespace BetterWaterManagement
             button = Object.Instantiate<GameObject>(panel_Cooking.m_ActionButtonObject, panel_Cooking.m_ActionButtonObject.transform.parent, true);
             button.transform.Translate(0, 0.09f, 0);
             Utils.GetComponentInChildren<UILabel>(button).text = text;
-            Utils.GetComponentInChildren<UIButton>(button).onClick = new List<EventDelegate>() { new EventDelegate(Execute) };
+            //Utils.GetComponentInChildren<UIButton>(button).onClick = new List<EventDelegate>() { new EventDelegate(Execute) };
+            Il2CppSystem.Collections.Generic.List<EventDelegate> placeHolderList = new Il2CppSystem.Collections.Generic.List<EventDelegate>();
+            placeHolderList.Add(new EventDelegate(new System.Action(Execute)));
+            Utils.GetComponentInChildren<UIButton>(button).onClick = placeHolderList;
 
             NGUITools.SetActive(button, false);
         }
@@ -254,7 +325,8 @@ namespace BetterWaterManagement
     {
         internal static void Postfix(Panel_Cooking __instance)
         {
-            List<GearItem> foodList = Traverse.Create(__instance).Field("m_FoodList").GetValue<List<GearItem>>();
+            //List<GearItem> foodList = Traverse.Create(__instance).Field("m_FoodList").GetValue<List<GearItem>>();
+            Il2CppSystem.Collections.Generic.List<GearItem> foodList = __instance.m_FoodList;
             if (foodList == null)
             {
                 return;
@@ -264,6 +336,7 @@ namespace BetterWaterManagement
             {
                 CookingModifier cookingModifier = ModUtils.GetComponent<CookingModifier>(eachGearItem);
                 cookingModifier?.Revert();
+                //if(cookingModifier) Implementation.Log("{0} reverted from Melt and Cook", eachGearItem.name);
             }
         }
     }
@@ -282,7 +355,8 @@ namespace BetterWaterManagement
     {
         internal static void Prefix(Panel_Cooking __instance)
         {
-            GearItem cookedItem = Traverse.Create(__instance).Method("GetSelectedFood").GetValue<GearItem>();
+            //GearItem cookedItem = Traverse.Create(__instance).Method("GetSelectedFood").GetValue<GearItem>();
+            GearItem cookedItem = __instance.GetSelectedFood();
             bool requiresWater = (cookedItem?.m_Cookable?.m_PotableWaterRequiredLiters ?? 0) > 0;
 
             if (Utils.IsMouseActive())
@@ -307,7 +381,8 @@ namespace BetterWaterManagement
                 return true;
             }
 
-            GearItem cookedItem = Traverse.Create(__instance).Method("GetSelectedFood").GetValue<GearItem>();
+            //GearItem cookedItem = Traverse.Create(__instance).Method("GetSelectedFood").GetValue<GearItem>();
+            GearItem cookedItem = __instance.GetSelectedFood();
             bool requiresWater = (cookedItem?.m_Cookable?.m_PotableWaterRequiredLiters ?? 0) > 0;
             if (!requiresWater)
             {
@@ -324,13 +399,15 @@ namespace BetterWaterManagement
     {
         internal static void Postfix(Panel_Cooking __instance)
         {
-            GearItem cookedItem = Traverse.Create(__instance).Method("GetSelectedFood").GetValue<GearItem>();
+            //GearItem cookedItem = Traverse.Create(__instance).Method("GetSelectedFood").GetValue<GearItem>();
+            GearItem cookedItem = __instance.GetSelectedFood();
             if (cookedItem == null || cookedItem.m_Cookable == null)
             {
                 return;
             }
 
-            CookingPotItem cookingPotItem = Traverse.Create(__instance).Field("m_CookingPotInteractedWith").GetValue<CookingPotItem>();
+            //CookingPotItem cookingPotItem = Traverse.Create(__instance).Field("m_CookingPotInteractedWith").GetValue<CookingPotItem>();
+            CookingPotItem cookingPotItem = __instance.m_CookingPotInteractedWith;
             if (cookingPotItem == null)
             {
                 return;

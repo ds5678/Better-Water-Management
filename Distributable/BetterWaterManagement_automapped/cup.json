@@ -1,0 +1,32 @@
+{
+    "ModGenericComponent": {
+                                "DisplayNameLocalizationId" : "GAMEPLAY_Cup",
+                                "DescriptionLocalizatonId" : "GAMEPLAY_CupDescription",
+                                "InventoryActionLocalizationId" : "",
+                                "WeightKG": 0.1,
+                                "DaysToDecay" : 100,
+                                "MaxHP" : 100,
+                                "InitialCondition" : "High",
+                                "InventoryCategory" : "Tool",
+                                "Radial" : "None",
+                                "PickUpAudio" : "Play_TinCanPickup",
+                                "PutBackAudio" : "Play_TinCanPutDown",
+                                "StowAudio" : "Play_InventoryStow",
+                                "WornOutAudio" : "Play_SndInvMetalSmallBreak2",
+                                "InspectOnPickup" : true,
+                                "InspectDistance" : 0.4,
+                                "InspectAngles" : [-30, 0, 0],
+                                "InspectOffset" : [0, -0.05, 0],
+                                "InspectScale" :  [1, 1, 1],
+                                "NormalModel" : "",
+                                "InspectModel" : "",
+
+                                "CanCookLiquid" : true,
+                                "CanCookGrub" : false,
+                                "CanCookMeat" : false,
+                                "Capacity" : 0.25,
+                                "Template" : "GEAR_RecycledCan",
+                                "SnowMesh" : "cup_snow",
+                                "WaterMesh" : "cup_water"
+                            }
+}

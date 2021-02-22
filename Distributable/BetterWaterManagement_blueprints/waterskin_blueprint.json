@@ -1,0 +1,18 @@
+{
+    "@type": "ModComponentAPI.ModBlueprint",
+    "RequiredGear": ["GEAR_RabbitPeltDried", "GEAR_GutDried"],
+    "RequiredGearUnits": [4, 3],
+    "KeroseneLitersRequired": 0,
+    "GunpowderRequired": 0,
+    "RequiredTool": "GEAR_SewingKit",
+    "OptionalTools": ["GEAR_HookAndLine"],
+    "RequiredCraftingLocation": "Workbench",
+    "RequiresLitFire": false,
+    "RequiresLight": true,
+    "CraftedResult": "GEAR_Waterskin",
+    "CraftedResultCount": 1,
+    "DurationMinutes": 120,
+    "CraftingAudio": "PLAY_CraftingLeatherHide",
+    "AppliedSkill" : "None",
+    "ImprovedSkill" : "None"
+}

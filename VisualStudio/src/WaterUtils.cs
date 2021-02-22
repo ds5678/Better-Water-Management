@@ -17,6 +17,11 @@ namespace BetterWaterManagement
             return gearItem.m_LiquidItem.m_LiquidLiters > 0;
         }
 
+        internal static bool ContainsPotableWater(GearItem gearItem)
+        {
+            return ContainsWater(gearItem) && gearItem.m_LiquidItem.m_LiquidQuality == LiquidQuality.Potable;
+        }
+
         internal static string FormatWaterAmount(float liters)
         {
             return Utils.GetLiquidQuantityStringNoOunces(InterfaceManager.m_Panel_OptionsMenu.m_State.m_Units, liters);
@@ -52,8 +57,9 @@ namespace BetterWaterManagement
 
         internal static float GetWaterAmount(CookingPotItem cookingPotItem)
         {
-            System.Reflection.FieldInfo fieldInfo = AccessTools.Field(typeof(CookingPotItem), "m_LitersWaterBeingBoiled");
-            return (float)fieldInfo.GetValue(cookingPotItem);
+            //System.Reflection.FieldInfo fieldInfo = AccessTools.Field(typeof(CookingPotItem), "m_LitersWaterBeingBoiled");
+            //return (float)fieldInfo.GetValue(cookingPotItem);
+            return cookingPotItem.m_LitersWaterBeingBoiled;
         }
 
         internal static string GetWaterSuffix(LiquidItem liquidItem)
@@ -78,12 +84,14 @@ namespace BetterWaterManagement
                 return false;
             }
 
-            return Traverse.Create(cookingPotItem).Field("m_GearItemBeingCooked").GetValue() != null;
+            //return Traverse.Create(cookingPotItem).Field("m_GearItemBeingCooked").GetValue() != null;
+            return cookingPotItem.m_GearItemBeingCooked != null;
         }
 
         internal static bool IsCooledDown(CookingPotItem cookingPotItem)
         {
-            return Traverse.Create(cookingPotItem).Field("m_GracePeriodElapsedHours").GetValue<float>() * 60.0 > (double)InterfaceManager.m_Panel_Cooking.m_MinutesGraceTimeInterruptedCooking;
+            //return Traverse.Create(cookingPotItem).Field("m_GracePeriodElapsedHours").GetValue<float>() * 60.0 > (double)InterfaceManager.m_Panel_Cooking.m_MinutesGraceTimeInterruptedCooking;
+            return (cookingPotItem.m_GracePeriodElapsedHours * 60f) > InterfaceManager.m_Panel_Cooking.m_MinutesGraceTimeInterruptedCooking;
         }
 
         internal static bool IsWaterItem(GearItem gearItem)
@@ -98,7 +106,8 @@ namespace BetterWaterManagement
 
         internal static void SetElapsedCookingTime(CookingPotItem cookingPotItem, float hours)
         {
-            Traverse.Create(cookingPotItem).Field("m_CookingElapsedHours").SetValue(hours);
+            //Traverse.Create(cookingPotItem).Field("m_CookingElapsedHours").SetValue(hours);
+            cookingPotItem.m_CookingElapsedHours = hours;
         }
 
         internal static void SetElapsedCookingTimeForWater(CookingPotItem cookingPotItem, float waterLiters)
@@ -109,8 +118,9 @@ namespace BetterWaterManagement
 
         internal static void SetWaterAmount(CookingPotItem cookingPotItem, float value)
         {
-            System.Reflection.FieldInfo fieldInfo = AccessTools.Field(typeof(CookingPotItem), "m_LitersWaterBeingBoiled");
-            fieldInfo.SetValue(cookingPotItem, value);
+            //System.Reflection.FieldInfo fieldInfo = AccessTools.Field(typeof(CookingPotItem), "m_LitersWaterBeingBoiled");
+            //fieldInfo.SetValue(cookingPotItem, value);
+            cookingPotItem.m_LitersWaterBeingBoiled = value;
         }
 
         internal static void UpdateWaterBottle(GearItem gearItem)
@@ -131,7 +141,7 @@ namespace BetterWaterManagement
 
         private static Texture GetTexture(LiquidItem liquidItem)
         {
-            return Resources.Load("Textures/GEAR_WaterBottle" + GetWaterSuffix(liquidItem)) as Texture;
+            return Resources.Load("Textures/GEAR_WaterBottle" + GetWaterSuffix(liquidItem)).Cast<Texture>();
         }
 
         private static string StripSuffix(string sound, string suffix)
@@ -146,7 +156,7 @@ namespace BetterWaterManagement
 
         private static void UpdateWaterBottleSound(GearItem instance)
         {
-            if (Water.IsEmpty(instance.m_LiquidItem))
+            /*if (Water.IsEmpty(instance.m_LiquidItem))
             {
                 instance.m_PickUpAudio = AppendSuffix(instance.m_PickUpAudio, SOUND_SUFFIX_EMPTY);
                 instance.m_PutBackAudio = AppendSuffix(instance.m_PutBackAudio, SOUND_SUFFIX_EMPTY);
@@ -155,7 +165,7 @@ namespace BetterWaterManagement
             {
                 instance.m_PickUpAudio = StripSuffix(instance.m_PickUpAudio, SOUND_SUFFIX_EMPTY);
                 instance.m_PutBackAudio = StripSuffix(instance.m_PutBackAudio, SOUND_SUFFIX_EMPTY);
-            }
+            }*/
         }
 
         private static void UpdateWaterBottleTexture(LiquidItem liquidItem)

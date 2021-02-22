@@ -1,5 +1,6 @@
 ﻿using Harmony;
 using UnityEngine;
+using UnhollowerBaseLib.Attributes;
 
 namespace BetterWaterManagement
 {
@@ -11,6 +12,7 @@ namespace BetterWaterManagement
         private CookingPotItem.CookingState nextState;
         private CookingPotItem.CookingState originalState;
 
+        public CoolDown(System.IntPtr intPtr) : base(intPtr) { }
         public void FixedUpdate()
         {
             if (!isActiveAndEnabled)
@@ -31,19 +33,24 @@ namespace BetterWaterManagement
 
             if (nextState < CookingPotItem.CookingState.Cooking)
             {
-                AccessTools.Method(typeof(CookingPotItem), "TurnOnParticles").Invoke(this.cookingPotItem, new object[] { null });
+                //AccessTools.Method(typeof(CookingPotItem), "TurnOnParticles").Invoke(this.cookingPotItem, new object[] { null });
+                this.cookingPotItem.TurnOnParticles(null);
                 this.enabled = false;
                 return;
             }
 
-            System.Reflection.FieldInfo fieldInfo = AccessTools.Field(typeof(CookingPotItem), "m_CookingState");
-            fieldInfo.SetValue(this.cookingPotItem, nextState);
-            AccessTools.Method(typeof(CookingPotItem), "UpdateParticles").Invoke(this.cookingPotItem, null);
-            fieldInfo.SetValue(this.cookingPotItem, originalState);
+            //System.Reflection.FieldInfo fieldInfo = AccessTools.Field(typeof(CookingPotItem), "m_CookingState");
+            //fieldInfo.SetValue(this.cookingPotItem, nextState);
+            this.cookingPotItem.m_CookingState = nextState;
+            //AccessTools.Method(typeof(CookingPotItem), "UpdateParticles").Invoke(this.cookingPotItem, null);
+            //fieldInfo.SetValue(this.cookingPotItem, originalState);
+            this.cookingPotItem.UpdateParticles();
+            this.cookingPotItem.m_CookingState = originalState;
             nextState--;
             this.elapsed = 0;
         }
 
+        [HideFromIl2Cpp]
         public void SetEnabled(bool enable)
         {
             if (this.enabled == enable)

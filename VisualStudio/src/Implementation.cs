@@ -1,25 +1,35 @@
 ﻿using UnityEngine;
-
+using MelonLoader;
 namespace BetterWaterManagement
 {
-    internal class Implementation
+    internal class Implementation : MelonMod
     {
         public const string NAME = "Better-Water-Management";
 
-        public static void OnLoad()
+        public override void OnApplicationStart()
         {
-            Log("Version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
+            Debug.Log($"[{Info.Name}] Version {Info.Version} loaded!");
+            BetterWaterSettings.OnLoad();
+            UnhollowerRuntimeLib.ClassInjector.RegisterTypeInIl2Cpp<BetterWaterManagement.OverrideCookingState>();
+            UnhollowerRuntimeLib.ClassInjector.RegisterTypeInIl2Cpp<BetterWaterManagement.CoolDown>();
+            UnhollowerRuntimeLib.ClassInjector.RegisterTypeInIl2Cpp<BetterWaterManagement.CookingModifier>();
+            UnhollowerRuntimeLib.ClassInjector.RegisterTypeInIl2Cpp<BetterWaterManagement.CookingPotWaterSaveData>();
         }
 
         internal static void Log(string message)
         {
-            Debug.LogFormat("[" + NAME + "] {0}", message);
+            MelonLogger.Log( message);
         }
 
         internal static void Log(string message, params object[] parameters)
         {
-            string preformattedMessage = string.Format("[" + NAME + "] {0}", message);
-            Debug.LogFormat(preformattedMessage, parameters);
+            string preformattedMessage = string.Format(message,parameters);
+            Log(preformattedMessage);
+        }
+
+        internal static void LogError(string message)
+        {
+            MelonLogger.LogError(message);
         }
     }
 }

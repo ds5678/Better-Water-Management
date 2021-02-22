@@ -1,0 +1,42 @@
+﻿{
+    "GAMEPLAY_Empty" : {
+                            "English" : "Empty",
+                            "German" : "Leer",
+                            "Russian" : "Пустая емкость",
+                            "Turkish" : "Boþ"
+    },
+    "GAMEPLAY_Lost" : {
+                            "English" : "Lost",
+                            "German" : "Verloren",
+                            "Russian" : "Потеряно",
+                            "Turkish" : "Kayýp"
+    },
+    "GAMEPLAY_NoCapacityAvailable" : {
+                            "English" : "No bottles with remaining capacity available",
+                            "German" : "Keine Flaschen mit verbleibender Kapazität vorhanden",
+                            "Russian" : "Отсутствует емкость для воды",
+                            "Turkish" : "Boþ þiþe kalmadý veya yeterli deðil"
+    },
+    "GAMEPLAY_Waterskin" : {
+                            "English" : "Waterskin",
+                            "German" : "Wasserschlauch"
+    },
+    "GAMEPLAY_WaterskinDescription" : {
+                            "English" : "A simple waterskin made from rabbit pelts. Holds up to 3 liters (102 oz).",
+                            "German" : "Ein einfacher Wasserschlauch aus Kaninchenpelzen. Fasst bis zu 3 liter."
+    },
+    "GAMEPLAY_Cup" : {
+                            "English" : "Metal Cup",
+                            "German" : "Metalltasse"
+    },
+    "GAMEPLAY_CupDescription" : {
+                            "English" : "Old metal camping cup.",
+                            "German" : "Alte Campingtasse aus Metall."
+    },
+    "GAMEPLAY_MetalWaterBottle" : {
+                            "English" : "Metal Water Bottle"
+    },
+    "GAMEPLAY_MetalWaterBottleDescription" : {
+                            "English" : "A reusable water bottle. Ubiquitous in modern society. Holds 750mL (25 fl oz) of water."
+    }
+}

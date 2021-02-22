@@ -13,7 +13,7 @@ namespace BetterWaterManagement
             WaterSource waterSource = GetWaterSource(panel);
             if (!waterSource)
             {
-                Debug.LogError("Could not find WaterSupply to transfer to");
+                Implementation.LogError("Could not find WaterSupply to transfer to");
                 return;
             }
 
@@ -54,7 +54,7 @@ namespace BetterWaterManagement
             WaterSource waterSource = GetWaterSource(panel);
             if (!waterSource)
             {
-                Debug.LogError("Could not find WaterSource");
+                Implementation.LogError("Could not find WaterSource");
                 return;
             }
 
@@ -67,7 +67,7 @@ namespace BetterWaterManagement
             WaterSource waterSource = GetWaterSource(panel);
             if (!waterSource)
             {
-                Debug.LogError("UpdateCapacityInfo: Could not find WaterSource");
+                Implementation.LogError("UpdateCapacityInfo: Could not find WaterSource");
                 return;
             }
 
@@ -87,16 +87,20 @@ namespace BetterWaterManagement
         {
             InterfaceManager.m_Panel_HUD.m_InspectMode_Equip.gameObject.SetActive(panel.IsEnabled());
             InterfaceManager.m_Panel_HUD.m_InspectMode_Equip.text = Localization.Get("GAMEPLAY_DrinkIt");
+            InterfaceManager.m_Panel_HUD.m_InspectMode_Equip.enabled = true;//test
+            //InterfaceManager.m_Panel_HUD.m_InspectMode_Equip.
         }
 
         private static WaterSource GetWaterSource(Panel_PickWater panel)
         {
-            return Traverse.Create(panel).Field("m_WaterSource").GetValue<WaterSource>();
+            //return Traverse.Create(panel).Field("m_WaterSource").GetValue<WaterSource>();
+            return panel.m_WaterSource;
         }
 
         private static void Refresh(Panel_PickWater panel)
         {
-            Traverse.Create(panel).Method("Refresh").GetValue();
+            //Traverse.Create(panel).Method("Refresh").GetValue();
+            panel.Refresh();
         }
     }
 }

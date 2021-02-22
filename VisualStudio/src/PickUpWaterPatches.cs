@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace BetterWaterManagement
 {
+    //This patch appends fill labels to the names of water containers
     [HarmonyPatch(typeof(ConditionTableManager), "GetDisplayNameWithCondition")]
     internal class ConditionTableManager_GetDisplayNameWithCondition
     {
@@ -29,6 +30,11 @@ namespace BetterWaterManagement
         }
     }
 
+    //This patch and the next one make any gear item with a 'WaterSupply' component weightless
+    //This is so that any water supply that's been created doesn't affect the player.
+    //In particular it prevents weight notifications whenever lost water would push the player over a threshold
+    // OR it prevents water weight from being counted twice. I'm not sure.
+    //WaterSupply is the giant pile of water that's created in the inventory
     [HarmonyPatch(typeof(GearItem), "GetItemWeightIgnoreClothingWornBonusKG")]
     internal class GearItem_GetItemWeightIgnoreClothingWornBonusKG
     {
@@ -44,6 +50,7 @@ namespace BetterWaterManagement
         }
     }
 
+    //This patch and the previous one make any gear item with a 'WaterSupply' component weightless
     [HarmonyPatch(typeof(GearItem), "GetItemWeightKG")]
     internal class GearItem_GetItemWeightKG
     {
@@ -59,6 +66,8 @@ namespace BetterWaterManagement
         }
     }
 
+    //Updates the sound and texture of a water bottle
+    //The sound and texture depend on the emptiness and quality of water inside.
     [HarmonyPatch(typeof(GearItem), "ManualStart")]
     internal class GearItem_ManualStart
     {
@@ -72,6 +81,7 @@ namespace BetterWaterManagement
         }
     }
 
+    //Disables the water adjustments while loading
     [HarmonyPatch(typeof(Inventory), "Deserialize")]
     internal class Inventory_Deserialize
     {
@@ -87,6 +97,7 @@ namespace BetterWaterManagement
         }
     }
 
+    //Prevents Water Containers from being converted into one giant pile of water
     [HarmonyPatch(typeof(Inventory), "AddGear")]
     internal class Inventory_AddGear
     {
@@ -131,7 +142,7 @@ namespace BetterWaterManagement
         }
     }
 
-    [HarmonyPatch(typeof(Inventory), "RemoveGear")]
+    [HarmonyPatch(typeof(Inventory), "RemoveGear", new System.Type[] { typeof(GameObject) })]
     internal class Inventory_RemoveGear
     {
         internal static void Postfix(GameObject go)
@@ -144,22 +155,38 @@ namespace BetterWaterManagement
         }
     }
 
-    [HarmonyPatch(typeof(Panel_Container), "IgnoreWaterSupplyItem")]
+    //repeats the previous patch because the method is overloaded
+    [HarmonyPatch(typeof(Inventory), "RemoveGear", new System.Type[] { typeof(GameObject), typeof(bool) })]
+    internal class Inventory_RemoveGear2
+    {
+        internal static void Postfix(GameObject go)
+        {
+            LiquidItem liquidItem = go.GetComponent<LiquidItem>();
+            if (liquidItem && liquidItem.m_LiquidType == GearLiquidTypeEnum.Water)
+            {
+                Water.AdjustWaterSupplyToWater();
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(Panel_Container), "IgnoreWaterSupplyItem")]//runs constantly while the container menu is open
     internal class Panel_Container_IgnoreWaterSupplyItem
     {
         internal static bool Prefix(WaterSupply ws, ref bool __result)
         {
-            __result = ws != null && ws.GetComponent<LiquidItem>() == null;
+            //Implementation.Log("Panel_Container -- IgnoreWaterSupplyItem");
+            __result = ws != null && ws.GetComponent<LiquidItem>() == null; //the water supply exists but has no liquid component
             return false;
         }
     }
 
-    [HarmonyPatch(typeof(Panel_Inventory), "IgnoreWaterSupplyItem")]
+    [HarmonyPatch(typeof(Panel_Inventory), "IgnoreWaterSupplyItem")]//runs constantly while the inventory is open
     internal class Panel_Inventory_IgnoreWaterSupplyItem
     {
         internal static bool Prefix(WaterSupply ws, ref bool __result)
         {
-            __result = ws != null && ws.GetComponent<LiquidItem>() == null;
+            //Implementation.Log("Panel_Inventory -- IgnoreWaterSupplyItem");
+            __result = ws != null && ws.GetComponent<LiquidItem>() == null; //the water supply exists but has no liquid component
             return false;
         }
     }
@@ -187,11 +214,12 @@ namespace BetterWaterManagement
         }
     }
 
-    [HarmonyPatch(typeof(Panel_PickWater), "OnTakeWaterComplete")]
+    [HarmonyPatch(typeof(Panel_PickWater), "OnTakeWaterComplete")]//runs after taking water from a toilet
     internal class Panel_PickWater_OnTakeWaterComplete
     {
         internal static void Postfix()
         {
+            //Implementation.Log("Panel_PickWater -- OnTakeWaterComplete");
             Water.AdjustWaterToWaterSupply();
         }
     }
@@ -221,18 +249,20 @@ namespace BetterWaterManagement
         {
             if (InputManager.GetEquipPressed(GameManager.Instance()))
             {
-                Traverse traverse = Traverse.Create(__instance);
+                //Traverse traverse = Traverse.Create(__instance);
 
                 GameObject gameObject = new GameObject();
                 GearItem gearItem = gameObject.AddComponent<GearItem>();
                 gearItem.m_LocalizedDisplayName = new LocalizedString { m_LocalizationID = "" };
 
                 WaterSourceSupply waterSourceSupply = gameObject.AddComponent<WaterSourceSupply>();
-                waterSourceSupply.SetWaterSource(traverse.Field("m_WaterSource").GetValue<WaterSource>());
+                //waterSourceSupply.SetWaterSource(traverse.Field("m_WaterSource").GetValue<WaterSource>());
+                waterSourceSupply.SetWaterSource(__instance.m_WaterSource);
 
                 gearItem.Awake();
 
-                traverse.Method("ExitInterface").GetValue();
+                //traverse.Method("ExitInterface").GetValue();
+                __instance.ExitInterface();
 
                 GameManager.GetPlayerManagerComponent().UseInventoryItem(gearItem);
             }
@@ -251,7 +281,7 @@ namespace BetterWaterManagement
             }
 
             string textureName = gi.name.Replace("GEAR_", "ico_GearItem__") + WaterUtils.GetWaterSuffix(liquidItem);
-            __result = Utils.GetInventoryGridIconTexture(textureName);
+            __result = Utils.GetInventoryGridIconTexture(textureName); 
 
             return __result == null;
         }

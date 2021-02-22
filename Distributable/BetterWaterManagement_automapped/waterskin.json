@@ -1,0 +1,29 @@
+{
+    "ModLiquidComponent": {
+                                "DisplayNameLocalizationId" : "GAMEPLAY_Waterskin",
+                                "DescriptionLocalizatonId" : "GAMEPLAY_WaterskinDescription",
+                                "InventoryActionLocalizationId" : "",
+                                "WeightKG": 0.5,
+                                "DaysToDecay" : 0,
+                                "MaxHP" : 100,
+                                "InitialCondition" : "Perfect",
+                                "InventoryCategory" : "Food",
+                                "Radial" : "None",
+                                "PickUpAudio" : "Play_SndInvWaterBottle",
+                                "PutBackAudio" : "Play_SndInvWaterBottle",
+                                "StowAudio" : "Play_InventoryStow",
+                                "WornOutAudio" : "",
+                                "InspectOnPickup" : true,
+                                "InspectDistance" : 0.4,
+                                "InspectAngles" : [20, 60, -70],
+                                "InspectOffset" : [0, -0.05, 0],
+                                "InspectScale" :  [0.75, 0.75, 0.75],
+                                "NormalModel" : "",
+                                "InspectModel" : "",
+
+                                "LiquidType" : "Water",
+                                "LiquidCapacityLiters" : 3,
+                                "RandomizedQuantity" : false,
+                                "LiquidLiters" : 0
+                            }
+}
