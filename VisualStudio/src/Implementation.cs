@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using MelonLoader;
+﻿using MelonLoader;
+using UnityEngine;
 namespace BetterWaterManagement
 {
     internal class Implementation : MelonMod
@@ -18,12 +18,12 @@ namespace BetterWaterManagement
 
         internal static void Log(string message)
         {
-            MelonLogger.Log( message);
+            MelonLogger.Log(message);
         }
 
         internal static void Log(string message, params object[] parameters)
         {
-            string preformattedMessage = string.Format(message,parameters);
+            string preformattedMessage = string.Format(message, parameters);
             Log(preformattedMessage);
         }
 

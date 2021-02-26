@@ -22,7 +22,7 @@ namespace BetterWaterManagement
         //sorts containers by ascending liquid amount, ie empty at the start of the list towards more at the end
 
         private List<LiquidItem> liquidItems = new List<LiquidItem>();
-        
+
         private Water()
         {
         }
@@ -245,7 +245,7 @@ namespace BetterWaterManagement
         private static void SendDelayedLostMessage(WaterSupply waterSupply, string name, float amount)
         {
             //GameManager.Instance().StartCoroutine(DelayedLostMessage(waterSupply, name, amount));
-            ShowLostMessage(waterSupply,name,amount);
+            ShowLostMessage(waterSupply, name, amount);
         }
 
         //returns true for negative numbers, zero, and small positive numbers

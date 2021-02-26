@@ -1,8 +1,5 @@
 ﻿using Harmony;
 using ModComponentMapper;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
 using UnityEngine;
 
 namespace BetterWaterManagement
@@ -103,7 +100,7 @@ namespace BetterWaterManagement
         {
             TrackExitPlaceMesh.isExecuting = true;
         }
-        
+
         internal static void Postfix(CookingPotItem __instance)
         {
             TrackExitPlaceMesh.isExecuting = false;
@@ -116,7 +113,7 @@ namespace BetterWaterManagement
 
     //Patch prevents PickUpCookedItem from running within the ExitPlaceMesh method
     //In other words, it allows water to be stored in cooking pots
-    [HarmonyPatch(typeof(CookingPotItem),"PickUpCookedItem")]
+    [HarmonyPatch(typeof(CookingPotItem), "PickUpCookedItem")]
     internal class CookingPotItem_PickUpCookedItem
     {
         private static bool Prefix()
@@ -133,7 +130,7 @@ namespace BetterWaterManagement
         }
         //this is for a completely separate problem
         //this adds the water to the bottles after picking it up from a cooking pot
-        private static void Postfix() 
+        private static void Postfix()
         {
             Water.AdjustWaterToWaterSupply();
         }

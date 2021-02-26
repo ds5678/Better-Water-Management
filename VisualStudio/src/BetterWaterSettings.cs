@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ModSettings;
+﻿using ModSettings;
 
 namespace BetterWaterManagement
 {
@@ -29,7 +24,7 @@ namespace BetterWaterManagement
     {
         [Name("Water Menu Increment")]
         [Description("The increment used in the menu to cook water.")]
-        [Choice("0.05 Liters","0.10 Liters","0.25 Liters","0.50 Liters")]
+        [Choice("0.05 Liters", "0.10 Liters", "0.25 Liters", "0.50 Liters")]
         public WaterIncrement waterIncrement = WaterIncrement.Liters0_25;
 
         [Name("Starting Water Bottles")]

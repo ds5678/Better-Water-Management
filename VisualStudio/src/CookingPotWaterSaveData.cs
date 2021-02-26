@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Harmony;
 using MelonLoader.TinyJSON;
-using Harmony;
+using System;
+using System.Reflection;
 using UnhollowerBaseLib.Attributes;
 
 namespace BetterWaterManagement
@@ -58,7 +55,7 @@ namespace BetterWaterManagement
         internal void ApplyToCookingPot()
         {
             CookingPotItem cookingPot = this.GetComponent<CookingPotItem>();
-            if(cookingPot == null)
+            if (cookingPot == null)
             {
                 MelonLoader.MelonLogger.LogError("CookingPotWaterSaveData applied to a non-cookingpotitem!");
             }
@@ -69,11 +66,11 @@ namespace BetterWaterManagement
                 cookingPot.m_LitersWaterBeingBoiled = this.litersWaterBeingBoiled;
                 cookingPot.m_MinutesUntilCooked = this.minutesUntilCooked;
                 cookingPot.m_MinutesUntilRuined = this.minutesUntilRuined;
-                if(cookingState == CookingPotItem.CookingState.Cooking)
+                if (cookingState == CookingPotItem.CookingState.Cooking)
                 {
                     cookingPot.m_GrubMeshRenderer.sharedMaterials = cookingPot.m_BoilWaterPotMaterialsList;
                 }
-                else if(cookingState == CookingPotItem.CookingState.Ready)
+                else if (cookingState == CookingPotItem.CookingState.Ready)
                 {
                     cookingPot.m_GrubMeshRenderer.sharedMaterials = cookingPot.m_BoilWaterReadyMaterialsList;
                 }
@@ -97,15 +94,15 @@ namespace BetterWaterManagement
             }
         }
 
-        private static void CopyFields<T>(T copyTo,T copyFrom)
+        private static void CopyFields<T>(T copyTo, T copyFrom)
         {
             Type typeOfT = typeof(T);
             FieldInfo[] fieldInfos = typeOfT.GetFields();
-            foreach(FieldInfo fieldInfo in fieldInfos)
+            foreach (FieldInfo fieldInfo in fieldInfos)
             {
                 fieldInfo.SetValue(copyTo, fieldInfo.GetValue(copyFrom));
             }
-            if(fieldInfos.Length == 0)
+            if (fieldInfos.Length == 0)
             {
                 MelonLoader.MelonLogger.LogError("There were no fields to copy!");
             }
@@ -123,22 +120,17 @@ namespace BetterWaterManagement
 
     internal class CookingPotWaterPatches
     {
-        [HarmonyPatch(typeof(GearItem),"Serialize")]
+        [HarmonyPatch(typeof(GearItem), "Serialize")]
         internal class GearItem_Serialize
         {
             [HarmonyPriority(Priority.First)]
             private static void Prefix(GearItem __instance)
             {
                 CookingPotItem cookingPot = __instance.m_CookingPotItem;
-                if(cookingPot != null)
+                if (cookingPot != null)
                 {
                     ModComponentMapper.ModUtils.GetOrCreateComponent<CookingPotWaterSaveData>(__instance).GetFromCookingPot();
                 }
-                //Bed bed = __instance.m_Bed;
-                //if(bed != null)
-                //{
-                //    ModComponentMapper.ModUtils.GetOrCreateComponent<CookingPotWaterSaveData>(__instance).litersWaterBeingBoiled = 10f;
-                //}
             }
         }
     }

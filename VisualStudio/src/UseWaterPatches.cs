@@ -1,7 +1,4 @@
 ﻿using Harmony;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
 using UnityEngine;
 
 namespace BetterWaterManagement
@@ -156,7 +153,7 @@ namespace BetterWaterManagement
                 if (!WaterUtils.IsCooledDown(gearItem.m_CookingPotItem))
                 {
                     //GameManager.GetPlayerManagerComponent().ApplyFreezingBuff(20 * progress, 0.5f, 1 * progress);
-                    GameManager.GetPlayerManagerComponent().ApplyFreezingBuff(20 * progress, 0.5f, 1 * progress,24f);
+                    GameManager.GetPlayerManagerComponent().ApplyFreezingBuff(20 * progress, 0.5f, 1 * progress, 24f);
                     PlayerDamageEvent.SpawnAfflictionEvent("GAMEPLAY_WarmingUp", "GAMEPLAY_BuffHeader", "ico_injury_warmingUp", InterfaceManager.m_Panel_ActionsRadial.m_FirstAidBuffColor);
                 }
 
@@ -220,13 +217,13 @@ namespace BetterWaterManagement
     }*/
 
     //Replacement Patches
-    
+
     internal class UpdateInspectGearTracker
     {
         internal static bool isExecuting = false;
     }
 
-    [HarmonyPatch(typeof(PlayerManager),"UpdateInspectGear")]
+    [HarmonyPatch(typeof(PlayerManager), "UpdateInspectGear")]
     internal class PlayerManager_UpdateInspectGear
     {
         private static void Prefix()

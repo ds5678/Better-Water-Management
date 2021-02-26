@@ -281,7 +281,7 @@ namespace BetterWaterManagement
             }
 
             string textureName = gi.name.Replace("GEAR_", "ico_GearItem__") + WaterUtils.GetWaterSuffix(liquidItem);
-            __result = Utils.GetInventoryGridIconTexture(textureName); 
+            __result = Utils.GetInventoryGridIconTexture(textureName);
 
             return __result == null;
         }

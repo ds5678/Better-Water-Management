@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Harmony;
-using UnityEngine;
+﻿using Harmony;
 
 namespace BetterWaterManagement
 {
     internal class StartGearPatch
     {
-        [HarmonyPatch(typeof(StartGear),"AddAllToInventory")]
+        [HarmonyPatch(typeof(StartGear), "AddAllToInventory")]
         internal class StartGear_AddAllToInventory
         {
             private static void Postfix()

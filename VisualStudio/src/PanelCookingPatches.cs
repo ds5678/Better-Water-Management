@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Harmony;
-using UnityEngine;
+﻿using Harmony;
 
 namespace BetterWaterManagement
 {
@@ -16,14 +10,14 @@ namespace BetterWaterManagement
         [HarmonyPatch(typeof(Panel_Cooking), "OnBoilDown")]
         internal class Panel_Cooking_OnBoilDown
         {
-            private static void Prefix(Panel_Cooking __instance,out float __state)
+            private static void Prefix(Panel_Cooking __instance, out float __state)
             {
                 __state = __instance.m_BoilWaterLiters;
             }
             private static void Postfix(Panel_Cooking __instance, float __state)
             {
                 //Implementation.Log("OnBoilDown");
-                if(__state != __instance.m_BoilWaterLiters)
+                if (__state != __instance.m_BoilWaterLiters)
                 {
                     __instance.m_BoilWaterLiters = __state - BetterWaterSettings.GetWaterIncrement();
                     __instance.ClampWaterBoilAmount();
