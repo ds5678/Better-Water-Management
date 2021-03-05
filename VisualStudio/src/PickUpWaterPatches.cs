@@ -38,15 +38,12 @@ namespace BetterWaterManagement
     [HarmonyPatch(typeof(GearItem), "GetItemWeightIgnoreClothingWornBonusKG")]
     internal class GearItem_GetItemWeightIgnoreClothingWornBonusKG
     {
-        internal static bool Prefix(GearItem __instance, ref float __result)
+        internal static void Postfix(GearItem __instance, ref float __result)
         {
             if (__instance.m_WaterSupply != null)
             {
                 __result = 0;
-                return false;
             }
-
-            return true;
         }
     }
 
@@ -54,15 +51,12 @@ namespace BetterWaterManagement
     [HarmonyPatch(typeof(GearItem), "GetItemWeightKG")]
     internal class GearItem_GetItemWeightKG
     {
-        internal static bool Prefix(GearItem __instance, ref float __result)
+        internal static void Postfix(GearItem __instance, ref float __result)
         {
             if (__instance.m_WaterSupply != null)
             {
                 __result = 0;
-                return false;
             }
-
-            return true;
         }
     }
 

@@ -68,7 +68,7 @@
     <Reference Include="ModComponentMapper">
       <Private>False</Private>
     </Reference>
-    <Reference Include="ModSettings, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ModSettings, Version=1.7.1.0, Culture=neutral, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
     <Reference Include="UnhollowerBaseLib, Version=0.4.10.0, Culture=neutral, processorArchitecture=MSIL">
