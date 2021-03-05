@@ -10,38 +10,30 @@ namespace BetterWaterManagement
         internal static bool Prefix(CookingPotItem __instance)
         {
             //Implementation.Log("CookingPotItem -- DoSpecialActionFromInspectMode");
-            if (__instance.GetCookingState() == CookingPotItem.CookingState.Cooking) //patch does not apply while cooking
+            float waterAmount = __instance.m_LitersWaterBeingBoiled;
+            if (__instance.GetCookingState() == CookingPotItem.CookingState.Ready && waterAmount > 0) //patch does not apply while cooking
             {
-                return true;
+                GearItem gearItem = __instance.GetComponent<GearItem>();
+                WaterSupply waterSupply = gearItem.m_WaterSupply;
+                if (waterSupply == null)//if it doesn't exist
+                {
+                    waterSupply = gearItem.gameObject.AddComponent<WaterSupply>();//create one
+                    gearItem.m_WaterSupply = waterSupply;//and assign it
+                }
+                //float waterVolumeToDrink = GameManager.GetPlayerManagerComponent().CalculateWaterVolumeToDrink(waterAmount);
+                //__instance.m_LitersWaterBeingBoiled -= waterVolumeToDrink;
+                waterSupply.m_VolumeInLiters = waterAmount;
+                waterSupply.m_WaterQuality = LiquidQuality.Potable;
+                waterSupply.m_TimeToDrinkSeconds = GameManager.GetInventoryComponent().GetPotableWaterSupply().m_WaterSupply.m_TimeToDrinkSeconds;
+                waterSupply.m_DrinkingAudio = GameManager.GetInventoryComponent().GetPotableWaterSupply().m_WaterSupply.m_DrinkingAudio;
+
+                GameManager.GetPlayerManagerComponent().DrinkFromWaterSupply(waterSupply, waterAmount);
+                __instance.m_LitersWaterBeingBoiled = waterSupply.m_VolumeInLiters;
+                //Object.Destroy(waterSupply);
+                return false;
             }
-
-            float waterAmount = WaterUtils.GetWaterAmount(__instance);
-            if (waterAmount <= 0) //There must be some water for this to apply
-            {
-                return true;
-            }
-
-            //sets to true if the item has been boiled
-            bool potable = __instance.GetCookingState() == CookingPotItem.CookingState.Ready;
-
-            GearItem gearItem = __instance.GetComponent<GearItem>();
-
-            WaterSupply waterSupply = gearItem.m_WaterSupply; //Gets the cooking pot's water supply component
-            if (waterSupply == null)//if it doesn't exist
-            {
-                waterSupply = gearItem.gameObject.AddComponent<WaterSupply>();//create one
-                gearItem.m_WaterSupply = waterSupply;//and assign it
-            }
-
-            //assign values to the water supply
-            waterSupply.m_VolumeInLiters = waterAmount;
-            waterSupply.m_WaterQuality = potable ? LiquidQuality.Potable : LiquidQuality.NonPotable;
-            waterSupply.m_TimeToDrinkSeconds = GameManager.GetInventoryComponent().GetPotableWaterSupply().m_WaterSupply.m_TimeToDrinkSeconds;
-            waterSupply.m_DrinkingAudio = GameManager.GetInventoryComponent().GetPotableWaterSupply().m_WaterSupply.m_DrinkingAudio;
-
-            GameManager.GetPlayerManagerComponent().UseInventoryItem(gearItem); //drink it?
-
-            return false;
+            return true;
+            
         }
     }
 
