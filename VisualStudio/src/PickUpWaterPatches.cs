@@ -30,39 +30,33 @@ namespace BetterWaterManagement
         }
     }
 
-    //This patch and the next one make any gear item with a 'WaterSupply' component weightless
-    //This is so that any water supply that's been created doesn't affect the player.
-    //In particular it prevents weight notifications whenever lost water would push the player over a threshold
-    // OR it prevents water weight from being counted twice. I'm not sure.
-    //WaterSupply is the giant pile of water that's created in the inventory
+    //This and the next patch makes the hidden inventory watersupply weightless without interfering with other watersupplies.
     [HarmonyPatch(typeof(GearItem), "GetItemWeightIgnoreClothingWornBonusKG")]
     internal class GearItem_GetItemWeightIgnoreClothingWornBonusKG
     {
-        internal static bool Prefix(GearItem __instance, ref float __result)
+        internal static void Postfix(GearItem __instance, ref float __result)
         {
-            if (__instance.m_WaterSupply != null)
+            var potableWaterSupply = GameManager.GetInventoryComponent().m_WaterSupplyPotable;
+            var nonPotableWaterSupply = GameManager.GetInventoryComponent().m_WaterSupplyNotPotable;
+if (__instance == potableWaterSupply || __instance == nonPotableWaterSupply)
             {
                 __result = 0;
-                return false;
             }
-
-            return true;
         }
     }
 
-    //This patch and the previous one make any gear item with a 'WaterSupply' component weightless
+    //This and the previous patch makes the hidden inventory watersupply weightless without interfering with other watersupplies.
     [HarmonyPatch(typeof(GearItem), "GetItemWeightKG")]
     internal class GearItem_GetItemWeightKG
     {
-        internal static bool Prefix(GearItem __instance, ref float __result)
+        internal static void Postfix(GearItem __instance, ref float __result)
         {
-            if (__instance.m_WaterSupply != null)
+            var potableWaterSupply = GameManager.GetInventoryComponent().m_WaterSupplyPotable;
+            var nonPotableWaterSupply = GameManager.GetInventoryComponent().m_WaterSupplyNotPotable;
+            if (__instance == potableWaterSupply || __instance == nonPotableWaterSupply)
             {
                 __result = 0;
-                return false;
             }
-
-            return true;
         }
     }
 

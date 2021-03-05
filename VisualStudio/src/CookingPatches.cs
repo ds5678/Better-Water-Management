@@ -7,12 +7,12 @@ namespace BetterWaterManagement
     [HarmonyPatch(typeof(CookingPotItem), "DoSpecialActionFromInspectMode")] //like eating, drinking, or passing time
     internal class CookingPotItem_DoSpecialActionFromInspectMode
     {
-        internal static bool Prefix(CookingPotItem __instance)
+        internal static void Prefix(CookingPotItem __instance)
         {
             float waterAmount = __instance.m_LitersWaterBeingBoiled;
             if (waterAmount <= 0) //only applies with water 
             {
-                return true;
+                return;
             }
             bool is_ready = __instance.GetCookingState() == CookingPotItem.CookingState.Ready;
             bool is_not_ready_and_no_fire = __instance.GetCookingState() == CookingPotItem.CookingState.Cooking && !__instance.AttachedFireIsBurning();
@@ -36,7 +36,6 @@ namespace BetterWaterManagement
                 GameManager.GetPlayerManagerComponent().DrinkFromWaterSupply(waterSupply, waterAmount);
                 Object.Destroy(waterSupply);
             }
-            return true;
         }
     }
 
@@ -136,7 +135,7 @@ namespace BetterWaterManagement
     [HarmonyPatch(typeof(CookingPotItem), "SetCookingState")]
     internal class CookingPotItem_SetCookingState
     {
-        internal static void Prefix(CookingPotItem __instance, ref CookingPotItem.CookingState cookingState)
+        internal static void Prefix(CookingPotItem __instance, ref CookingPotItem.CookingState cookingState) // circumvent the transformation to "ruined" after a long time period. 
         {
             if (cookingState == CookingPotItem.CookingState.Cooking && !__instance.AttachedFireIsBurning() && WaterUtils.GetWaterAmount(__instance) > 0)
             {
