@@ -10,19 +10,26 @@ namespace BetterWaterManagement
         internal static bool Prefix(CookingPotItem __instance)
         {
             float waterAmount = __instance.m_LitersWaterBeingBoiled;
-            if (__instance.GetCookingState() == CookingPotItem.CookingState.Ready && waterAmount > 0) //patch does not apply while cooking
+            if (waterAmount <= 0) //only applies with water 
+            {
+                return true;
+            }
+            bool is_ready = __instance.GetCookingState() == CookingPotItem.CookingState.Ready;
+            bool is_not_ready_and_no_fire = __instance.GetCookingState() == CookingPotItem.CookingState.Cooking && !__instance.AttachedFireIsBurning();
+            if (is_ready || is_not_ready_and_no_fire) //patch applies if ready or if still cooking but no fire.
             {
                 GearItem gearItem = __instance.GetComponent<GearItem>();
                 WaterSupply waterSupply = gearItem.m_WaterSupply;
-                if (waterSupply == null)//if it doesn't exist
+                if (waterSupply == null)
                 {
-                    waterSupply = gearItem.gameObject.AddComponent<WaterSupply>();//create one
-                    gearItem.m_WaterSupply = waterSupply;//and assign it
-                }
+                    waterSupply = gearItem.gameObject.AddComponent<WaterSupply>();
+                    gearItem.m_WaterSupply = waterSupply;
+                } 
                 float waterVolumeToDrink = GameManager.GetPlayerManagerComponent().CalculateWaterVolumeToDrink(waterAmount);
                 __instance.m_LitersWaterBeingBoiled -= waterVolumeToDrink;
                 waterSupply.m_VolumeInLiters = waterAmount;
-                waterSupply.m_WaterQuality = LiquidQuality.Potable;
+                bool potable = __instance.GetCookingState() == CookingPotItem.CookingState.Ready;
+                waterSupply.m_WaterQuality = potable ? LiquidQuality.Potable : LiquidQuality.NonPotable;
                 waterSupply.m_TimeToDrinkSeconds = GameManager.GetInventoryComponent().GetPotableWaterSupply().m_WaterSupply.m_TimeToDrinkSeconds;
                 waterSupply.m_DrinkingAudio = GameManager.GetInventoryComponent().GetPotableWaterSupply().m_WaterSupply.m_DrinkingAudio;
                 
