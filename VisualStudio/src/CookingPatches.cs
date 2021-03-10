@@ -98,7 +98,9 @@ namespace BetterWaterManagement
         internal static void Postfix(CookingPotItem __instance)
         {
             TrackExitPlaceMesh.isExecuting = false;
-            if (!__instance.AttachedFireIsBurning() && WaterUtils.IsCookingItem(__instance))
+            // This is used to instantly pick up food from pot/ cans, when using right-click (It is bugged otherwise).
+            // It is not allowed for meat -> !__instance.IsDummyPot().
+            if (!__instance.AttachedFireIsBurning() && WaterUtils.IsCookingItem(__instance) && !__instance.IsDummyPot())
             {
                 __instance.PickUpCookedItem();
             }

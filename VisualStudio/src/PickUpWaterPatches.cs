@@ -38,7 +38,7 @@ namespace BetterWaterManagement
         {
             var potableWaterSupply = GameManager.GetInventoryComponent().m_WaterSupplyPotable;
             var nonPotableWaterSupply = GameManager.GetInventoryComponent().m_WaterSupplyNotPotable;
-if (__instance == potableWaterSupply || __instance == nonPotableWaterSupply)
+            if (__instance == potableWaterSupply || __instance == nonPotableWaterSupply)
             {
                 __result = 0;
             }
