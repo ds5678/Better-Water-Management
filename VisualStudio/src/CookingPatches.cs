@@ -1,4 +1,4 @@
-﻿using Harmony;
+using Harmony;
 using ModComponentMapper;
 using UnityEngine;
 
@@ -9,6 +9,7 @@ namespace BetterWaterManagement
     {
         internal static void Prefix(CookingPotItem __instance)
         {
+
             float waterAmount = __instance.m_LitersWaterBeingBoiled;
             if (waterAmount <= 0) //only applies with water 
             {
