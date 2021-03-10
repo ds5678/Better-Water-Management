@@ -1,4 +1,4 @@
-﻿using Harmony;
+using Harmony;
 using ModComponentMapper;
 using UnityEngine;
 
@@ -7,33 +7,36 @@ namespace BetterWaterManagement
     [HarmonyPatch(typeof(CookingPotItem), "DoSpecialActionFromInspectMode")] //like eating, drinking, or passing time
     internal class CookingPotItem_DoSpecialActionFromInspectMode
     {
-        internal static bool Prefix(CookingPotItem __instance)
+        internal static void Prefix(CookingPotItem __instance)
         {
-            //Implementation.Log("CookingPotItem -- DoSpecialActionFromInspectMode");
+
             float waterAmount = __instance.m_LitersWaterBeingBoiled;
-            if (__instance.GetCookingState() == CookingPotItem.CookingState.Ready && waterAmount > 0) //patch does not apply while cooking
+            if (waterAmount <= 0) //only applies with water 
+            {
+                return;
+            }
+            bool is_ready = __instance.GetCookingState() == CookingPotItem.CookingState.Ready;
+            bool is_not_ready_and_no_fire = __instance.GetCookingState() == CookingPotItem.CookingState.Cooking && !__instance.AttachedFireIsBurning();
+            if (is_ready || is_not_ready_and_no_fire) //patch applies if ready or if still cooking but no fire.
             {
                 GearItem gearItem = __instance.GetComponent<GearItem>();
                 WaterSupply waterSupply = gearItem.m_WaterSupply;
-                if (waterSupply == null)//if it doesn't exist
+                if (waterSupply == null)
                 {
-                    waterSupply = gearItem.gameObject.AddComponent<WaterSupply>();//create one
-                    gearItem.m_WaterSupply = waterSupply;//and assign it
-                }
-                //float waterVolumeToDrink = GameManager.GetPlayerManagerComponent().CalculateWaterVolumeToDrink(waterAmount);
-                //__instance.m_LitersWaterBeingBoiled -= waterVolumeToDrink;
+                    waterSupply = gearItem.gameObject.AddComponent<WaterSupply>();
+                    gearItem.m_WaterSupply = waterSupply;
+                } 
+                float waterVolumeToDrink = GameManager.GetPlayerManagerComponent().CalculateWaterVolumeToDrink(waterAmount);
+                __instance.m_LitersWaterBeingBoiled -= waterVolumeToDrink;
                 waterSupply.m_VolumeInLiters = waterAmount;
-                waterSupply.m_WaterQuality = LiquidQuality.Potable;
+                bool potable = __instance.GetCookingState() == CookingPotItem.CookingState.Ready;
+                waterSupply.m_WaterQuality = potable ? LiquidQuality.Potable : LiquidQuality.NonPotable;
                 waterSupply.m_TimeToDrinkSeconds = GameManager.GetInventoryComponent().GetPotableWaterSupply().m_WaterSupply.m_TimeToDrinkSeconds;
                 waterSupply.m_DrinkingAudio = GameManager.GetInventoryComponent().GetPotableWaterSupply().m_WaterSupply.m_DrinkingAudio;
-
+                
                 GameManager.GetPlayerManagerComponent().DrinkFromWaterSupply(waterSupply, waterAmount);
-                __instance.m_LitersWaterBeingBoiled = waterSupply.m_VolumeInLiters;
-                //Object.Destroy(waterSupply);
-                return false;
+                Object.Destroy(waterSupply);
             }
-            return true;
-            
         }
     }
 
@@ -96,7 +99,9 @@ namespace BetterWaterManagement
         internal static void Postfix(CookingPotItem __instance)
         {
             TrackExitPlaceMesh.isExecuting = false;
-            if (!__instance.AttachedFireIsBurning() && WaterUtils.IsCookingItem(__instance))
+            // This is used to instantly pick up food from pot/ cans, when using right-click (It is bugged otherwise).
+            // It is not allowed for meat -> !__instance.IsDummyPot().
+            if (!__instance.AttachedFireIsBurning() && WaterUtils.IsCookingItem(__instance) && !__instance.IsDummyPot())
             {
                 __instance.PickUpCookedItem();
             }
@@ -133,7 +138,7 @@ namespace BetterWaterManagement
     [HarmonyPatch(typeof(CookingPotItem), "SetCookingState")]
     internal class CookingPotItem_SetCookingState
     {
-        internal static void Prefix(CookingPotItem __instance, ref CookingPotItem.CookingState cookingState)
+        internal static void Prefix(CookingPotItem __instance, ref CookingPotItem.CookingState cookingState) // circumvent the transformation to "ruined" after a long time period. 
         {
             if (cookingState == CookingPotItem.CookingState.Cooking && !__instance.AttachedFireIsBurning() && WaterUtils.GetWaterAmount(__instance) > 0)
             {
