@@ -10,12 +10,12 @@ namespace BetterWaterManagement
         internal static bool Prefix(CookingPotItem __instance)
         {
             float waterAmount = __instance.m_LitersWaterBeingBoiled;
-            if (Utils.IsZero(waterAmount)) //only applies with water 
+            if (Water.IsNone(waterAmount)) //only applies with water 
             {
                 return true;
             }
             float waterVolumeToDrink = GameManager.GetPlayerManagerComponent().CalculateWaterVolumeToDrink(waterAmount);
-            if (Utils.IsZero(waterVolumeToDrink)) // Not thirsty.
+            if (Water.IsNone(waterVolumeToDrink)) // Not thirsty.
             {
                 HUDMessage.AddMessage(Localization.Get("GAMEPLAY_Youarenotthirsty"));
                 GameAudioManager.PlayGUIError();
@@ -43,7 +43,7 @@ namespace BetterWaterManagement
                 Object.Destroy(waterSupply);
                 // Enable drinking without taking the remaining water
                 gearItem.m_WaterSupply = null;
-                if (Utils.IsZero(__instance.m_LitersWaterBeingBoiled))
+                if (Water.IsNone(__instance.m_LitersWaterBeingBoiled))
                 {
                     return true;
                 }

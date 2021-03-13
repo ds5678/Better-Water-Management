@@ -248,14 +248,14 @@ namespace BetterWaterManagement
                     Implementation.LogError("UpdateCapacityInfo: Could not find WaterSource");
                     return;
                 }
-                if (Utils.IsZero(waterSource.m_CurrentLiters))
+                if (Water.IsNone(waterSource.m_CurrentLiters))
                 {
                     HUDMessage.AddMessage(Localization.Get("GAMEPLAY_Empty"));
                     GameAudioManager.PlayGUIError();
                     return;
                 }
                 float waterVolumeToDrink = GameManager.GetPlayerManagerComponent().CalculateWaterVolumeToDrink(waterSource.m_CurrentLiters);
-                if (Utils.IsZero(waterVolumeToDrink))
+                if (Water.IsNone(waterVolumeToDrink))
                 {
                     GameAudioManager.PlayGUIError();
                     HUDMessage.AddMessage(Localization.Get("GAMEPLAY_Youarenotthirsty"));
