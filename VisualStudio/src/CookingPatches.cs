@@ -7,13 +7,19 @@ namespace BetterWaterManagement
     [HarmonyPatch(typeof(CookingPotItem), "DoSpecialActionFromInspectMode")] //like eating, drinking, or passing time
     internal class CookingPotItem_DoSpecialActionFromInspectMode
     {
-        internal static void Prefix(CookingPotItem __instance)
+        internal static bool Prefix(CookingPotItem __instance)
         {
-
             float waterAmount = __instance.m_LitersWaterBeingBoiled;
-            if (waterAmount <= 0) //only applies with water 
+            if (Water.IsNone(waterAmount)) //only applies with water 
             {
-                return;
+                return true;
+            }
+            float waterVolumeToDrink = GameManager.GetPlayerManagerComponent().CalculateWaterVolumeToDrink(waterAmount);
+            if (Water.IsNone(waterVolumeToDrink)) // Not thirsty.
+            {
+                HUDMessage.AddMessage(Localization.Get("GAMEPLAY_Youarenotthirsty"));
+                GameAudioManager.PlayGUIError();
+                return false;
             }
             bool is_ready = __instance.GetCookingState() == CookingPotItem.CookingState.Ready;
             bool is_not_ready_and_no_fire = __instance.GetCookingState() == CookingPotItem.CookingState.Cooking && !__instance.AttachedFireIsBurning();
@@ -25,18 +31,26 @@ namespace BetterWaterManagement
                 {
                     waterSupply = gearItem.gameObject.AddComponent<WaterSupply>();
                     gearItem.m_WaterSupply = waterSupply;
-                } 
-                float waterVolumeToDrink = GameManager.GetPlayerManagerComponent().CalculateWaterVolumeToDrink(waterAmount);
+                }
                 __instance.m_LitersWaterBeingBoiled -= waterVolumeToDrink;
                 waterSupply.m_VolumeInLiters = waterAmount;
                 bool potable = __instance.GetCookingState() == CookingPotItem.CookingState.Ready;
                 waterSupply.m_WaterQuality = potable ? LiquidQuality.Potable : LiquidQuality.NonPotable;
                 waterSupply.m_TimeToDrinkSeconds = GameManager.GetInventoryComponent().GetPotableWaterSupply().m_WaterSupply.m_TimeToDrinkSeconds;
                 waterSupply.m_DrinkingAudio = GameManager.GetInventoryComponent().GetPotableWaterSupply().m_WaterSupply.m_DrinkingAudio;
-                
+
                 GameManager.GetPlayerManagerComponent().DrinkFromWaterSupply(waterSupply, waterAmount);
                 Object.Destroy(waterSupply);
+                // Enable drinking without taking the remaining water
+                gearItem.m_WaterSupply = null;
+                if (Water.IsNone(__instance.m_LitersWaterBeingBoiled))
+                {
+                    return true;
+                }
+                GameManager.GetPlayerManagerComponent().ExitInspectGearMode(false);
+                return false;
             }
+            return true;
         }
     }
 

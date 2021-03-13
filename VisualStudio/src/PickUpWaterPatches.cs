@@ -179,7 +179,6 @@ namespace BetterWaterManagement
     {
         internal static bool Prefix(WaterSupply ws, ref bool __result)
         {
-            //Implementation.Log("Panel_Inventory -- IgnoreWaterSupplyItem");
             __result = ws != null && ws.GetComponent<LiquidItem>() == null; //the water supply exists but has no liquid component
             return false;
         }
@@ -235,30 +234,48 @@ namespace BetterWaterManagement
             PickWater.Prepare(__instance);
         }
     }
-
+    //* Drinking from toilets.
     [HarmonyPatch(typeof(Panel_PickWater), "Update")]
     internal class Panel_PickWater_Update
     {
         internal static void Postfix(Panel_PickWater __instance)
         {
-            if (InputManager.GetEquipPressed(GameManager.Instance()))
+            if (InputManager.GetEquipPressed(__instance))
             {
-                //Traverse traverse = Traverse.Create(__instance);
-
-                GameObject gameObject = new GameObject();
-                GearItem gearItem = gameObject.AddComponent<GearItem>();
-                gearItem.m_LocalizedDisplayName = new LocalizedString { m_LocalizationID = "" };
-
-                WaterSourceSupply waterSourceSupply = gameObject.AddComponent<WaterSourceSupply>();
-                //waterSourceSupply.SetWaterSource(traverse.Field("m_WaterSource").GetValue<WaterSource>());
-                waterSourceSupply.SetWaterSource(__instance.m_WaterSource);
-
-                gearItem.Awake();
-
-                //traverse.Method("ExitInterface").GetValue();
+                var waterSource = __instance.m_WaterSource;
+                if (!waterSource)
+                {
+                    Implementation.LogError("UpdateCapacityInfo: Could not find WaterSource");
+                    return;
+                }
+                if (Water.IsNone(waterSource.m_CurrentLiters))
+                {
+                    HUDMessage.AddMessage(Localization.Get("GAMEPLAY_Empty"));
+                    GameAudioManager.PlayGUIError();
+                    return;
+                }
+                float waterVolumeToDrink = GameManager.GetPlayerManagerComponent().CalculateWaterVolumeToDrink(waterSource.m_CurrentLiters);
+                if (Water.IsNone(waterVolumeToDrink))
+                {
+                    GameAudioManager.PlayGUIError();
+                    HUDMessage.AddMessage(Localization.Get("GAMEPLAY_Youarenotthirsty"));
+                    return;
+                }
+                GameAudioManager.PlayGuiConfirm();
+                WaterSupply waterSupply;
+                if (waterSource.GetQuality() == LiquidQuality.Potable)
+                {
+                    waterSupply = __instance.InstantiateWaterSupply(__instance.m_WaterSupply_Potable).m_WaterSupply;
+                }
+                else
+                {
+                    waterSupply = __instance.InstantiateWaterSupply(__instance.m_WaterSupply_NonPotable).m_WaterSupply;
+                }
+                waterSupply.m_VolumeInLiters = waterSource.m_CurrentLiters;
+                waterSource.RemoveLiters(waterVolumeToDrink);
+                GameManager.GetPlayerManagerComponent().DrinkFromWaterSupply(waterSupply, waterSupply.m_VolumeInLiters);
+                UnityEngine.Object.Destroy(waterSupply.gameObject);
                 __instance.ExitInterface();
-
-                GameManager.GetPlayerManagerComponent().UseInventoryItem(gearItem);
             }
         }
     }

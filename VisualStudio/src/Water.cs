@@ -249,7 +249,7 @@ namespace BetterWaterManagement
         }
 
         //returns true for negative numbers, zero, and small positive numbers
-        private static bool IsNone(float liters)
+        internal static bool IsNone(float liters)
         {
             return liters < MIN_AMOUNT;
         }
