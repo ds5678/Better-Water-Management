@@ -25,6 +25,10 @@ namespace BetterWaterManagement
         {
             return Utils.GetLiquidQuantityStringNoOunces(InterfaceManager.m_Panel_OptionsMenu.m_State.m_Units, liters);
         }
+        internal static string FormatWaterAmountWithUnits(float liters)
+        {
+            return Utils.GetLiquidQuantityStringWithUnitsNoOunces(InterfaceManager.m_Panel_OptionsMenu.m_State.m_Units, liters);
+        }
 
         internal static UILabel GetUILabel(string name)
         {

@@ -31,7 +31,7 @@ namespace BetterWaterManagement
             labelNoCapacityWarning.width = 400;
             labelNoCapacityWarning.height = 12;
             labelNoCapacityWarning.capsLock = true;
-            labelNoCapacityWarning.transform.position = new Vector3(0, -0.908f, 0);
+            labelNoCapacityWarning.transform.position = new Vector3(0, -0.166f, 0);
             labelNoCapacityWarning.text = Localization.Get("GAMEPLAY_NoCapacityAvailable");
             labelNoCapacityWarning.gameObject.SetActive(false);
 
@@ -70,16 +70,16 @@ namespace BetterWaterManagement
                 return;
             }
 
-            labelCapacityInfo.text = GetWaterInfo(LiquidQuality.Potable) + "    " +
-                GetWaterInfo(LiquidQuality.NonPotable) + "    " +
-                Localization.Get("GAMEPLAY_Empty") + ": " + WaterUtils.FormatWaterAmount(0) + "/" + WaterUtils.FormatWaterAmount(Water.GetRemainingCapacityEmpty());
+            labelCapacityInfo.text = GetWaterInfo(LiquidQuality.Potable) + "            " +
+                GetWaterInfo(LiquidQuality.NonPotable) + "            " +
+                Localization.Get("GAMEPLAY_Empty") + ": " + WaterUtils.FormatWaterAmountWithUnits(Water.GetRemainingCapacityEmpty());
 
             labelNoCapacityWarning.gameObject.SetActive(Water.GetRemainingCapacityEmpty() == 0 && Water.GetRemainingCapacity(waterSource.GetQuality()) == 0);
         }
 
         private static string GetWaterInfo(LiquidQuality quality)
         {
-            return Localization.Get("GAMEPLAY_Water" + quality.ToString()) + ": " + WaterUtils.FormatWaterAmount(Water.GetActual(quality)) + "/" + WaterUtils.FormatWaterAmount(Water.GetCapacity(quality));
+            return Localization.Get("GAMEPLAY_Water" + quality.ToString()) + ": " + WaterUtils.FormatWaterAmount(Water.GetActual(quality)) + "/" + WaterUtils.FormatWaterAmountWithUnits(Water.GetCapacity(quality));
         }
 
         internal static void UpdateDrinking(Panel_PickWater panel)
