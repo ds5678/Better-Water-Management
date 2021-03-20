@@ -25,5 +25,12 @@
                                 "LiquidCapacityLiters" : 3,
                                 "RandomizedQuantity" : false,
                                 "LiquidLiters" : 0
+                            },
+    "ModHarvestableComponent": {
+                                "Audio" : "",
+                                "Minutes" : 20,
+                                "YieldCounts" : [2],
+                                "YieldNames" : ["GEAR_RabbitPeltDried"],
+                                "RequiredToolNames" : []
                             }
 }

@@ -35,16 +35,19 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\BetterWaterSettings.cs" />
+    <Compile Include="src\Buttons\WaterButtons.cs" />
+    <Compile Include="src\Buttons\MeltAndCookButton.cs" />
     <Compile Include="src\CookingModifier.cs" />
     <Compile Include="src\CookingPotWaterSaveData.cs" />
     <Compile Include="src\CoolDown.cs" />
     <Compile Include="src\Implementation.cs" />
     <Compile Include="src\OverrideCookingState.cs" />
     <Compile Include="src\PanelCookingPatches.cs" />
+    <Compile Include="src\Patches\RemovePotWithWaterPatches.cs" />
     <Compile Include="src\PickUpWaterPatches.cs" />
     <Compile Include="src\CookingPatches.cs" />
     <Compile Include="src\PickWater.cs" />
-    <Compile Include="src\StartGearPatch.cs" />
+    <Compile Include="src\Patches\StartGearPatch.cs" />
     <Compile Include="src\UseWaterPatches.cs" />
     <Compile Include="src\WaterUtils.cs" />
     <Compile Include="src\Water.cs" />

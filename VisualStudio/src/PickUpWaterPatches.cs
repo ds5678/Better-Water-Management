@@ -17,7 +17,7 @@ namespace BetterWaterManagement
 
             if (Water.IsEmpty(liquidItem))
             {
-                __result += " - " + Localization.Get("GAMEPLAY_Empty");
+                __result += " - " + Localization.Get("GAMEPLAY_BWM_Empty");
             }
             else if (liquidItem.m_LiquidQuality == LiquidQuality.Potable)
             {
@@ -250,7 +250,7 @@ namespace BetterWaterManagement
                 }
                 if (Water.IsNone(waterSource.m_CurrentLiters))
                 {
-                    HUDMessage.AddMessage(Localization.Get("GAMEPLAY_Empty"));
+                    HUDMessage.AddMessage(Localization.Get("GAMEPLAY_BWM_Empty"));
                     GameAudioManager.PlayGUIError();
                     return;
                 }

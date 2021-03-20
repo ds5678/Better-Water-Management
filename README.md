@@ -19,9 +19,6 @@ I know many people might skip over this, but I hope you don't. You are so specia
 3. If you haven't done so already, download the latest version of `AssetLoader.dll` from its [releases page](https://github.com/ds5678/AssetLoader/releases)
 4. If you haven't done so already, move `ModComponentAPI.dll`, `ModComponentMapper.dll`, and `AssetLoader.dll` into the Mods folder in your TLD install directory
 5. Run The Long Dark once. It should generate some subfolders in your mods folder.
-6. Download `BetterWaterManagement.zip` from the [releases page](https://github.com/ds5678/Better-Water-Management/releases)
-7. Extract its contents. Doesn't matter where.
-8. Move `BetterWaterManagement_automapped` into the `auto-mapped` folder within your mods folder.
-9. Move `BetterWaterManagement_gearspawns` into the `gear-spawns` folder within your mods folder.
-10. Move `BetterWaterManagement_blueprints` into the `blueprints` folder within your mods folder.
-11. Move `Better-Water-Management.dll` into your mods folder.
+6. Download `Better-Water-Management.dll` and `Better-Water-Management.zip` from the [releases page](https://github.com/ds5678/Better-Water-Management/releases)
+7. Move `Better-Water-Management.dll` into your mods folder.
+8. Move `Better-Water-Management.zip` into the `ModComponentZips` folder within your mods folder. Do not extract it!

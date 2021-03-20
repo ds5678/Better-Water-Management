@@ -230,11 +230,11 @@ namespace BetterWaterManagement
         }
 
         //Method to send a notification informing the player that water has been lost
-        private static void ShowLostMessage(WaterSupply waterSupply, string name, float amount)
+        internal static void ShowLostMessage(WaterSupply waterSupply, string name, float amount)
         {
             GearMessage.AddMessage(
                 waterSupply.name,
-                Localization.Get("GAMEPLAY_Lost"),
+                Localization.Get("GAMEPLAY_BWM_Lost"),
                 " " + Localization.Get(name) + " (" + Utils.GetLiquidQuantityStringWithUnitsNoOunces(InterfaceManager.m_Panel_OptionsMenu.m_State.m_Units, amount) + ")",
                 Color.red,
                 false);
@@ -255,7 +255,7 @@ namespace BetterWaterManagement
         }
 
         //Adds water to the bottles in the inventory
-        private void Add(float amount, LiquidQuality quality)
+        internal void Add(float amount, LiquidQuality quality)
         {
             if (IsNone(amount))//returns true for negative numbers, zero, and small positive numbers
             {
@@ -310,7 +310,7 @@ namespace BetterWaterManagement
         }
 
         //Take water out of the bottles for things like cooking
-        private void Remove(float amount, LiquidQuality quality)
+        internal void Remove(float amount, LiquidQuality quality)
         {
             if (IsNone(amount))//returns true for negative numbers, zero, and small positive numbers
             {

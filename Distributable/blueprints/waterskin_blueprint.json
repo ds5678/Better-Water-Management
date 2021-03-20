@@ -3,7 +3,7 @@
     "RequiredGear": ["GEAR_RabbitPeltDried", "GEAR_GutDried"],
     "RequiredGearUnits": [4, 3],
     "KeroseneLitersRequired": 0,
-    "GunpowderRequired": 0,
+    "GunpowderKGRequired": 0,
     "RequiredTool": "GEAR_SewingKit",
     "OptionalTools": ["GEAR_HookAndLine"],
     "RequiredCraftingLocation": "Workbench",

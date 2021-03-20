@@ -32,7 +32,7 @@ namespace BetterWaterManagement
             labelNoCapacityWarning.height = 12;
             labelNoCapacityWarning.capsLock = true;
             labelNoCapacityWarning.transform.position = new Vector3(0, -0.166f, 0);
-            labelNoCapacityWarning.text = Localization.Get("GAMEPLAY_NoCapacityAvailable");
+            labelNoCapacityWarning.text = Localization.Get("GAMEPLAY_BWM_NoCapacityAvailable");
             labelNoCapacityWarning.gameObject.SetActive(false);
 
             labelCapacityInfo = NGUITools.AddChild<UILabel>(panel.gameObject);
@@ -72,7 +72,7 @@ namespace BetterWaterManagement
 
             labelCapacityInfo.text = GetWaterInfo(LiquidQuality.Potable) + "            " +
                 GetWaterInfo(LiquidQuality.NonPotable) + "            " +
-                Localization.Get("GAMEPLAY_Empty") + ": " + WaterUtils.FormatWaterAmountWithUnits(Water.GetRemainingCapacityEmpty());
+                Localization.Get("GAMEPLAY_BWM_Empty") + ": " + WaterUtils.FormatWaterAmountWithUnits(Water.GetRemainingCapacityEmpty());
 
             labelNoCapacityWarning.gameObject.SetActive(Water.GetRemainingCapacityEmpty() == 0 && Water.GetRemainingCapacity(waterSource.GetQuality()) == 0);
         }
