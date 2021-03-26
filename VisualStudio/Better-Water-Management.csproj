@@ -65,10 +65,7 @@
     <Reference Include="MelonLoader.ModHandler, Version=0.2.7.4, Culture=neutral, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
-    <Reference Include="ModComponentAPI">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ModComponentMapper">
+    <Reference Include="ModComponent, Version=4.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
     <Reference Include="ModSettings, Version=1.7.1.0, Culture=neutral, processorArchitecture=MSIL">

@@ -170,31 +170,38 @@ namespace BetterWaterManagement
             return 0;
         }
 
-        //Returns the current value
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="quality"></param>
+        /// <returns></returns>
         public static float GetRemainingCapacity(LiquidQuality quality)
         {
-            if (quality == LiquidQuality.NonPotable)
+            switch (quality)
             {
-                return WATER.RemainingCapacityNonPotable;
+                case LiquidQuality.NonPotable:
+                    return WATER.RemainingCapacityNonPotable;
+                case LiquidQuality.Potable:
+                    return WATER.RemainingCapacityPotable;
+                default:
+                    return 0f;
             }
-
-            if (quality == LiquidQuality.Potable)
-            {
-                return WATER.RemainingCapacityPotable;
-            }
-
-            return 0;
         }
 
-        //Returns the current value of the variable representing the total capacity of the empty containers
+        /// <summary>
+        /// Gets the total capacity of the empty containers in the inventory
+        /// </summary>
+        /// <returns>The current value of the variable representing the total capacity of the empty containers</returns>
         public static float GetRemainingCapacityEmpty()
         {
             return WATER.CapacityEmpty;
         }
 
-        //Updates the list of water containers in the inventory
-        //Recalculates the total amounts of water held and the total capacities for each type
-        //Updates the sound and texture of each water bottle in the inventory
+        /// <summary>
+        /// Updates the list of water containers in the inventory
+        /// Recalculates the total amounts of water held and the total capacities for each type
+        /// Updates the sound and texture of each water bottle in the inventory
+        /// </summary>
         public void Update()
         {
             liquidItems.Clear();
@@ -216,6 +223,9 @@ namespace BetterWaterManagement
             UpdateBottles();
         }
 
+        /// <summary>
+        /// Returns true if the liquid container has a neglible amount of fluid
+        /// </summary>
         internal static bool IsEmpty(LiquidItem liquidItem)
         {
             return IsNone(liquidItem.m_LiquidLiters);
@@ -229,7 +239,12 @@ namespace BetterWaterManagement
             ShowLostMessage(waterSupply, name, amount);
         }
 
-        //Method to send a notification informing the player that water has been lost
+        /// <summary>
+        /// Method to send a notification informing the player that water has been lost
+        /// </summary>
+        /// <param name="waterSupply">The water supply the water was lost from</param>
+        /// <param name="name">The localization key for potable or nonpotable water</param>
+        /// <param name="amount">The amount of water lost in liters</param>
         internal static void ShowLostMessage(WaterSupply waterSupply, string name, float amount)
         {
             GearMessage.AddMessage(
@@ -240,21 +255,31 @@ namespace BetterWaterManagement
                 false);
         }
 
-        //Sends a message when water is lost
-        //Currently sends it instantly because there is an issue with the Coroutine
+        /// <summary>
+        /// Sends a message when water is lost. Currently sends it instantly because there is an issue with the Coroutine
+        /// </summary>
+        /// <param name="waterSupply">The water supply the water was lost from</param>
+        /// <param name="name">The localization key for potable or nonpotable water</param>
+        /// <param name="amount">The amount of water lost in liters</param>
         private static void SendDelayedLostMessage(WaterSupply waterSupply, string name, float amount)
         {
             //GameManager.Instance().StartCoroutine(DelayedLostMessage(waterSupply, name, amount));
             ShowLostMessage(waterSupply, name, amount);
         }
 
-        //returns true for negative numbers, zero, and small positive numbers
+        /// <summary>
+        /// Returns true for negative numbers, zero, and small positive numbers
+        /// </summary>
         internal static bool IsNone(float liters)
         {
             return liters < MIN_AMOUNT;
         }
 
-        //Adds water to the bottles in the inventory
+        /// <summary>
+        /// Adds water to the bottles in the inventory
+        /// </summary>
+        /// <param name="amount">Amount of water in liters</param>
+        /// <param name="quality">Potable or Nonpotable</param>
         internal void Add(float amount, LiquidQuality quality)
         {
             if (IsNone(amount))//returns true for negative numbers, zero, and small positive numbers
@@ -309,7 +334,11 @@ namespace BetterWaterManagement
             //If remaining is still greater than zero at this point, that water becomes the lost amount
         }
 
-        //Take water out of the bottles for things like cooking
+        /// <summary>
+        /// Take water out of the bottles for things like cooking
+        /// </summary>
+        /// <param name="amount">Amount of water in liters</param>
+        /// <param name="quality">Potable or Nonpotable</param>
         internal void Remove(float amount, LiquidQuality quality)
         {
             if (IsNone(amount))//returns true for negative numbers, zero, and small positive numbers
@@ -341,7 +370,9 @@ namespace BetterWaterManagement
             //That would mean that some kind of error occured and that the game tried to take more water than the player possessed.
         }
 
-        //Recalculates the total amounts of water held and the total capacities for each type
+        /// <summary>
+        /// Recalculates the total amounts of water held and the total capacities for each type
+        /// </summary>
         private void UpdateAmounts()
         {
             CapacityEmpty = 0;
@@ -371,7 +402,9 @@ namespace BetterWaterManagement
             }
         }
 
-        //Updates the sound and texture of each water bottle in the inventory
+        /// <summary>
+        /// Updates the sound and texture of each water bottle in the inventory
+        /// </summary>
         private void UpdateBottles()
         {
             foreach (LiquidItem eachLiquidItem in this.liquidItems)
