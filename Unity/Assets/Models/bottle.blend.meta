@@ -7,13 +7,58 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: color
-    second: {fileID: 2100000, guid: 675dc0f0c928f144bb7f72214e8358a2, type: 2}
+      name: black_metal
+    second: {fileID: 2100000, guid: bca6c27390d2ef34ebe7f981499b9a71, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: blue_metal
+    second: {fileID: 2100000, guid: ab79caf6d6bdcd943b75c984a82952f0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: brown_metal
+    second: {fileID: 2100000, guid: 81e823c88cd554c4ca5aafc43772c3a4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: green_metal
+    second: {fileID: 2100000, guid: 1a48e22bc9bd22044b77c35d2cc8e64b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: metal
-    second: {fileID: 2100000, guid: d42bf8a5ab1549f4b93a80e31488570c, type: 2}
+    second: {fileID: 2100000, guid: ddbac49bb1284fb4cb899b56525eb858, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: orange_metal
+    second: {fileID: 2100000, guid: c8c8266c554fa254da94a8907d5dfaae, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pink_metal
+    second: {fileID: 2100000, guid: 95933c3d0d5bbb747bd5faac3dd0529e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: purple_metal
+    second: {fileID: 2100000, guid: d7de2bfc4d6019143ac22dbb0c4f9e3f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: red_metal
+    second: {fileID: 2100000, guid: 3a105bd885949c24d8355010ea3066af, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: white_metal
+    second: {fileID: 2100000, guid: 757013f9e1db53546b75151d37901694, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: yellow_metal
+    second: {fileID: 2100000, guid: c19d3c408f653c64b9d69cfd30d99d5e, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

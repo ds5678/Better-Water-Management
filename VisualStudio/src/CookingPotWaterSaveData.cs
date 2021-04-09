@@ -129,7 +129,7 @@ namespace BetterWaterManagement
                 CookingPotItem cookingPot = __instance.m_CookingPotItem;
                 if (cookingPot != null)
                 {
-                    ModComponentMapper.ModUtils.GetOrCreateComponent<CookingPotWaterSaveData>(__instance).GetFromCookingPot();
+                    ModComponentMapper.ComponentUtils.GetOrCreateComponent<CookingPotWaterSaveData>(__instance).GetFromCookingPot();
                 }
             }
         }

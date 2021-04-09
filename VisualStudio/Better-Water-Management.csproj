@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\BetterWaterSettings.cs" />
+    <Compile Include="src\Settings.cs" />
     <Compile Include="src\Buttons\WaterButtons.cs" />
     <Compile Include="src\Buttons\MeltAndCookButton.cs" />
     <Compile Include="src\CookingModifier.cs" />
@@ -48,6 +48,7 @@
     <Compile Include="src\CookingPatches.cs" />
     <Compile Include="src\PickWater.cs" />
     <Compile Include="src\Patches\StartGearPatch.cs" />
+    <Compile Include="src\SpawnProbabilities.cs" />
     <Compile Include="src\UseWaterPatches.cs" />
     <Compile Include="src\WaterUtils.cs" />
     <Compile Include="src\Water.cs" />
@@ -70,7 +71,7 @@
     <Reference Include="MelonLoader.ModHandler, Version=0.2.7.4, Culture=neutral, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
-    <Reference Include="ModComponent, Version=4.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ModComponent, Version=4.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
     <Reference Include="ModSettings, Version=1.7.1.0, Culture=neutral, processorArchitecture=MSIL">

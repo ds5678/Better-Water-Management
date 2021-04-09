@@ -19,7 +19,7 @@ namespace BetterWaterManagement
                 //Implementation.Log("OnBoilDown");
                 if (__state != __instance.m_BoilWaterLiters)
                 {
-                    __instance.m_BoilWaterLiters = __state - BetterWaterSettings.GetWaterIncrement();
+                    __instance.m_BoilWaterLiters = __state - Settings.GetWaterIncrement();
                     __instance.ClampWaterBoilAmount();
                 }
             }
@@ -36,7 +36,7 @@ namespace BetterWaterManagement
                 //Implementation.Log("OnBoilUp");
                 if (__state != __instance.m_BoilWaterLiters)
                 {
-                    __instance.m_BoilWaterLiters = __state + BetterWaterSettings.GetWaterIncrement();
+                    __instance.m_BoilWaterLiters = __state + Settings.GetWaterIncrement();
                     __instance.ClampWaterBoilAmount();
                 }
             }
@@ -53,7 +53,7 @@ namespace BetterWaterManagement
                 //Implementation.Log("OnMeltSnowDown");
                 if (__state != __instance.m_MeltSnowLiters)
                 {
-                    __instance.m_MeltSnowLiters = __state - BetterWaterSettings.GetWaterIncrement();
+                    __instance.m_MeltSnowLiters = __state - Settings.GetWaterIncrement();
                     __instance.ClampMeltSnowAmount();
                 }
             }
@@ -70,7 +70,7 @@ namespace BetterWaterManagement
                 //Implementation.Log("OnMeltSnowUp");
                 if (__state != __instance.m_MeltSnowLiters)
                 {
-                    __instance.m_MeltSnowLiters = __state + BetterWaterSettings.GetWaterIncrement();
+                    __instance.m_MeltSnowLiters = __state + Settings.GetWaterIncrement();
                     __instance.ClampMeltSnowAmount();
                 }
             }

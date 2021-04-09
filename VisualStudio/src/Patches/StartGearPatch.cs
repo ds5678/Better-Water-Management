@@ -9,7 +9,7 @@ namespace BetterWaterManagement
         {
             private static void Postfix()
             {
-                switch (BetterWaterSettings.settings.startingBottles)
+                switch (Settings.options.startingBottles)
                 {
                     case StartingBottles.Nothing:
                         break;

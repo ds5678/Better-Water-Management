@@ -67,7 +67,12 @@ namespace BetterWaterManagement
                 GameAudioManager.PlayGUIError();
                 return;
             }
-            if (Water.IsNone(Water.GetActual(liquidItem.m_LiquidQuality))) // If the current water supply is empty.
+
+            //If an empty container held nonpotable water before, we want to fill it with potable water.
+            if (Water.IsEmpty(liquidItem) && liquidItem.m_LiquidQuality == LiquidQuality.NonPotable) liquidItem.m_LiquidQuality = LiquidQuality.Potable;
+
+            //If the current water supply is empty.
+            if (Water.IsNone(Water.GetActual(liquidItem.m_LiquidQuality))) 
             {
                 HUDMessage.AddMessage(Localization.Get("GAMEPLAY_BWM_Empty"));
                 GameAudioManager.PlayGUIError();

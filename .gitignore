@@ -1,4 +1,7 @@
 bin
 obj
-Better-Water-Management.csproj.user
+*.csproj.user
 .vs
+Library
+Temp
+Logs

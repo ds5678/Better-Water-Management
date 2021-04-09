@@ -17,7 +17,7 @@ namespace BetterWaterManagement
 
             GearItem result = cookedItem.Drop(1, false, true);
 
-            CookingModifier cookingModifier = ModUtils.GetOrCreateComponent<CookingModifier>(result);
+            CookingModifier cookingModifier = ComponentUtils.GetOrCreateComponent<CookingModifier>(result);
             cookingModifier.additionalMinutes = result.m_Cookable.m_PotableWaterRequiredLiters * panel_Cooking.m_MinutesToMeltSnowPerLiter;
             cookingModifier.Apply();
 
@@ -59,7 +59,7 @@ namespace BetterWaterManagement
 
             foreach (GearItem eachGearItem in foodList)
             {
-                CookingModifier cookingModifier = ModUtils.GetComponent<CookingModifier>(eachGearItem);
+                CookingModifier cookingModifier = ComponentUtils.GetComponent<CookingModifier>(eachGearItem);
                 cookingModifier?.Revert();
                 //if(cookingModifier) Implementation.Log("{0} reverted from Melt and Cook", eachGearItem.name);
             }

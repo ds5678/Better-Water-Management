@@ -118,7 +118,7 @@ namespace BetterWaterManagement
         {
             Water.AdjustWaterToWaterSupply();
 
-            ModUtils.GetOrCreateComponent<OverrideCookingState>(__instance).ForceReady = false;
+            ComponentUtils.GetOrCreateComponent<OverrideCookingState>(__instance).ForceReady = false;
         }
     }
 
@@ -138,7 +138,7 @@ namespace BetterWaterManagement
         internal static void Postfix(CookingPotItem __instance)
         {
             //Implementation.Log("CookingPotItem -- StartMeltingSnow");
-            ModUtils.GetOrCreateComponent<OverrideCookingState>(__instance).ForceReady = false;
+            ComponentUtils.GetOrCreateComponent<OverrideCookingState>(__instance).ForceReady = false;
         }
     }
 
@@ -162,7 +162,7 @@ namespace BetterWaterManagement
 
                     if (__instance.GetCookingState() == CookingPotItem.CookingState.Ready)
                     {
-                        ModUtils.GetOrCreateComponent<OverrideCookingState>(__instance).ForceReady = true;
+                        ComponentUtils.GetOrCreateComponent<OverrideCookingState>(__instance).ForceReady = true;
                         WaterUtils.SetElapsedCookingTimeForWater(__instance, WaterUtils.GetWaterAmount(__instance));
                     }
                 }
@@ -199,7 +199,7 @@ namespace BetterWaterManagement
             float waterRequired = __instance?.m_Cookable?.m_PotableWaterRequiredLiters ?? 0;
             if (waterRequired > 0)
             {
-                ModUtils.GetOrCreateComponent<CookingModifier>(__instance);
+                ComponentUtils.GetOrCreateComponent<CookingModifier>(__instance);
             }
         }
 
@@ -207,8 +207,8 @@ namespace BetterWaterManagement
         {
             if (__instance.m_CookingPotItem)
             {
-                ModUtils.GetOrCreateComponent<OverrideCookingState>(__instance);
-                ModUtils.GetOrCreateComponent<CookingPotWaterSaveData>(__instance);
+                ComponentUtils.GetOrCreateComponent<OverrideCookingState>(__instance);
+                ComponentUtils.GetOrCreateComponent<CookingPotWaterSaveData>(__instance);
             }
         }
     }
@@ -224,7 +224,7 @@ namespace BetterWaterManagement
             }
 
             CookingPotItem cookingPotItem = placedGearNew.m_CookingPotItem;
-            OverrideCookingState overrideCookingState = ModUtils.GetComponent<OverrideCookingState>(cookingPotItem);
+            OverrideCookingState overrideCookingState = ComponentUtils.GetComponent<OverrideCookingState>(cookingPotItem);
 
             if (overrideCookingState?.ForceReady ?? false)
             {

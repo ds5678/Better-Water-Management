@@ -9,7 +9,8 @@ namespace BetterWaterManagement
         public override void OnApplicationStart()
         {
             Debug.Log($"[{Info.Name}] Version {Info.Version} loaded!");
-            BetterWaterSettings.OnLoad();
+            Settings.OnLoad();
+            SpawnProbabilities.AddToModComponent();
             UnhollowerRuntimeLib.ClassInjector.RegisterTypeInIl2Cpp<BetterWaterManagement.OverrideCookingState>();
             UnhollowerRuntimeLib.ClassInjector.RegisterTypeInIl2Cpp<BetterWaterManagement.CoolDown>();
             UnhollowerRuntimeLib.ClassInjector.RegisterTypeInIl2Cpp<BetterWaterManagement.CookingModifier>();
