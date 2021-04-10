@@ -12,6 +12,16 @@ More details available on the [wiki](https://github.com/ds5678/Better-Water-Mana
 
 I know many people might skip over this, but I hope you don't. You are so special, and I would appreciate your support. Modding takes lots of time, and I have expenses like food, internet, and rent. If you feel that I have improved your playing experience, please consider supporting me on my [Patreon](https://www.patreon.com/ds5678). Your support helps to ensure that I can continue making mods for you at the pace I am :)
 
+## Localizations
+
+You can help make Better Water Management even better by contributing to its localized text entries!
+
+Here is a list of the [Localizations](https://github.com/ds5678/ModComponent/wiki/Localizations) currently supported by The Long Dark.
+
+Here is the [localization file](https://github.com/ds5678/Better-Water-Management/blob/master/Unity/Assets/Localization.json) for Better Water Management.
+
+If you send me your translations, I'll update and add them to the mod so that more people can enjoy it in their native language.
+
 ## Installation
 
 1. If you haven't done so already, install MelonLoader by downloading and running [MelonLoader.Installer.exe](https://github.com/HerpDerpinstine/MelonLoader/releases/latest/download/MelonLoader.Installer.exe)
