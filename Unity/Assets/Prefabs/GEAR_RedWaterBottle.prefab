@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6631448766378534830}
   - component: {fileID: 6631448766378534829}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: GEAR_RedWaterBottle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 6631448767180674207}
   - component: {fileID: 6631448767180674201}
   - component: {fileID: 6631448767180674200}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: WaterBottle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

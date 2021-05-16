@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 33464787415432756}
   - component: {fileID: 23395892740497988}
   - component: {fileID: 65295961336715676}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: GEAR_Cup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 4925261106333084}
   - component: {fileID: 33398342802296484}
   - component: {fileID: 23036539857252176}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: cup_water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 4050676290841132}
   - component: {fileID: 33180401519892416}
   - component: {fileID: 23180692902329452}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: cup_snow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

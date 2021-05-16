@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 33991392840865676}
   - component: {fileID: 23751493282108826}
   - component: {fileID: 65663105451283650}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: GEAR_Waterskin
   m_TagString: Untagged
   m_Icon: {fileID: 0}

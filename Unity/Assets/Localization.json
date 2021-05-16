@@ -3,61 +3,99 @@
                             "English" : "Empty",
                             "German" : "Leer",
                             "Russian" : "Пустая емкость",
-                            "Turkish" : "Boþ"
+                            "Turkish" : "Boþ",
+                            "Polish" : "Pusta",
+                            "French (France)" : "Vide"
     },
     "GAMEPLAY_BWM_Lost" : {
                             "English" : "Lost",
                             "German" : "Verloren",
                             "Russian" : "Потеряно",
-                            "Turkish" : "Kayýp"
+                            "Turkish" : "Kayýp",
+                            "Polish" : "Zgubiona",
+                            "French (France)" : "Perdu"
     },
     "GAMEPLAY_BWM_NoCapacityAvailable" : {
                             "English" : "No bottles with remaining capacity available",
                             "German" : "Keine Flaschen mit verbleibender Kapazität vorhanden",
                             "Russian" : "Отсутствует емкость для воды",
-                            "Turkish" : "Boþ þiþe kalmadý veya yeterli deðil"
+                            "Turkish" : "Boþ þiþe kalmadý veya yeterli deðil",
+                            "Polish" : "Brak pustych butelek o odpowiedniej pojemności",
+                            "French (France)" : "Toutes vos bouteilles sont déjà pleines."
     },
     "GAMEPLAY_BWM_AlreadyFull" : {
-                            "English" : "Already Full"
+                            "English" : "Already Full",
+                            "Polish" : "Butelka pełna",
+                            "French (France)" : "Déjà plein."
     },
     "GAMEPLAY_Waterskin" : {
                             "English" : "Waterskin",
-                            "German" : "Wasserschlauch"
+                            "German" : "Wasserschlauch",
+                            "Polish" : "Bukłak",
+                            "French (France)" : "Outre"
     },
     "GAMEPLAY_WaterskinDescription" : {
                             "English" : "A simple waterskin made from rabbit pelts. Holds up to 3 liters (102 oz).",
-                            "German" : "Ein einfacher Wasserschlauch aus Kaninchenpelzen. Fasst bis zu 3 liter."
+                            "German" : "Ein einfacher Wasserschlauch aus Kaninchenpelzen. Fasst bis zu 3 liter.",
+                            "Polish" : "Prosty bukłak z zajęczych skórek. Możesz przechować w nim do 3 litrów wody.",
+                            "French (France)" : "Une simple outre fabriquée à partir de peaux de lapin. Elle peut contenir jusqu'à 3 litres (102 oz)."
     },
     "GAMEPLAY_Cup" : {
                             "English" : "Metal Cup",
-                            "German" : "Metalltasse"
+                            "German" : "Metalltasse",
+                            "Polish" : "Metalowy kubek",
+                            "French (France)" : "Tasse en métal"
     },
     "GAMEPLAY_CupDescription" : {
                             "English" : "Old metal camping cup.",
-                            "German" : "Alte Campingtasse aus Metall."
+                            "German" : "Alte Campingtasse aus Metall.",
+                            "Polish" : "Stary metalowy kubek turystyczny",
+                            "French (France)" : "Vieille tasse de camping en métal."
     },
     "GAMEPLAY_MetalWaterBottle" : {
-                            "English" : "Metal Water Bottle"
+                            "English" : "Metal Water Bottle",
+                            "Polish" : "Metalowa butelka na wodę",
+                            "French (France)" : "Gourde en métal"
     },
     "GAMEPLAY_MetalWaterBottleDescription" : {
-                            "English" : "A reusable water bottle. Ubiquitous in modern society. Holds 750mL (25 fl oz) of water."
+                            "English" : "A reusable water bottle. Ubiquitous in modern society. Holds 750mL (25 fl oz) of water.",
+                            "Polish" : "Metalowa butelka wielokrotnego użytku. Wszechobecna w nowoczesnym społeczeństwie. Możesz przechować w niej do 750 ml wody.",
+                            "French (France)" : "Une bouteille d'eau réutilisable. Omniprésente dans la société moderne. Contient 750 ml (25 fl oz) d'eau."
     },
     "GAMEPLAY_BWM_FillBottle" : {
-                            "English" : "Fill"
+                            "English" : "Fill",
+                            "Polish" : "Napełnij",
+                            "French (France)" : "Remplir"
     },
     "GAMEPLAY_BWM_TransferBottle" : {
-                            "English" : "Transfer"
+                            "English" : "Transfer",
+                            "Polish" : "Przelej",
+                            "French (France)" : "Transférer"
     },
     "GAMEPLAY_BWM_DumpBottle" : {
-                            "English" : "Dump"
+                            "English" : "Dump",
+                            "Polish" : "Wylej",
+                            "French (France)" : "Vider"
     },
     "GAMEPLAY_BWM_FillingProgress" : {
-                            "English" : "Filling..."
+                            "English" : "Filling...",
+                            "Polish" : "Napełnianie...",
+                            "French (France)" : "Remplissage..."
     },
     "GAMEPLAY_BWM_TransferingProgress" : {
-                            "English" : "Transfering..."
+                            "English" : "Transfering...",
+                            "Polish" : "Przelewanie...",
+                            "French (France)" : "Transfert..."
     },
     "GAMEPLAY_BWM_DumpingProgress" : {
-                            "English" : "Dumping..."
+                            "English" : "Dumping...",
+                            "Polish" : "Wylewanie...",
+                            "French (France)" : "Vidange..."
+    },
+    "GAMEPLAY_RandomWaterBottle" : {
+                            "English" : "Random Water Bottle"
+    },
+    "GAMEPLAY_RandomWaterBottleDescription" : {
+                            "English" : "A random water bottle."
     }
 }

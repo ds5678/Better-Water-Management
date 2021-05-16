@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &639699942134590614
+--- !u!1 &3150041602855476019
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,54 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 639699942134590612}
-  - component: {fileID: 639699942134590613}
-  m_Layer: 17
-  m_Name: GEAR_OrangeWaterBottle
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &639699942134590612
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 639699942134590614}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
-  m_Children:
-  - {fileID: 639699942345869716}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &639699942134590613
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 639699942134590614}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.14165896, y: 0.5230155, z: 0.14254239}
-  m_Center: {x: 0.00018550456, y: 0.26138926, z: -0.0032089502}
---- !u!1 &639699942345869717
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 639699942345869716}
-  - component: {fileID: 639699942345869722}
-  - component: {fileID: 639699942345869723}
+  - component: {fileID: 538086029657705549}
+  - component: {fileID: 3669629377362435988}
+  - component: {fileID: 6708161787458185488}
   m_Layer: 17
   m_Name: WaterBottle
   m_TagString: Untagged
@@ -63,35 +18,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &639699942345869716
+--- !u!4 &538086029657705549
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 639699942345869717}
+  m_GameObject: {fileID: 3150041602855476019}
   m_LocalRotation: {x: -0.52679044, y: 0.47169045, z: 0.47169068, w: 0.52679014}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 0.06967837, y: 0.06967837, z: 0.06967838}
   m_Children: []
-  m_Father: {fileID: 639699942134590612}
+  m_Father: {fileID: 1968232753132497626}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &639699942345869722
+--- !u!33 &3669629377362435988
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 639699942345869717}
+  m_GameObject: {fileID: 3150041602855476019}
   m_Mesh: {fileID: 2685422785042298724, guid: 5f94e18e8bd28004192addb2fd3e656b, type: 3}
---- !u!23 &639699942345869723
+--- !u!23 &6708161787458185488
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 639699942345869717}
+  m_GameObject: {fileID: 3150041602855476019}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -103,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c8c8266c554fa254da94a8907d5dfaae, type: 2}
+  - {fileID: 2100000, guid: 807f7b7419f32df48b42eda23a3cdbe1, type: 2}
   - {fileID: 2100000, guid: 5341f82a0156a724ab44c06cd6e41d7f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -125,3 +80,48 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &9157402499801634233
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1968232753132497626}
+  - component: {fileID: 1661756509516889976}
+  m_Layer: 17
+  m_Name: GEAR_RandomWaterBottle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1968232753132497626
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9157402499801634233}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_Children:
+  - {fileID: 538086029657705549}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1661756509516889976
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9157402499801634233}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.14165896, y: 0.5230155, z: 0.14254239}
+  m_Center: {x: 0.00018550456, y: 0.26138926, z: -0.0032089502}
