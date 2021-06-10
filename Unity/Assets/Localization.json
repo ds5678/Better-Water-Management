@@ -25,6 +25,7 @@
     },
     "GAMEPLAY_BWM_AlreadyFull" : {
                             "English" : "Already Full",
+                            "German": "Bereits voll",
                             "Polish" : "Butelka pełna",
                             "French (France)" : "Déjà plein."
     },
@@ -36,7 +37,7 @@
     },
     "GAMEPLAY_WaterskinDescription" : {
                             "English" : "A simple waterskin made from rabbit pelts. Holds up to 3 liters (102 oz).",
-                            "German" : "Ein einfacher Wasserschlauch aus Kaninchenpelzen. Fasst bis zu 3 liter.",
+                            "German" : "Ein einfacher Wasserschlauch aus Kaninchenpelzen. Fasst bis zu 3 Liter.",
                             "Polish" : "Prosty bukłak z zajęczych skórek. Możesz przechować w nim do 3 litrów wody.",
                             "French (France)" : "Une simple outre fabriquée à partir de peaux de lapin. Elle peut contenir jusqu'à 3 litres (102 oz)."
     },
@@ -54,48 +55,58 @@
     },
     "GAMEPLAY_MetalWaterBottle" : {
                             "English" : "Metal Water Bottle",
+                            "German": "Metalwasserflasche",
                             "Polish" : "Metalowa butelka na wodę",
                             "French (France)" : "Gourde en métal"
     },
     "GAMEPLAY_MetalWaterBottleDescription" : {
                             "English" : "A reusable water bottle. Ubiquitous in modern society. Holds 750mL (25 fl oz) of water.",
+                            "German": "Eine wiederverwendbare Wasserflasche. Allgegenwärtig in der modernen Gesellschaft. Fasst 750 ml Wasser.",
                             "Polish" : "Metalowa butelka wielokrotnego użytku. Wszechobecna w nowoczesnym społeczeństwie. Możesz przechować w niej do 750 ml wody.",
                             "French (France)" : "Une bouteille d'eau réutilisable. Omniprésente dans la société moderne. Contient 750 ml (25 fl oz) d'eau."
     },
     "GAMEPLAY_BWM_FillBottle" : {
                             "English" : "Fill",
+                            "German": "Füllen",
                             "Polish" : "Napełnij",
                             "French (France)" : "Remplir"
     },
     "GAMEPLAY_BWM_TransferBottle" : {
                             "English" : "Transfer",
+                            "German": "Umfüllen",
                             "Polish" : "Przelej",
                             "French (France)" : "Transférer"
     },
     "GAMEPLAY_BWM_DumpBottle" : {
                             "English" : "Dump",
+                            "German": "Wegschütten",
                             "Polish" : "Wylej",
                             "French (France)" : "Vider"
     },
     "GAMEPLAY_BWM_FillingProgress" : {
                             "English" : "Filling...",
+                            "German": "Füllen...",
                             "Polish" : "Napełnianie...",
                             "French (France)" : "Remplissage..."
     },
     "GAMEPLAY_BWM_TransferingProgress" : {
                             "English" : "Transfering...",
+                            "German": "Umfüllen...",
                             "Polish" : "Przelewanie...",
                             "French (France)" : "Transfert..."
     },
     "GAMEPLAY_BWM_DumpingProgress" : {
                             "English" : "Dumping...",
+                            "German": "Wegschütten...",
                             "Polish" : "Wylewanie...",
                             "French (France)" : "Vidange..."
     },
     "GAMEPLAY_RandomWaterBottle" : {
-                            "English" : "Random Water Bottle"
+                            "English" : "Random Water Bottle",
+                            "German": "Beliebige Wasserflasche"
     },
     "GAMEPLAY_RandomWaterBottleDescription" : {
-                            "English" : "A random water bottle."
+                            "English" : "A random water bottle.",
+                            "German": "Eine beliebige Wasserflasche."
     }
 }
