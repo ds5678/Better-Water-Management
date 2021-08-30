@@ -2,7 +2,7 @@
     "GAMEPLAY_BWM_Empty" : {
                             "English" : "Empty",
                             "German" : "Leer",
-                            "Russian" : "Пустая емкость",
+                            "Russian" : "Пусто",
                             "Turkish" : "Boþ",
                             "Polish" : "Pusta",
                             "French (France)" : "Vide"
@@ -26,78 +26,91 @@
     "GAMEPLAY_BWM_AlreadyFull" : {
                             "English" : "Already Full",
                             "German": "Bereits voll",
+                            "Russian" : "Емкость уже полна",
                             "Polish" : "Butelka pełna",
                             "French (France)" : "Déjà plein."
     },
     "GAMEPLAY_Waterskin" : {
                             "English" : "Waterskin",
                             "German" : "Wasserschlauch",
+                            "Russian" : "Бурдюк",
                             "Polish" : "Bukłak",
                             "French (France)" : "Outre"
     },
     "GAMEPLAY_WaterskinDescription" : {
                             "English" : "A simple waterskin made from rabbit pelts. Holds up to 3 liters (102 oz).",
                             "German" : "Ein einfacher Wasserschlauch aus Kaninchenpelzen. Fasst bis zu 3 Liter.",
+                            "Russian" : "Простой бурдюк из кроличьих шкур. Емкость составляет три литра.",
                             "Polish" : "Prosty bukłak z zajęczych skórek. Możesz przechować w nim do 3 litrów wody.",
                             "French (France)" : "Une simple outre fabriquée à partir de peaux de lapin. Elle peut contenir jusqu'à 3 litres (102 oz)."
     },
     "GAMEPLAY_Cup" : {
                             "English" : "Metal Cup",
                             "German" : "Metalltasse",
+                            "Russian" : "Металлическая чашка",
                             "Polish" : "Metalowy kubek",
                             "French (France)" : "Tasse en métal"
     },
     "GAMEPLAY_CupDescription" : {
                             "English" : "Old metal camping cup.",
                             "German" : "Alte Campingtasse aus Metall.",
+                            "Russian" : "Старая металлическая чашка для кемпинга.",
                             "Polish" : "Stary metalowy kubek turystyczny",
                             "French (France)" : "Vieille tasse de camping en métal."
     },
     "GAMEPLAY_MetalWaterBottle" : {
                             "English" : "Metal Water Bottle",
                             "German": "Metalwasserflasche",
+                            "Russian" : "Металлическая бутылка для воды",
                             "Polish" : "Metalowa butelka na wodę",
                             "French (France)" : "Gourde en métal"
     },
     "GAMEPLAY_MetalWaterBottleDescription" : {
                             "English" : "A reusable water bottle. Ubiquitous in modern society. Holds 750mL (25 fl oz) of water.",
                             "German": "Eine wiederverwendbare Wasserflasche. Allgegenwärtig in der modernen Gesellschaft. Fasst 750 ml Wasser.",
+                            "Russian" : "Многоразовая бутылка для воды. Встречаться довольно часто в современном обществе. Емкость составляет 750 мл воды.",
                             "Polish" : "Metalowa butelka wielokrotnego użytku. Wszechobecna w nowoczesnym społeczeństwie. Możesz przechować w niej do 750 ml wody.",
                             "French (France)" : "Une bouteille d'eau réutilisable. Omniprésente dans la société moderne. Contient 750 ml (25 fl oz) d'eau."
     },
     "GAMEPLAY_BWM_FillBottle" : {
                             "English" : "Fill",
                             "German": "Füllen",
+                            "Russian" : "Набрать.",
                             "Polish" : "Napełnij",
                             "French (France)" : "Remplir"
     },
     "GAMEPLAY_BWM_TransferBottle" : {
                             "English" : "Transfer",
                             "German": "Umfüllen",
+                            "Russian" : "Перелить.",
                             "Polish" : "Przelej",
                             "French (France)" : "Transférer"
     },
     "GAMEPLAY_BWM_DumpBottle" : {
                             "English" : "Dump",
                             "German": "Wegschütten",
+                            "Russian" : "Вылить.",
                             "Polish" : "Wylej",
                             "French (France)" : "Vider"
     },
     "GAMEPLAY_BWM_FillingProgress" : {
                             "English" : "Filling...",
                             "German": "Füllen...",
+                            "Russian" : "Набираю...",
                             "Polish" : "Napełnianie...",
                             "French (France)" : "Remplissage..."
     },
     "GAMEPLAY_BWM_TransferingProgress" : {
                             "English" : "Transfering...",
                             "German": "Umfüllen...",
+                            "Russian" : "Переливаю...",
                             "Polish" : "Przelewanie...",
                             "French (France)" : "Transfert..."
     },
     "GAMEPLAY_BWM_DumpingProgress" : {
                             "English" : "Dumping...",
                             "German": "Wegschütten...",
+                            "Russian" : "Выливаю...",
                             "Polish" : "Wylewanie...",
                             "French (France)" : "Vidange..."
     },
