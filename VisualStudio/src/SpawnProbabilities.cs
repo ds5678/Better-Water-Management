@@ -1,4 +1,4 @@
-﻿using ModComponentMapper;
+﻿using GearSpawner;
 using System;
 
 namespace BetterWaterManagement

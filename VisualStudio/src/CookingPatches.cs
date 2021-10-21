@@ -1,5 +1,5 @@
-using Harmony;
-using ModComponentUtils;
+using HarmonyLib;
+using ModComponent.Utils;
 
 namespace BetterWaterManagement
 {
@@ -223,7 +223,7 @@ namespace BetterWaterManagement
 			}
 
 			CookingPotItem cookingPotItem = placedGearNew.m_CookingPotItem;
-			OverrideCookingState overrideCookingState = ComponentUtils.GetComponent<OverrideCookingState>(cookingPotItem);
+			OverrideCookingState overrideCookingState = ComponentUtils.GetComponentSafe<OverrideCookingState>(cookingPotItem);
 
 			if (overrideCookingState?.ForceReady ?? false)
 			{

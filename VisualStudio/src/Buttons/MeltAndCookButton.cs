@@ -1,5 +1,5 @@
-﻿using Harmony;
-using ModComponentUtils;
+﻿using HarmonyLib;
+using ModComponent.Utils;
 using UnityEngine;
 
 namespace BetterWaterManagement
@@ -59,15 +59,15 @@ namespace BetterWaterManagement
 
 			foreach (GearItem eachGearItem in foodList)
 			{
-				CookingModifier cookingModifier = ComponentUtils.GetComponent<CookingModifier>(eachGearItem);
+				CookingModifier cookingModifier = ComponentUtils.GetComponentSafe<CookingModifier>(eachGearItem);
 				cookingModifier?.Revert();
 				//if(cookingModifier) Implementation.Log("{0} reverted from Melt and Cook", eachGearItem.name);
 			}
 		}
 	}
 
-	[HarmonyPatch(typeof(Panel_Cooking), "Start")]
-	internal class Panel_Cooking_Start
+	[HarmonyPatch(typeof(Panel_Cooking), "Initialize")]
+	internal class Panel_Cooking_Initialize
 	{
 		internal static void Postfix(Panel_Cooking __instance)
 		{

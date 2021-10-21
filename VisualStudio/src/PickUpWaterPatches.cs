@@ -1,4 +1,4 @@
-﻿using Harmony;
+﻿using HarmonyLib;
 using UnityEngine;
 
 namespace BetterWaterManagement
@@ -226,8 +226,8 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(Panel_PickWater), "Start")]
-	internal class Panel_PickWater_Start
+	[HarmonyPatch(typeof(Panel_PickWater), "Initialize")]
+	internal class Panel_PickWater_Initialize
 	{
 		internal static void Postfix(Panel_PickWater __instance)
 		{

@@ -1,4 +1,4 @@
-﻿using Harmony;
+﻿using HarmonyLib;
 using MelonLoader.TinyJSON;
 using System;
 using System.Reflection;
@@ -8,7 +8,7 @@ namespace BetterWaterManagement
 {
 	//this is to prevent the issue where saving a game and reloading would cause
 	//cooking pots with boiled water to become non-potable.
-	public class CookingPotWaterSaveData : ModComponentAPI.ModSaveBehaviour
+	public class CookingPotWaterSaveData : CustomSaveDataUtilities.ModSaveBehaviour
 	{
 		public CookingPotItem.CookingState cookingState;
 		public float litersSnowBeingMelted;
@@ -57,7 +57,7 @@ namespace BetterWaterManagement
 			CookingPotItem cookingPot = this.GetComponent<CookingPotItem>();
 			if (cookingPot == null)
 			{
-				MelonLoader.MelonLogger.LogError("CookingPotWaterSaveData applied to a non-cookingpotitem!");
+				MelonLoader.MelonLogger.Error("CookingPotWaterSaveData applied to a non-cookingpotitem!");
 			}
 			else
 			{
@@ -82,7 +82,7 @@ namespace BetterWaterManagement
 			CookingPotItem cookingPot = this.GetComponent<CookingPotItem>();
 			if (cookingPot == null)
 			{
-				MelonLoader.MelonLogger.LogError("CookingPotWaterSaveData trying to get data from a non-cookingpotitem!");
+				MelonLoader.MelonLogger.Error("CookingPotWaterSaveData trying to get data from a non-cookingpotitem!");
 			}
 			else
 			{
@@ -104,7 +104,7 @@ namespace BetterWaterManagement
 			}
 			if (fieldInfos.Length == 0)
 			{
-				MelonLoader.MelonLogger.LogError("There were no fields to copy!");
+				MelonLoader.MelonLogger.Error("There were no fields to copy!");
 			}
 		}
 	}
@@ -129,7 +129,7 @@ namespace BetterWaterManagement
 				CookingPotItem cookingPot = __instance.m_CookingPotItem;
 				if (cookingPot != null)
 				{
-					ModComponentUtils.ComponentUtils.GetOrCreateComponent<CookingPotWaterSaveData>(__instance).GetFromCookingPot();
+					ModComponent.Utils.ComponentUtils.GetOrCreateComponent<CookingPotWaterSaveData>(__instance).GetFromCookingPot();
 				}
 			}
 		}

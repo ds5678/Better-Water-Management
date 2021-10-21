@@ -1,4 +1,4 @@
-﻿using Harmony;
+﻿using HarmonyLib;
 using UnityEngine;
 
 
@@ -181,7 +181,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(Panel_Inventory), "Start")]
+	[HarmonyPatch(typeof(Panel_Inventory), "Initialize")]
 	internal class Panel_Inventory_Start
 	{
 		private static void Postfix(Panel_Inventory __instance)

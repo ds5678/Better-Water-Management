@@ -1,5 +1,5 @@
 {
-    "@type": "ModComponentAPI.ModBlueprint",
+    "Name": "Waterskin",
     "RequiredGear": ["GEAR_RabbitPeltDried", "GEAR_GutDried"],
     "RequiredGearUnits": [4, 3],
     "KeroseneLitersRequired": 0,
