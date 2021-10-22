@@ -25,6 +25,7 @@ If you send me your translations, I'll update and add them to the mod so that mo
 ## Installation
 
 * If you haven't done so already, install MelonLoader by downloading and running [MelonLoader.Installer.exe](https://github.com/HerpDerpinstine/MelonLoader/releases/latest/download/MelonLoader.Installer.exe)
-* If you haven't done so already, install the latest version of [ModComponent](https://github.com/ds5678/ModComponent) and its dependencies
+* If you haven't done so already, install the latest version of [ModComponent](https://github.com/ds5678/ModComponent) and its dependencies.
+* If you haven't done so already, install the latest version of [CustomSaveDataUtilities](https://github.com/ds5678/CustomSaveDataUtilities).
 * Download `Better-Water-Management.dll` and `Better-Water-Management.modcomponent` from the [releases page](https://github.com/ds5678/Better-Water-Management/releases)
 * Move `Better-Water-Management.dll` and `Better-Water-Management.modcomponent` into your mods folder.
