@@ -5,6 +5,7 @@
                             "Russian" : "Пусто",
                             "Turkish" : "Boþ",
                             "Polish" : "Pusta",
+                            "Ukrainian" : "Порожньо",
                             "Japanese" : "空",
                             "French (France)" : "Vide"
     },
@@ -14,6 +15,7 @@
                             "Russian" : "Потеряно",
                             "Turkish" : "Kayýp",
                             "Polish" : "Zgubiona",
+                            "Ukrainian" : "Втрачено",
                             "Japanese" : "失われた",
                             "French (France)" : "Perdu"
     },
@@ -23,6 +25,7 @@
                             "Russian" : "Отсутствует емкость для воды",
                             "Turkish" : "Boþ þiþe kalmadý veya yeterli deðil",
                             "Polish" : "Brak pustych butelek o odpowiedniej pojemności",
+                            "Ukrainian" : "Відсутня ємність для води",
                             "Japanese" : "空きのあるボトルはありません",
                             "French (France)" : "Toutes vos bouteilles sont déjà pleines."
     },
@@ -31,6 +34,7 @@
                             "German": "Bereits voll",
                             "Russian" : "Емкость уже полна",
                             "Polish" : "Butelka pełna",
+                            "Ukrainian" : "Ємність повна",
                             "Japanese" : "既に容器が一杯です",
                             "French (France)" : "Déjà plein."
     },
@@ -39,6 +43,7 @@
                             "German" : "Wasserschlauch",
                             "Russian" : "Бурдюк",
                             "Polish" : "Bukłak",
+                            "Ukrainian" : "Міх",
                             "Japanese" : "革製水筒",
                             "French (France)" : "Outre"
     },
@@ -47,6 +52,7 @@
                             "German" : "Ein einfacher Wasserschlauch aus Kaninchenpelzen. Fasst bis zu 3 Liter.",
                             "Russian" : "Простой бурдюк из кроличьих шкур. Емкость составляет три литра.",
                             "Polish" : "Prosty bukłak z zajęczych skórek. Możesz przechować w nim do 3 litrów wody.",
+                            "Ukrainian" : "Простий міх зі шкіри крілика. Місткість до трьох літрів.",
                             "Japanese" : "ウサギの毛皮から作られたシンプルな革袋。容量3リットル。",
                             "French (France)" : "Une simple outre fabriquée à partir de peaux de lapin. Elle peut contenir jusqu'à 3 litres (102 oz)."
     },
@@ -55,6 +61,7 @@
                             "German" : "Metalltasse",
                             "Russian" : "Металлическая чашка",
                             "Polish" : "Metalowy kubek",
+                            "Ukrainian" : "Залізне горнятко",
                             "Japanese" : "金属製カップ",
                             "French (France)" : "Tasse en métal"
     },
@@ -63,6 +70,7 @@
                             "German" : "Alte Campingtasse aus Metall.",
                             "Russian" : "Старая металлическая чашка для кемпинга.",
                             "Polish" : "Stary metalowy kubek turystyczny",
+                            "Ukrainian" : "Старе залізне горнятко для кемпінгу.",
                             "Japanese" : "昔ながらの金属製マグカップ",
                             "French (France)" : "Vieille tasse de camping en métal."
     },
@@ -71,6 +79,7 @@
                             "German": "Metalwasserflasche",
                             "Russian" : "Металлическая бутылка для воды",
                             "Polish" : "Metalowa butelka na wodę",
+                            "Ukrainian" : "Залізна пляшка для води",
                             "Japanese" : "ステンレスボトル",
                             "French (France)" : "Gourde en métal"
     },
@@ -79,6 +88,7 @@
                             "German": "Eine wiederverwendbare Wasserflasche. Allgegenwärtig in der modernen Gesellschaft. Fasst 750 ml Wasser.",
                             "Russian" : "Многоразовая бутылка для воды. Встречаться довольно часто в современном обществе. Емкость составляет 750 мл воды.",
                             "Polish" : "Metalowa butelka wielokrotnego użytku. Wszechobecna w nowoczesnym społeczeństwie. Możesz przechować w niej do 750 ml wody.",
+                            "Ukrainian" : "Багаторазова пляшка для води. Неодноразово зустрічаються в нинішньому суспільстві. Місткість становить 750 мл води.",
                             "Japanese" : "現代社会のどこにでもある使い捨てではない水筒。容量750ml。",
                             "French (France)" : "Une bouteille d'eau réutilisable. Omniprésente dans la société moderne. Contient 750 ml (25 fl oz) d'eau."
     },
@@ -87,6 +97,7 @@
                             "German": "Füllen",
                             "Russian" : "Набрать.",
                             "Polish" : "Napełnij",
+                            "Ukrainian" : "Набрати",
                             "Japanese" : "満たす",
                             "French (France)" : "Remplir"
     },
@@ -95,6 +106,7 @@
                             "German": "Umfüllen",
                             "Russian" : "Перелить.",
                             "Polish" : "Przelej",
+                            "Ukrainian" : "Перелити",
                             "Japanese" : "移す",
                             "French (France)" : "Transférer"
     },
@@ -103,6 +115,7 @@
                             "German": "Wegschütten",
                             "Russian" : "Вылить.",
                             "Polish" : "Wylej",
+                            "Ukrainian" : "Вилити",
                             "French (France)" : "Vider"
                             "Japanese" : "捨てる",
     },
@@ -111,6 +124,7 @@
                             "German": "Füllen...",
                             "Russian" : "Набираю...",
                             "Polish" : "Napełnianie...",
+                            "Ukrainian" : "Наповнюю...",
                             "Japanese" : "容器を一杯にしています...",
                             "French (France)" : "Remplissage..."
     },
@@ -119,6 +133,7 @@
                             "German": "Umfüllen...",
                             "Russian" : "Переливаю...",
                             "Polish" : "Przelewanie...",
+                            "Ukrainian" : "Переливаю...",
                             "Japanese" : "他の容器に移しています...",
                             "French (France)" : "Transfert..."
     },
@@ -127,6 +142,7 @@
                             "German": "Wegschütten...",
                             "Russian" : "Выливаю...",
                             "Polish" : "Wylewanie...",
+                            "Ukrainian" : "Виливаю...",
                             "Japanese" : "水を捨てています...",
                             "French (France)" : "Vidange..."
     },
