@@ -1,12 +1,12 @@
 ﻿extern alias Hinterland;
-using Hinterland;
 using HarmonyLib;
+using Hinterland;
 using UnityEngine;
 
 namespace BetterWaterManagement
 {
 	//This patch appends fill labels to the names of water containers
-	[HarmonyPatch(typeof(ConditionTableManager), "GetDisplayNameWithCondition")]
+	[HarmonyPatch(typeof(ConditionTableManager), nameof(ConditionTableManager.GetDisplayNameWithCondition))]
 	internal class ConditionTableManager_GetDisplayNameWithCondition
 	{
 		internal static void Postfix(GearItem gearItem, ref string __result)
@@ -33,7 +33,7 @@ namespace BetterWaterManagement
 	}
 
 	//This and the next patch makes the hidden inventory watersupply weightless without interfering with other watersupplies.
-	[HarmonyPatch(typeof(GearItem), "GetItemWeightIgnoreClothingWornBonusKG")]
+	[HarmonyPatch(typeof(GearItem), nameof(GearItem.GetItemWeightIgnoreClothingWornBonusKG))]
 	internal class GearItem_GetItemWeightIgnoreClothingWornBonusKG
 	{
 		internal static void Postfix(GearItem __instance, ref float __result)
@@ -48,7 +48,7 @@ namespace BetterWaterManagement
 	}
 
 	//This and the previous patch makes the hidden inventory watersupply weightless without interfering with other watersupplies.
-	[HarmonyPatch(typeof(GearItem), "GetItemWeightKG")]
+	[HarmonyPatch(typeof(GearItem), nameof(GearItem.GetItemWeightKG))]
 	internal class GearItem_GetItemWeightKG
 	{
 		internal static void Postfix(GearItem __instance, ref float __result)
@@ -64,7 +64,7 @@ namespace BetterWaterManagement
 
 	//Updates the sound and texture of a water bottle
 	//The sound and texture depend on the emptiness and quality of water inside.
-	[HarmonyPatch(typeof(GearItem), "ManualStart")]
+	[HarmonyPatch(typeof(GearItem), nameof(GearItem.ManualStart))]
 	internal class GearItem_ManualStart
 	{
 		internal static void Postfix(GearItem __instance)
@@ -78,7 +78,7 @@ namespace BetterWaterManagement
 	}
 
 	//Disables the water adjustments while loading
-	[HarmonyPatch(typeof(Inventory), "Deserialize")]
+	[HarmonyPatch(typeof(Inventory), nameof(Inventory.Deserialize))]
 	internal class Inventory_Deserialize
 	{
 		internal static void Prefix()
@@ -94,7 +94,7 @@ namespace BetterWaterManagement
 	}
 
 	//Prevents Water Containers from being converted into one giant pile of water
-	[HarmonyPatch(typeof(Inventory), "AddGear")]
+	[HarmonyPatch(typeof(Inventory), nameof(Inventory.AddGear))]
 	internal class Inventory_AddGear
 	{
 		private const GearLiquidTypeEnum ModWater = (GearLiquidTypeEnum)1000;
@@ -120,7 +120,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(Inventory), "AddToPotableWaterSupply")]
+	[HarmonyPatch(typeof(Inventory), nameof(Inventory.AddToPotableWaterSupply))]
 	internal class Inventory_AddToPotableWaterSupply
 	{
 		internal static void Postfix(float volumeLiters)
@@ -129,7 +129,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(Inventory), "AddToWaterSupply")]
+	[HarmonyPatch(typeof(Inventory), nameof(Inventory.AddToWaterSupply))]
 	internal class Inventory_AddToWaterSupply
 	{
 		internal static void Postfix(float numLiters, LiquidQuality quality)
@@ -165,7 +165,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(Panel_Container), "IgnoreWaterSupplyItem")]//runs constantly while the container menu is open
+	[HarmonyPatch(typeof(Panel_Container), nameof(Panel_Container.IgnoreWaterSupplyItem))]//runs constantly while the container menu is open
 	internal class Panel_Container_IgnoreWaterSupplyItem
 	{
 		internal static bool Prefix(WaterSupply ws, ref bool __result)
@@ -176,7 +176,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(Panel_Inventory), "IgnoreWaterSupplyItem")]//runs constantly while the inventory is open
+	[HarmonyPatch(typeof(Panel_Inventory), nameof(Panel_Inventory.IgnoreWaterSupplyItem))]//runs constantly while the inventory is open
 	internal class Panel_Inventory_IgnoreWaterSupplyItem
 	{
 		internal static bool Prefix(WaterSupply ws, ref bool __result)
@@ -186,7 +186,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(Panel_PickWater), "Enable")]
+	[HarmonyPatch(typeof(Panel_PickWater), nameof(Panel_PickWater.Enable))]
 	internal class Panel_PickWater_Enable
 	{
 		internal static void Postfix(Panel_PickWater __instance)
@@ -195,7 +195,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(Panel_PickWater), "Refresh")]
+	[HarmonyPatch(typeof(Panel_PickWater), nameof(Panel_PickWater.Refresh))]
 	internal class Panel_PickWater_Refresh
 	{
 		internal static void Prefix(Panel_PickWater __instance)
@@ -209,7 +209,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(Panel_PickWater), "OnTakeWaterComplete")]//runs after taking water from a toilet
+	[HarmonyPatch(typeof(Panel_PickWater), nameof(Panel_PickWater.OnTakeWaterComplete))]//runs after taking water from a toilet
 	internal class Panel_PickWater_OnTakeWaterComplete
 	{
 		internal static void Postfix()
@@ -219,7 +219,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(Panel_PickWater), "SetWaterSourceForTaking")]
+	[HarmonyPatch(typeof(Panel_PickWater), nameof(Panel_PickWater.SetWaterSourceForTaking))]
 	internal class Panel_PickWater_SetWaterSourceForTaking
 	{
 		internal static void Postfix(Panel_PickWater __instance)
@@ -228,7 +228,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(Panel_PickWater), "Initialize")]
+	[HarmonyPatch(typeof(Panel_PickWater), nameof(Panel_PickWater.Initialize))]
 	internal class Panel_PickWater_Initialize
 	{
 		internal static void Postfix(Panel_PickWater __instance)
@@ -237,7 +237,7 @@ namespace BetterWaterManagement
 		}
 	}
 	//* Drinking from toilets.
-	[HarmonyPatch(typeof(Panel_PickWater), "Update")]
+	[HarmonyPatch(typeof(Panel_PickWater), nameof(Panel_PickWater.Update))]
 	internal class Panel_PickWater_Update
 	{
 		internal static void Postfix(Panel_PickWater __instance)
@@ -282,7 +282,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(Utils), "GetInventoryIconTexture")]
+	[HarmonyPatch(typeof(Utils), nameof(Utils.GetInventoryIconTexture))]
 	internal class Utils_GetInventoryIconTexture
 	{
 		internal static bool Prefix(GearItem gi, ref Texture2D __result)
@@ -307,15 +307,15 @@ namespace BetterWaterManagement
 		internal void SetWaterSource(WaterSource waterSource)
 		{
 			this.waterSource = waterSource;
-			this.m_VolumeInLiters = waterSource.GetVolumeLiters();
-			this.m_WaterQuality = waterSource.GetQuality();
-			this.m_DrinkingAudio = "Play_Slurping1";
-			this.m_TimeToDrinkSeconds = 4;
+			m_VolumeInLiters = waterSource.GetVolumeLiters();
+			m_WaterQuality = waterSource.GetQuality();
+			m_DrinkingAudio = "Play_Slurping1";
+			m_TimeToDrinkSeconds = 4;
 		}
 
 		internal void UpdateWaterSource()
 		{
-			waterSource.RemoveLiters(waterSource.GetVolumeLiters() - this.m_VolumeInLiters);
+			waterSource.RemoveLiters(waterSource.GetVolumeLiters() - m_VolumeInLiters);
 		}
 	}
 }

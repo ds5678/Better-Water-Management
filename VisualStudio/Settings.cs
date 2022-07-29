@@ -2,25 +2,7 @@
 
 namespace BetterWaterManagement
 {
-	internal enum WaterIncrement
-	{
-		Liters0_05,
-		Liters0_10,
-		Liters0_25,
-		Liters0_50
-	};
-	internal enum StartingBottles
-	{
-		Nothing,
-		One500mL,
-		One750mL,
-		One1000mL,
-		Two500mL,
-		Two750mL,
-		Two1000mL,
-		One3000mL
-	}
-	internal class BetterWaterSettings : JsonModSettings
+	internal sealed class BetterWaterSettings : JsonModSettings
 	{
 		[Section("Gameplay Settings")]
 		[Name("Water Menu Increment")]
@@ -75,19 +57,14 @@ namespace BetterWaterManagement
 
 		public static float GetWaterIncrement()
 		{
-			switch (options.waterIncrement)
+			return options.waterIncrement switch
 			{
-				case WaterIncrement.Liters0_05:
-					return 0.05f;
-				case WaterIncrement.Liters0_10:
-					return 0.1f;
-				case WaterIncrement.Liters0_25:
-					return 0.25f;
-				case WaterIncrement.Liters0_50:
-					return 0.5f;
-				default:
-					return 0.5f;
-			}
+				WaterIncrement.Liters0_05 => 0.05f,
+				WaterIncrement.Liters0_10 => 0.1f,
+				WaterIncrement.Liters0_25 => 0.25f,
+				WaterIncrement.Liters0_50 => 0.5f,
+				_ => 0.5f,
+			};
 		}
 	}
 }

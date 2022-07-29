@@ -1,11 +1,11 @@
 extern alias Hinterland;
-using Hinterland;
 using HarmonyLib;
+using Hinterland;
 using ModComponent.Utils;
 
 namespace BetterWaterManagement
 {
-	/*[HarmonyPatch(typeof(CookingPotItem), "ExitPlaceMesh")] // transpiler!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	/*[HarmonyPatch(typeof(CookingPotItem), nameof(CookingPotItem.ExitPlaceMesh))] // transpiler!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     internal class CookingPotItem_ExitPlaceMesh
     {
         internal static void Postfix(CookingPotItem __instance)
@@ -53,7 +53,7 @@ namespace BetterWaterManagement
 		public static bool isExecuting = false;
 	}
 
-	[HarmonyPatch(typeof(CookingPotItem), "ExitPlaceMesh")]
+	[HarmonyPatch(typeof(CookingPotItem), nameof(CookingPotItem.ExitPlaceMesh))]
 	internal class CookingPotItem_ExitPlaceMesh
 	{
 		internal static void Prefix()
@@ -75,7 +75,7 @@ namespace BetterWaterManagement
 
 	//Patch prevents PickUpCookedItem from running within the ExitPlaceMesh method
 	//In other words, it allows water to be stored in cooking pots
-	[HarmonyPatch(typeof(CookingPotItem), "PickUpCookedItem")]
+	[HarmonyPatch(typeof(CookingPotItem), nameof(CookingPotItem.PickUpCookedItem))]
 	internal class CookingPotItem_PickUpCookedItem
 	{
 		private static bool Prefix()
@@ -100,7 +100,7 @@ namespace BetterWaterManagement
 
 	//End Replacements
 
-	[HarmonyPatch(typeof(CookingPotItem), "SetCookingState")]
+	[HarmonyPatch(typeof(CookingPotItem), nameof(CookingPotItem.SetCookingState))]
 	internal class CookingPotItem_SetCookingState
 	{
 		internal static void Prefix(CookingPotItem __instance, ref CookingPotItem.CookingState cookingState) // circumvent the transformation to "ruined" after a long time period. 
@@ -112,7 +112,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(CookingPotItem), "StartBoilingWater")]
+	[HarmonyPatch(typeof(CookingPotItem), nameof(CookingPotItem.StartBoilingWater))]
 	internal class CookingPotItem_StartBoilingWater
 	{
 		internal static void Postfix(CookingPotItem __instance)
@@ -123,7 +123,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(CookingPotItem), "StartCooking")]
+	[HarmonyPatch(typeof(CookingPotItem), nameof(CookingPotItem.StartCooking))]
 	internal class CookingPotItem_StartCooking
 	{
 		internal static void Postfix(CookingPotItem __instance)
@@ -132,8 +132,8 @@ namespace BetterWaterManagement
 		}
 	}
 
-	//[HarmonyPatch(typeof(CookingPotItem), "StartMeltingSnow")] //inlined
-	[HarmonyPatch(typeof(Panel_Cooking), "OnMeltSnow")]
+	//[HarmonyPatch(typeof(CookingPotItem), nameof(CookingPotItem.StartMeltingSnow))] //inlined
+	[HarmonyPatch(typeof(Panel_Cooking), nameof(Panel_Cooking.OnMeltSnow))]
 	internal class CookingPotItem_StartMeltingSnow
 	{
 		internal static void Postfix(CookingPotItem __instance)
@@ -143,8 +143,8 @@ namespace BetterWaterManagement
 		}
 	}
 
-	//[HarmonyPatch(typeof(CookingPotItem), "UpdateBoilingWater")] //inlined
-	[HarmonyPatch(typeof(CookingPotItem), "Update")]
+	//[HarmonyPatch(typeof(CookingPotItem), nameof(CookingPotItem.UpdateBoilingWater))] //inlined
+	[HarmonyPatch(typeof(CookingPotItem), nameof(CookingPotItem.Update))]
 	internal class CookingPotItem_UpdateBoilingWater
 	{
 		internal static void Postfix(CookingPotItem __instance)
@@ -171,8 +171,8 @@ namespace BetterWaterManagement
 		}
 	}
 
-	//[HarmonyPatch(typeof(CookingPotItem), "UpdateMeltingSnow")] //inlined
-	[HarmonyPatch(typeof(CookingPotItem), "Update")] //replacement
+	//[HarmonyPatch(typeof(CookingPotItem), nameof(CookingPotItem.UpdateMeltingSnow))] //inlined
+	[HarmonyPatch(typeof(CookingPotItem), nameof(CookingPotItem.Update))] //replacement
 	internal class CookingPotItem_UpdateMeltingSnow
 	{
 		internal static void Postfix(CookingPotItem __instance)
@@ -192,7 +192,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(GearItem), "Deserialize")]
+	[HarmonyPatch(typeof(GearItem), nameof(GearItem.Deserialize))]
 	internal class GearItem_Deserialize
 	{
 		internal static void Postfix(GearItem __instance)
@@ -214,7 +214,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(GearPlacePoint), "UpdateAttachedFire")]
+	[HarmonyPatch(typeof(GearPlacePoint), nameof(GearPlacePoint.UpdateAttachedFire))]
 	internal class GearPlacePoint_UpdateAttachedFire
 	{
 		internal static void Postfix(GearItem placedGearNew)

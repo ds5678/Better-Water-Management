@@ -1,6 +1,6 @@
 ﻿extern alias Hinterland;
-using Hinterland;
 using HarmonyLib;
+using Hinterland;
 using MelonLoader.TinyJSON;
 using System;
 using System.Reflection;
@@ -28,11 +28,11 @@ namespace BetterWaterManagement
 			{
 				CookingPotWaterSaveProxy saveProxy = JSON.Load(data).Make<CookingPotWaterSaveProxy>();
 
-				this.cookingState = saveProxy.cookingState;
-				this.litersSnowBeingMelted = saveProxy.litersSnowBeingMelted;
-				this.litersWaterBeingBoiled = saveProxy.litersWaterBeingBoiled;
-				this.minutesUntilCooked = saveProxy.minutesUntilCooked;
-				this.minutesUntilRuined = saveProxy.minutesUntilRuined;
+				cookingState = saveProxy.cookingState;
+				litersSnowBeingMelted = saveProxy.litersSnowBeingMelted;
+				litersWaterBeingBoiled = saveProxy.litersWaterBeingBoiled;
+				minutesUntilCooked = saveProxy.minutesUntilCooked;
+				minutesUntilRuined = saveProxy.minutesUntilRuined;
 				ApplyToCookingPot();
 			}
 		}
@@ -44,11 +44,11 @@ namespace BetterWaterManagement
 			GetFromCookingPot();
 			CookingPotWaterSaveProxy saveProxy = new CookingPotWaterSaveProxy
 			{
-				cookingState = this.cookingState,
-				litersSnowBeingMelted = this.litersSnowBeingMelted,
-				litersWaterBeingBoiled = this.litersWaterBeingBoiled,
-				minutesUntilCooked = this.minutesUntilCooked,
-				minutesUntilRuined = this.minutesUntilRuined
+				cookingState = cookingState,
+				litersSnowBeingMelted = litersSnowBeingMelted,
+				litersWaterBeingBoiled = litersWaterBeingBoiled,
+				minutesUntilCooked = minutesUntilCooked,
+				minutesUntilRuined = minutesUntilRuined
 			};
 
 			return JSON.Dump(saveProxy);
@@ -56,18 +56,18 @@ namespace BetterWaterManagement
 
 		internal void ApplyToCookingPot()
 		{
-			CookingPotItem cookingPot = this.GetComponent<CookingPotItem>();
+			CookingPotItem cookingPot = GetComponent<CookingPotItem>();
 			if (cookingPot == null)
 			{
 				MelonLoader.MelonLogger.Error("CookingPotWaterSaveData applied to a non-cookingpotitem!");
 			}
 			else
 			{
-				cookingPot.m_CookingState = this.cookingState;
-				cookingPot.m_LitersSnowBeingMelted = this.litersSnowBeingMelted;
-				cookingPot.m_LitersWaterBeingBoiled = this.litersWaterBeingBoiled;
-				cookingPot.m_MinutesUntilCooked = this.minutesUntilCooked;
-				cookingPot.m_MinutesUntilRuined = this.minutesUntilRuined;
+				cookingPot.m_CookingState = cookingState;
+				cookingPot.m_LitersSnowBeingMelted = litersSnowBeingMelted;
+				cookingPot.m_LitersWaterBeingBoiled = litersWaterBeingBoiled;
+				cookingPot.m_MinutesUntilCooked = minutesUntilCooked;
+				cookingPot.m_MinutesUntilRuined = minutesUntilRuined;
 				if (cookingState == CookingPotItem.CookingState.Cooking)
 				{
 					cookingPot.m_GrubMeshRenderer.sharedMaterials = cookingPot.m_BoilWaterPotMaterialsList;
@@ -81,18 +81,18 @@ namespace BetterWaterManagement
 
 		internal void GetFromCookingPot()
 		{
-			CookingPotItem cookingPot = this.GetComponent<CookingPotItem>();
+			CookingPotItem cookingPot = GetComponent<CookingPotItem>();
 			if (cookingPot == null)
 			{
 				MelonLoader.MelonLogger.Error("CookingPotWaterSaveData trying to get data from a non-cookingpotitem!");
 			}
 			else
 			{
-				this.cookingState = cookingPot.m_CookingState;
-				this.litersSnowBeingMelted = cookingPot.m_LitersSnowBeingMelted;
-				this.litersWaterBeingBoiled = cookingPot.m_LitersWaterBeingBoiled;
-				this.minutesUntilCooked = cookingPot.m_MinutesUntilCooked;
-				this.minutesUntilRuined = cookingPot.m_MinutesUntilRuined;
+				cookingState = cookingPot.m_CookingState;
+				litersSnowBeingMelted = cookingPot.m_LitersSnowBeingMelted;
+				litersWaterBeingBoiled = cookingPot.m_LitersWaterBeingBoiled;
+				minutesUntilCooked = cookingPot.m_MinutesUntilCooked;
+				minutesUntilRuined = cookingPot.m_MinutesUntilRuined;
 			}
 		}
 
@@ -122,7 +122,7 @@ namespace BetterWaterManagement
 
 	internal class CookingPotWaterPatches
 	{
-		[HarmonyPatch(typeof(GearItem), "Serialize")]
+		[HarmonyPatch(typeof(GearItem), nameof(GearItem.Serialize))]
 		internal class GearItem_Serialize
 		{
 			[HarmonyPriority(Priority.First)]

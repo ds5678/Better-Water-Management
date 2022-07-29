@@ -1,6 +1,6 @@
 ﻿extern alias Hinterland;
-using Hinterland;
 using HarmonyLib;
+using Hinterland;
 using ModComponent.Utils;
 using UnityEngine;
 
@@ -48,7 +48,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(Panel_Cooking), "RefreshFoodList")]
+	[HarmonyPatch(typeof(Panel_Cooking), nameof(Panel_Cooking.RefreshFoodList))]
 	internal class Panel_Cooking_RefreshFoodList
 	{
 		internal static void Postfix(Panel_Cooking __instance)
@@ -68,7 +68,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(Panel_Cooking), "Initialize")]
+	[HarmonyPatch(typeof(Panel_Cooking), nameof(Panel_Cooking.Initialize))]
 	internal class Panel_Cooking_Initialize
 	{
 		internal static void Postfix(Panel_Cooking __instance)
@@ -77,7 +77,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(Panel_Cooking), "UpdateButtonLegend")]
+	[HarmonyPatch(typeof(Panel_Cooking), nameof(Panel_Cooking.UpdateButtonLegend))]
 	internal class Panel_Cooking_UpdateButtonLegend
 	{
 		internal static void Prefix(Panel_Cooking __instance)
@@ -97,7 +97,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(Panel_Cooking), "UpdateGamepadControls")]
+	[HarmonyPatch(typeof(Panel_Cooking), nameof(Panel_Cooking.UpdateGamepadControls))]
 	internal class Panel_Cooking_UpdateGamepadControls
 	{
 		internal static bool Prefix(Panel_Cooking __instance)
@@ -119,7 +119,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(Panel_Cooking), "UpdateGearItem")]
+	[HarmonyPatch(typeof(Panel_Cooking), nameof(Panel_Cooking.UpdateGearItem))]
 	internal class Panel_Cooking_UpdateGearItem
 	{
 		internal static void Postfix(Panel_Cooking __instance)

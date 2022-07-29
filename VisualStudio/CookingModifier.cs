@@ -1,6 +1,6 @@
 ﻿extern alias Hinterland;
-using Hinterland;
 using CustomSaveDataUtilities;
+using Hinterland;
 using UnhollowerBaseLib.Attributes;
 
 namespace BetterWaterManagement
@@ -14,11 +14,11 @@ namespace BetterWaterManagement
 		public CookingModifier(System.IntPtr intPtr) : base(intPtr) { }
 		public void Apply()
 		{
-			Cookable cookable = this.GetComponent<Cookable>();
-			if (cookable != null && this.additionalMinutes > 0)
+			Cookable cookable = GetComponent<Cookable>();
+			if (cookable != null && additionalMinutes > 0)
 			{
-				this.potableWaterRequiredLiters = cookable.m_PotableWaterRequiredLiters;
-				this.originalMinutes = cookable.m_CookTimeMinutes;
+				potableWaterRequiredLiters = cookable.m_PotableWaterRequiredLiters;
+				originalMinutes = cookable.m_CookTimeMinutes;
 
 				cookable.m_PotableWaterRequiredLiters = 0;
 				cookable.m_CookTimeMinutes += additionalMinutes;
@@ -34,17 +34,17 @@ namespace BetterWaterManagement
 			}
 
 			CookingModifierData cookingModifierData = MelonLoader.TinyJSON.JSON.Load(data).Make<CookingModifierData>();
-			this.additionalMinutes = cookingModifierData.additionalMinutes;
-			this.originalMinutes = cookingModifierData.originalMinutes;
-			this.potableWaterRequiredLiters = cookingModifierData.potableWaterRequiredLiters;
+			additionalMinutes = cookingModifierData.additionalMinutes;
+			originalMinutes = cookingModifierData.originalMinutes;
+			potableWaterRequiredLiters = cookingModifierData.potableWaterRequiredLiters;
 
-			this.Apply();
+			Apply();
 		}
 
 		public void Revert()
 		{
-			Cookable cookable = this.GetComponent<Cookable>();
-			if (cookable != null && this.additionalMinutes > 0)
+			Cookable cookable = GetComponent<Cookable>();
+			if (cookable != null && additionalMinutes > 0)
 			{
 				//Implementation.Log("OriginalLiters: {0}", cookable.m_PotableWaterRequiredLiters);
 				cookable.m_PotableWaterRequiredLiters = potableWaterRequiredLiters;
@@ -61,9 +61,9 @@ namespace BetterWaterManagement
 		{
 			CookingModifierData cookingModifierData = new CookingModifierData
 			{
-				additionalMinutes = this.additionalMinutes,
-				originalMinutes = this.originalMinutes,
-				potableWaterRequiredLiters = this.potableWaterRequiredLiters
+				additionalMinutes = additionalMinutes,
+				originalMinutes = originalMinutes,
+				potableWaterRequiredLiters = potableWaterRequiredLiters
 			};
 
 			return MelonLoader.TinyJSON.JSON.Dump(cookingModifierData);

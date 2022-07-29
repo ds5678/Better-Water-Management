@@ -179,15 +179,12 @@ namespace BetterWaterManagement
 		/// <returns></returns>
 		public static float GetRemainingCapacity(LiquidQuality quality)
 		{
-			switch (quality)
+			return quality switch
 			{
-				case LiquidQuality.NonPotable:
-					return WATER.RemainingCapacityNonPotable;
-				case LiquidQuality.Potable:
-					return WATER.RemainingCapacityPotable;
-				default:
-					return 0f;
-			}
+				LiquidQuality.NonPotable => WATER.RemainingCapacityNonPotable,
+				LiquidQuality.Potable => WATER.RemainingCapacityPotable,
+				_ => 0f,
+			};
 		}
 
 		/// <summary>
@@ -409,7 +406,7 @@ namespace BetterWaterManagement
 		/// </summary>
 		private void UpdateBottles()
 		{
-			foreach (LiquidItem eachLiquidItem in this.liquidItems)
+			foreach (LiquidItem eachLiquidItem in liquidItems)
 			{
 				WaterUtils.UpdateWaterBottle(eachLiquidItem.GetComponent<GearItem>());
 			}

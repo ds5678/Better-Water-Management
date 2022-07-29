@@ -1,6 +1,6 @@
 ﻿extern alias Hinterland;
-using Hinterland;
 using HarmonyLib;
+using Hinterland;
 using UnityEngine;
 
 namespace BetterWaterManagement
@@ -182,7 +182,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(Panel_Inventory), "Initialize")]
+	[HarmonyPatch(typeof(Panel_Inventory), nameof(Panel_Inventory.Initialize))]
 	internal class Panel_Inventory_Start
 	{
 		private static void Postfix(Panel_Inventory __instance)
@@ -191,7 +191,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(ItemDescriptionPage), "BuildItemDescription")]
+	[HarmonyPatch(typeof(ItemDescriptionPage), nameof(ItemDescriptionPage.BuildItemDescription))]
 	internal class ItemDescriptionPage_Start
 	{
 		private static void Postfix(ItemDescriptionPage __instance, GearItem gi)

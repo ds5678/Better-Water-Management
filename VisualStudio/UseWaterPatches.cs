@@ -1,11 +1,11 @@
 ﻿extern alias Hinterland;
-using Hinterland;
 using HarmonyLib;
+using Hinterland;
 using UnityEngine;
 
 namespace BetterWaterManagement
 {
-	[HarmonyPatch(typeof(GameManager), "Start")]
+	[HarmonyPatch(typeof(GameManager), nameof(GameManager.Start))]
 	internal class GameManager_Start
 	{
 		internal static void Postfix()
@@ -17,7 +17,7 @@ namespace BetterWaterManagement
 	//
 	//Changes the minimum water amount to display the "Drink" button
 	//
-	/*[HarmonyPatch(typeof(ItemDescriptionPage), "GetEquipButtonLocalizationId")] //Transpiler!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	/*[HarmonyPatch(typeof(ItemDescriptionPage), nameof(ItemDescriptionPage.GetEquipButtonLocalizationId))] //Transpiler!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     internal class ItemDescriptionPageGetEquipButtonLocalizationIdPatch
     {
         internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
@@ -48,7 +48,7 @@ namespace BetterWaterManagement
         }
     }*/
 
-	[HarmonyPatch(typeof(Panel_ActionsRadial), "GetDrinkItemsInInventory")]
+	[HarmonyPatch(typeof(Panel_ActionsRadial), nameof(Panel_ActionsRadial.GetDrinkItemsInInventory))]
 	internal class Panel_ActionsRadial_GetDrinkItemsInInventory
 	{
 		internal static bool Prefix(Panel_ActionsRadial __instance, ref Il2CppSystem.Collections.Generic.List<GearItem> __result)
@@ -87,7 +87,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(Panel_Inventory), "CanBeAddedToSatchel")]
+	[HarmonyPatch(typeof(Panel_Inventory), nameof(Panel_Inventory.CanBeAddedToSatchel))]
 	internal class Panel_Inventory_CanBeAddedToSatchel
 	{
 		internal static bool Prefix(GearItem gi, ref bool __result)
@@ -107,7 +107,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(PlayerManager), "DrinkFromWaterSupply")]//runs when you start drinking water; doesn't run when drinking tea
+	[HarmonyPatch(typeof(PlayerManager), nameof(PlayerManager.DrinkFromWaterSupply))]//runs when you start drinking water; doesn't run when drinking tea
 	internal class PlayerManager_DrinkFromWaterSupply
 	{
 		internal static void Postfix(WaterSupply ws, bool __result)
@@ -130,7 +130,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(PlayerManager), "OnDrinkWaterComplete")]
+	[HarmonyPatch(typeof(PlayerManager), nameof(PlayerManager.OnDrinkWaterComplete))]
 	internal class PlayerManager_OnDrinkWaterComplete
 	{
 		internal static void Postfix(PlayerManager __instance, float progress)
@@ -173,7 +173,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(PlayerManager), "OnPurifyWaterComplete")]
+	[HarmonyPatch(typeof(PlayerManager), nameof(PlayerManager.OnPurifyWaterComplete))]
 	internal class PlayerManager_OnPurifyWaterComplete
 	{
 		internal static void Postfix()
@@ -183,7 +183,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	/*[HarmonyPatch(typeof(PlayerManager), "UpdateInspectGear")]// Transpiler!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	/*[HarmonyPatch(typeof(PlayerManager), nameof(PlayerManager.UpdateInspectGear))]// Transpiler!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     internal class PlayerManager_UpdateInspectGear
     {
         internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
@@ -225,7 +225,7 @@ namespace BetterWaterManagement
 		internal static bool isExecuting = false;
 	}
 
-	[HarmonyPatch(typeof(PlayerManager), "UpdateInspectGear")]
+	[HarmonyPatch(typeof(PlayerManager), nameof(PlayerManager.UpdateInspectGear))]
 	internal class PlayerManager_UpdateInspectGear
 	{
 		private static void Prefix()
@@ -238,7 +238,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	/*[HarmonyPatch(typeof(PlayerManager), "UseInventoryItem")]
+	/*[HarmonyPatch(typeof(PlayerManager), nameof(PlayerManager.UseInventoryItem))]
     internal class PlayerManager_UseInventoryItem
     {
         private static void Prefix(ref GearItem gi,float volumeAvailable)
@@ -250,7 +250,7 @@ namespace BetterWaterManagement
         }
     }*/
 
-	/*[HarmonyPatch(typeof(Inventory), "GetPotableWaterSupply")]
+	/*[HarmonyPatch(typeof(Inventory), nameof(Inventory.GetPotableWaterSupply))]
     internal class Inventory_GetPotableWaterSupply
     {
         private static bool Prefix(ref GearItem __result)
@@ -267,7 +267,7 @@ namespace BetterWaterManagement
         }
     }
 
-    [HarmonyPatch(typeof(Inventory), "GetNonPotableWaterSupply")]
+    [HarmonyPatch(typeof(Inventory), nameof(Inventory.GetNonPotableWaterSupply))]
     internal class Inventory_GetNonPotableWaterSupply
     {
         private static bool Prefix(ref GearItem __result)
@@ -286,7 +286,7 @@ namespace BetterWaterManagement
 
 	//End Replacements
 
-	[HarmonyPatch(typeof(PlayerManager), "UseInventoryItem")]
+	[HarmonyPatch(typeof(PlayerManager), nameof(PlayerManager.UseInventoryItem))]
 	internal class PlayerManager_UseInventoryItem
 	{
 		internal static void Prefix(ref GearItem gi, float volumeAvailable, ref bool __result)

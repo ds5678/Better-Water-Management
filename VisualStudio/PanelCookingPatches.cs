@@ -1,6 +1,6 @@
 ﻿extern alias Hinterland;
-using Hinterland;
 using HarmonyLib;
+using Hinterland;
 
 namespace BetterWaterManagement
 {
@@ -9,7 +9,7 @@ namespace BetterWaterManagement
 	//
 	internal class PanelCookingPatches
 	{
-		[HarmonyPatch(typeof(Panel_Cooking), "OnBoilDown")]
+		[HarmonyPatch(typeof(Panel_Cooking), nameof(Panel_Cooking.OnBoilDown))]
 		internal class Panel_Cooking_OnBoilDown
 		{
 			private static void Prefix(Panel_Cooking __instance, out float __state)
@@ -26,7 +26,7 @@ namespace BetterWaterManagement
 				}
 			}
 		}
-		[HarmonyPatch(typeof(Panel_Cooking), "OnBoilUp")]
+		[HarmonyPatch(typeof(Panel_Cooking), nameof(Panel_Cooking.OnBoilUp))]
 		internal class Panel_Cooking_OnBoilUp
 		{
 			private static void Prefix(Panel_Cooking __instance, out float __state)
@@ -43,7 +43,7 @@ namespace BetterWaterManagement
 				}
 			}
 		}
-		[HarmonyPatch(typeof(Panel_Cooking), "OnMeltSnowDown")]
+		[HarmonyPatch(typeof(Panel_Cooking), nameof(Panel_Cooking.OnMeltSnowDown))]
 		internal class Panel_Cooking_OnMeltSnowDown
 		{
 			private static void Prefix(Panel_Cooking __instance, out float __state)
@@ -60,7 +60,7 @@ namespace BetterWaterManagement
 				}
 			}
 		}
-		[HarmonyPatch(typeof(Panel_Cooking), "OnMeltSnowUp")]
+		[HarmonyPatch(typeof(Panel_Cooking), nameof(Panel_Cooking.OnMeltSnowUp))]
 		internal class Panel_Cooking_OnMeltSnowUp
 		{
 			private static void Prefix(Panel_Cooking __instance, out float __state)

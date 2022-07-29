@@ -1,6 +1,6 @@
 ﻿extern alias Hinterland;
-using Hinterland;
 using HarmonyLib;
+using Hinterland;
 using UnityEngine;
 
 namespace BetterWaterManagement
@@ -43,7 +43,7 @@ namespace BetterWaterManagement
 		}
 	}
 
-	[HarmonyPatch(typeof(CookingPotItem), "DoSpecialActionFromInspectMode")] //like eating, drinking, or passing time
+	[HarmonyPatch(typeof(CookingPotItem), nameof(CookingPotItem.DoSpecialActionFromInspectMode))] //like eating, drinking, or passing time
 	internal class CookingPotItem_DoSpecialActionFromInspectMode
 	{
 		internal static bool Prefix(CookingPotItem __instance)

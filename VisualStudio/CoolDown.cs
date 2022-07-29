@@ -7,11 +7,25 @@ namespace BetterWaterManagement
 {
 	public class CoolDown : MonoBehaviour
 	{
-		private CookingPotItem cookingPotItem;
+		private CookingPotItem CookingPotItem 
+		{ 
+			get
+			{
+				if (_cookingPotItem == null)
+				{
+					_cookingPotItem = GetComponent<CookingPotItem>();
+					originalState = _cookingPotItem.GetCookingState();
+					nextState = originalState - 1;
+				}
+				return _cookingPotItem;
+			}
+			set => _cookingPotItem = value; 
+		}
 		private float elapsed;
 		private float lastUpdate;
 		private CookingPotItem.CookingState nextState;
 		private CookingPotItem.CookingState originalState;
+		private CookingPotItem? _cookingPotItem;
 
 		public CoolDown(System.IntPtr intPtr) : base(intPtr) { }
 		public void FixedUpdate()
@@ -34,60 +48,38 @@ namespace BetterWaterManagement
 
 			if (nextState < CookingPotItem.CookingState.Cooking)
 			{
-				//AccessTools.Method(typeof(CookingPotItem), "TurnOnParticles").Invoke(this.cookingPotItem, new object[] { null });
-				this.cookingPotItem.TurnOnParticles(null);
-				this.enabled = false;
+				CookingPotItem.TurnOnParticles(null);
+				enabled = false;
 				return;
 			}
 
-			//System.Reflection.FieldInfo fieldInfo = AccessTools.Field(typeof(CookingPotItem), "m_CookingState");
-			//fieldInfo.SetValue(this.cookingPotItem, nextState);
-			this.cookingPotItem.m_CookingState = nextState;
-			//AccessTools.Method(typeof(CookingPotItem), "UpdateParticles").Invoke(this.cookingPotItem, null);
-			//fieldInfo.SetValue(this.cookingPotItem, originalState);
-			this.cookingPotItem.UpdateParticles();
-			this.cookingPotItem.m_CookingState = originalState;
+			CookingPotItem.m_CookingState = nextState;
+			CookingPotItem.UpdateParticles();
+			CookingPotItem.m_CookingState = originalState;
 			nextState--;
-			this.elapsed = 0;
+			elapsed = 0;
 		}
 
 		[HideFromIl2Cpp]
 		public void SetEnabled(bool enable)
 		{
-			if (this.enabled == enable)
+			if (enabled == enable)
 			{
 				return;
 			}
 
 			if (enable)
 			{
-				this.enabled = true;
-				this.elapsed = 0;
-				this.lastUpdate = 0;
-				this.originalState = this.cookingPotItem.GetCookingState();
-				this.nextState = originalState - 1;
+				enabled = true;
+				elapsed = 0;
+				lastUpdate = 0;
+				originalState = CookingPotItem.GetCookingState();
+				nextState = originalState - 1;
 			}
 			else
 			{
-				this.enabled = false;
+				enabled = false;
 			}
-		}
-
-		internal void Initialize()
-		{
-			if (this.cookingPotItem != null)
-			{
-				return;
-			}
-
-			this.cookingPotItem = this.GetComponent<CookingPotItem>();
-			this.originalState = this.cookingPotItem.GetCookingState();
-			this.nextState = originalState - 1;
-		}
-
-		public void Start()
-		{
-			this.Initialize();
 		}
 	}
 }

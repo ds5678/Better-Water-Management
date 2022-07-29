@@ -10,12 +10,7 @@ namespace BetterWaterManagement
 
 		internal static bool ContainsWater(GearItem gearItem)
 		{
-			if (!IsWaterItem(gearItem))
-			{
-				return false;
-			}
-
-			return gearItem.m_LiquidItem.m_LiquidLiters > 0;
+			return IsWaterItem(gearItem) && gearItem.m_LiquidItem.m_LiquidLiters > 0;
 		}
 
 		internal static bool ContainsPotableWater(GearItem gearItem)
@@ -27,12 +22,13 @@ namespace BetterWaterManagement
 		{
 			return Utils.GetLiquidQuantityStringNoOunces(InterfaceManager.m_Panel_OptionsMenu.m_State.m_Units, liters);
 		}
+		
 		internal static string FormatWaterAmountWithUnits(float liters)
 		{
 			return Utils.GetLiquidQuantityStringWithUnitsNoOunces(InterfaceManager.m_Panel_OptionsMenu.m_State.m_Units, liters);
 		}
 
-		internal static UILabel GetUILabel(string name)
+		internal static UILabel? GetUILabel(string name)
 		{
 			UILabel[] labels = Resources.FindObjectsOfTypeAll<UILabel>();
 			foreach (UILabel eachLabel in labels)
@@ -46,7 +42,7 @@ namespace BetterWaterManagement
 			return null;
 		}
 
-		internal static UITexture GetUITexure(string name)
+		internal static UITexture? GetUITexure(string name)
 		{
 			UITexture[] textures = Resources.FindObjectsOfTypeAll<UITexture>();
 			foreach (UITexture eachTexture in textures)
@@ -62,8 +58,6 @@ namespace BetterWaterManagement
 
 		internal static float GetWaterAmount(CookingPotItem cookingPotItem)
 		{
-			//System.Reflection.FieldInfo fieldInfo = AccessTools.Field(typeof(CookingPotItem), "m_LitersWaterBeingBoiled");
-			//return (float)fieldInfo.GetValue(cookingPotItem);
 			return cookingPotItem.m_LitersWaterBeingBoiled;
 		}
 
@@ -84,34 +78,21 @@ namespace BetterWaterManagement
 
 		internal static bool IsCookingItem(CookingPotItem cookingPotItem)
 		{
-			if (!cookingPotItem.IsCookingSomething())
-			{
-				return false;
-			}
-
-			//return Traverse.Create(cookingPotItem).Field("m_GearItemBeingCooked").GetValue() != null;
-			return cookingPotItem.m_GearItemBeingCooked != null;
+			return cookingPotItem.IsCookingSomething() && cookingPotItem.m_GearItemBeingCooked != null;
 		}
 
 		internal static bool IsCooledDown(CookingPotItem cookingPotItem)
 		{
-			//return Traverse.Create(cookingPotItem).Field("m_GracePeriodElapsedHours").GetValue<float>() * 60.0 > (double)InterfaceManager.m_Panel_Cooking.m_MinutesGraceTimeInterruptedCooking;
 			return (cookingPotItem.m_GracePeriodElapsedHours * 60f) > InterfaceManager.m_Panel_Cooking.m_MinutesGraceTimeInterruptedCooking;
 		}
 
 		internal static bool IsWaterItem(GearItem gearItem)
 		{
-			if (gearItem == null || gearItem.m_LiquidItem == null)
-			{
-				return false;
-			}
-
-			return gearItem.m_LiquidItem.m_LiquidType == GearLiquidTypeEnum.Water;
+			return gearItem != null && gearItem.m_LiquidItem != null && gearItem.m_LiquidItem.m_LiquidType == GearLiquidTypeEnum.Water;
 		}
 
 		internal static void SetElapsedCookingTime(CookingPotItem cookingPotItem, float hours)
 		{
-			//Traverse.Create(cookingPotItem).Field("m_CookingElapsedHours").SetValue(hours);
 			cookingPotItem.m_CookingElapsedHours = hours;
 		}
 
@@ -123,8 +104,6 @@ namespace BetterWaterManagement
 
 		internal static void SetWaterAmount(CookingPotItem cookingPotItem, float value)
 		{
-			//System.Reflection.FieldInfo fieldInfo = AccessTools.Field(typeof(CookingPotItem), "m_LitersWaterBeingBoiled");
-			//fieldInfo.SetValue(cookingPotItem, value);
 			cookingPotItem.m_LitersWaterBeingBoiled = value;
 		}
 
@@ -136,12 +115,7 @@ namespace BetterWaterManagement
 
 		private static string AppendSuffix(string sound, string suffix)
 		{
-			if (sound.EndsWith(suffix))
-			{
-				return sound;
-			}
-
-			return sound + suffix;
+			return sound.EndsWith(suffix, System.StringComparison.Ordinal) ? sound : sound + suffix;
 		}
 
 		private static Texture GetTexture(LiquidItem liquidItem)
@@ -151,12 +125,7 @@ namespace BetterWaterManagement
 
 		private static string StripSuffix(string sound, string suffix)
 		{
-			if (sound.EndsWith(suffix))
-			{
-				return sound.Substring(0, sound.Length - suffix.Length);
-			}
-
-			return sound;
+			return sound.EndsWith(suffix, System.StringComparison.Ordinal) ? sound.Substring(0, sound.Length - suffix.Length) : sound;
 		}
 
 		private static void UpdateWaterBottleSound(GearItem instance)

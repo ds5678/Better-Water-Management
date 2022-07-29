@@ -1,6 +1,6 @@
 ﻿extern alias Hinterland;
-using Hinterland;
 using CustomSaveDataUtilities;
+using Hinterland;
 using UnhollowerBaseLib.Attributes;
 
 namespace BetterWaterManagement
@@ -22,7 +22,7 @@ namespace BetterWaterManagement
 				return;
 			}
 
-			CookingPotItem cookingPotItem = this.GetComponent<CookingPotItem>();
+			CookingPotItem cookingPotItem = GetComponent<CookingPotItem>();
 			if (cookingPotItem == null)
 			{
 				return;

@@ -1,12 +1,12 @@
 ﻿extern alias Hinterland;
-using Hinterland;
 using HarmonyLib;
+using Hinterland;
 
 namespace BetterWaterManagement
 {
 	internal class StartGearPatch
 	{
-		[HarmonyPatch(typeof(StartGear), "AddAllToInventory")]
+		[HarmonyPatch(typeof(StartGear), nameof(StartGear.AddAllToInventory))]
 		internal class StartGear_AddAllToInventory
 		{
 			private static void Postfix()
