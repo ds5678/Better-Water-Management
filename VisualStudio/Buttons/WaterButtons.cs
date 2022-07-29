@@ -1,6 +1,7 @@
-﻿using HarmonyLib;
+﻿extern alias Hinterland;
+using Hinterland;
+using HarmonyLib;
 using UnityEngine;
-
 
 namespace BetterWaterManagement
 {

@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿extern alias Hinterland;
+using Hinterland;
+using HarmonyLib;
 using ModComponent.Utils;
 using UnityEngine;
 

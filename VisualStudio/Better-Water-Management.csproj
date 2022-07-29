@@ -1,111 +1,77 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CA7965C2-D9E8-412A-A046-F9EAAB676F47}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BetterWaterManagement</RootNamespace>
-    <AssemblyName>Better-Water-Management</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\Settings.cs" />
-    <Compile Include="src\Buttons\WaterButtons.cs" />
-    <Compile Include="src\Buttons\MeltAndCookButton.cs" />
-    <Compile Include="src\CookingModifier.cs" />
-    <Compile Include="src\CookingPotWaterSaveData.cs" />
-    <Compile Include="src\CoolDown.cs" />
-    <Compile Include="src\Implementation.cs" />
-    <Compile Include="src\OverrideCookingState.cs" />
-    <Compile Include="src\PanelCookingPatches.cs" />
-    <Compile Include="src\Patches\RemovePotWithWaterPatches.cs" />
-    <Compile Include="src\PickUpWaterPatches.cs" />
-    <Compile Include="src\CookingPatches.cs" />
-    <Compile Include="src\PickWater.cs" />
-    <Compile Include="src\Patches\StartGearPatch.cs" />
-    <Compile Include="src\SpawnProbabilities.cs" />
-    <Compile Include="src\UseWaterPatches.cs" />
-    <Compile Include="src\WaterUtils.cs" />
-    <Compile Include="src\Water.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\.gitignore" />
-    <None Include="..\LICENSE" />
-    <None Include="..\README.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="CustomSaveDataUtilities, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="GearSpawner, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Il2Cppmscorlib, Version=3.7.1.6, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Il2CppSystem, Version=3.7.1.6, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="MelonLoader, Version=0.4.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ModComponent, Version=4.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ModSettings, Version=1.7.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnhollowerBaseLib, Version=0.4.10.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>cmd /C IF DEFINED TLD_MOD_DIR copy "$(TargetPath)" %25TLD_MOD_DIR%25</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net472</TargetFramework>
+		<LangVersion>Latest</LangVersion>
+		<Nullable>enable</Nullable>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<TheLongDarkPath>E:\Games\TLD400</TheLongDarkPath>
+		<MelonLoaderPath>$(TheLongDarkPath)\MelonLoader</MelonLoaderPath>
+		<ManagedPath>$(MelonLoaderPath)\Managed</ManagedPath>
+		<ModsPath>$(TheLongDarkPath)\Mods</ModsPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Nullable" Version="1.3.1">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="0Harmony">
+			<HintPath>$(MelonLoaderPath)\0Harmony.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="Assembly-CSharp">
+			<HintPath>$(ManagedPath)\Assembly-CSharp.dll</HintPath>
+			<Private>False</Private>
+			<Aliases>Hinterland</Aliases>
+		</Reference>
+		<Reference Include="CustomSaveDataUtilities">
+			<HintPath>$(ModsPath)\CustomSaveDataUtilities.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="GearSpawner">
+			<HintPath>$(ModsPath)\GearSpawner.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="Il2Cppmscorlib">
+			<HintPath>$(ManagedPath)\Il2Cppmscorlib.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="Il2CppSystem">
+			<HintPath>$(ManagedPath)\Il2CppSystem.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="MelonLoader">
+			<HintPath>$(MelonLoaderPath)\MelonLoader.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="ModComponent">
+			<HintPath>$(ModsPath)\ModComponent.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="ModSettings">
+			<HintPath>$(ModsPath)\ModSettings.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="UnhollowerBaseLib">
+			<HintPath>$(ManagedPath)\UnhollowerBaseLib.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="UnityEngine.CoreModule">
+			<HintPath>$(ManagedPath)\UnityEngine.CoreModule.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+	</ItemGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<DebugType>full</DebugType>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<DebugType>pdbonly</DebugType>
+	</PropertyGroup>
 </Project>

@@ -1,4 +1,6 @@
-﻿using CustomSaveDataUtilities;
+﻿extern alias Hinterland;
+using Hinterland;
+using CustomSaveDataUtilities;
 using UnhollowerBaseLib.Attributes;
 
 namespace BetterWaterManagement
