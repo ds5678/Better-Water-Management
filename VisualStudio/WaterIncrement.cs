@@ -1,10 +1,9 @@
-﻿namespace BetterWaterManagement
+﻿namespace BetterWaterManagement;
+
+internal enum WaterIncrement
 {
-	internal enum WaterIncrement
-	{
-		Liters0_05,
-		Liters0_10,
-		Liters0_25,
-		Liters0_50
-	};
-}
+	Liters0_05,
+	Liters0_10,
+	Liters0_25,
+	Liters0_50
+};
